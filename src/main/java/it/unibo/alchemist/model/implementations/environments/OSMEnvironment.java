@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014, Danilo Pianini and contributors
+ * Copyright (C) 2010-2015, Danilo Pianini and contributors
  * listed in the project's pom.xml file.
  * 
  * This file is part of Alchemist, and is distributed under the terms of
@@ -26,12 +26,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.Objects;
+import java.util.Optional;
 
 import org.danilopianini.concurrency.FastReadWriteLock;
 import org.danilopianini.io.FileUtilities;
@@ -41,8 +41,7 @@ import org.danilopianini.lang.MaxSizeHashMap;
 import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
-import com.graphhopper.routing.util.AbstractFlagEncoder;
-import com.graphhopper.routing.util.DefaultEdgeFilter;
+import com.graphhopper.routing.util.EdgeFilter;
 import com.graphhopper.storage.index.QueryResult;
 import com.graphhopper.util.CmdArgs;
 import com.graphhopper.util.shapes.GHPoint;
@@ -252,41 +251,37 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		initDir(mapfile);
 		initAll();
 	}
+	
+	private static void mkdirsIfNeeded(final File target) throws IOException {
+		if (!target.exists()) {
+			if (!target.mkdirs()) {
+				throw new IOException("Can not create the required directory structure: " + target);
+			}
+		}
+	}
 
-	private void initAll() {
+	private void initAll() throws IOException {
 		final File workdir = new File(dir);
-		if (!workdir.exists()) {
-			workdir.mkdirs();
-		}
-		final ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
-		for (final Vehicle v : Vehicle.values()) {
-			executor.execute(new Runnable() {
-				@Override
-				public void run() {
-					final String internalWorkdir = workdir + Global.SLASH + v;
-					final File iwdf = new File(internalWorkdir);
-					if (!iwdf.exists()) {
-						iwdf.mkdirs();
-					}
-					final GraphHopper gh = new GraphHopper().forServer();
-					try {
-						gh.init(CmdArgs.read(new String[] { "graph.location=" + internalWorkdir, "osmreader.osm=" + mapFile, "osmreader.acceptWay=" + v }));
-						gh.setCHShortcuts(ROUTING_STRATEGY);
-						gh.importOrLoad();
-					} catch (IOException e) {
-						L.error(e);
-					}
-					mapLock.write();
-					navigators.put(v, gh);
-					mapLock.release();
-				}
-			});
-		} try {
-			executor.shutdown();
-			executor.awaitTermination(3, TimeUnit.HOURS);
-		} catch (InterruptedException e) {
-			L.error(e);
-		}
+		mkdirsIfNeeded(workdir);
+		Arrays.stream(Vehicle.values()).parallel().forEach((v) -> {
+			final String internalWorkdir = workdir + Global.SLASH + v;
+			final File iwdf = new File(internalWorkdir);
+			try {
+				mkdirsIfNeeded(iwdf);
+				final GraphHopper gh = new GraphHopper().forServer();
+				gh.init(CmdArgs.read(new String[] {
+						"graph.location=" + internalWorkdir,
+						"osmreader.osm=" + mapFile,
+						"osmreader.acceptWay=" + v }));
+				gh.setCHShortcuts(ROUTING_STRATEGY);
+				gh.importOrLoad();
+				mapLock.write();
+				navigators.put(v, gh);
+				mapLock.release();
+			} catch (IOException e) {
+				L.error(e);
+			}
+		});
 	}
 
 	@Override
@@ -326,17 +321,16 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		return computeRoute(getPosition(node), coord, vehicle);
 	}
 
-	private IPosition getNearestStreetPoint(final IPosition position) {
+	private Optional<IPosition> getNearestStreetPoint(final IPosition position) {
 		mapLock.read();
-		final GraphHopper gh = navigators.get(DEFAULT_VEHICLE);
+		final GraphHopper gh = navigators.get(Vehicle.BIKE);
 		mapLock.release();
-		final AbstractFlagEncoder enc = gh.getEncodingManager().getEncoder(DEFAULT_VEHICLE.toString());
-		final QueryResult qr = gh.getLocationIndex().findClosest(position.getCoordinate(1), position.getCoordinate(0), new DefaultEdgeFilter(enc));
+		final QueryResult qr = gh.getLocationIndex().findClosest(position.getCoordinate(1), position.getCoordinate(0), EdgeFilter.ALL_EDGES);
 		if (qr.isValid()) {
 			final GHPoint pt = qr.getSnappedPoint();
-			return new LatLongPosition(pt.lat, pt.lon);
+			return Optional.of(new LatLongPosition(pt.lat, pt.lon));
 		}
-		return position;
+		return Optional.empty();
 	}
 
 	/**
@@ -382,18 +376,14 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 
 	@Override
 	public void addNode(final INode<T> node, final IPosition position) {
-		if (position == null) {
-			throw new IllegalArgumentException("The position cannot be null.");
-		}
+		Objects.requireNonNull(position, "The position cannot be null.");
 		final IGPSTrace trace = traces.get(node.getId());
 		if (trace == null) {
-			final IPosition computed = forceStreets ? getNearestStreetPoint(position) : position;
-			if (computed == null) {
-				if (!onlyStreet) {
-					super.addNode(node, position);
-				}
-			} else {
-				super.addNode(node, computed);
+			final Optional<IPosition> computed = forceStreets ? getNearestStreetPoint(position) : Optional.of(position);
+			if (computed.isPresent()) {
+				super.addNode(node, computed.get());
+			} else if (!onlyStreet) {
+				super.addNode(node, position);
 			}
 		} else {
 			super.addNode(node, trace.getPreviousPosition(0).toIPosition());

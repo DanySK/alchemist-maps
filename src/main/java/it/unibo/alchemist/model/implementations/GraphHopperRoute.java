@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014, Danilo Pianini and contributors
+ * Copyright (C) 2010-2015, Danilo Pianini and contributors
  * listed in the project's pom.xml file.
  * 
  * This file is part of Alchemist, and is distributed under the terms of
@@ -35,7 +35,7 @@ public class GraphHopperRoute implements IRoute {
 	 *            the response to use
 	 */
 	public GraphHopperRoute(final GHResponse resp) {
-		time = resp.getTime();
+		time = resp.getMillis() / 1000d;
 		distance = resp.getDistance();
 		final PointList pts = resp.getPoints();
 		size = pts.getSize();
