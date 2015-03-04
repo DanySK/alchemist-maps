@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2010-2014, Danilo Pianini and contributors
+ * Copyright (C) 2010-2015, Danilo Pianini and contributors
  * listed in the project's pom.xml file.
  * 
  * This file is part of Alchemist, and is distributed under the terms of
@@ -9,7 +9,6 @@
 package it.unibo.alchemist.model.implementations.actions;
 
 import it.unibo.alchemist.exceptions.UncomparableDistancesException;
-import it.unibo.alchemist.model.interfaces.IAction;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
 import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IPosition;
@@ -107,9 +106,6 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 		in = interaction;
 		rd = range;
 	}
-
-	@Override
-	public abstract IAction<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r);
 
 	/**
 	 * @return the speed in this very moment, computed considering the
