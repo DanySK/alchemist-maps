@@ -8,13 +8,11 @@
  */
 package it.unibo.alchemist.model.implementations.actions;
 
-import it.unibo.alchemist.exceptions.UncomparableDistancesException;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
 import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.model.interfaces.IReaction;
 import it.unibo.alchemist.model.interfaces.IRoute;
-import it.unibo.alchemist.utils.L;
 import it.unibo.alchemist.utils.MapUtils;
 
 import java.util.Collection;
@@ -55,12 +53,25 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 	 * @param reaction
 	 *            the reaction. Will be used to compute the distance to walk in
 	 *            every step, relying on {@link IReaction}'s getRate() method.
+	 */
+	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
+		this(environment, node, reaction, DEFAULT_RANGE);
+	}
+
+	/**
+	 * @param environment
+	 *            the environment
+	 * @param node
+	 *            the node
+	 * @param reaction
+	 *            the reaction. Will be used to compute the distance to walk in
+	 *            every step, relying on {@link IReaction}'s getRate() method.
 	 * @param interaction
 	 *            the higher, the more the {@link AbstractWalker} slows down
 	 *            when obstacles are found
 	 */
 	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double interaction) {
-		this(environment, node, reaction, DEFAULT_SPEED, interaction, DEFAULT_RANGE);
+		this(environment, node, reaction, interaction, DEFAULT_RANGE);
 	}
 
 	/**
@@ -142,15 +153,11 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 		final IMapEnvironment<T> env = getEnvironment();
 		final INode<T> node = getNode();
 		final IPosition curPos = env.getPosition(node);
-		try {
-			if (curPos.getDistanceTo(end) < maxWalk) {
-				final IPosition destination = end;
-				end = getNextTarget();
-				resetRoute();
-				return destination;
-			}
-		} catch (final UncomparableDistancesException e) {
-			L.error(e);
+		if (curPos.getDistanceTo(end) <= maxWalk) {
+			final IPosition destination = end;
+			end = getNextTarget();
+			resetRoute();
+			return destination;
 		}
 		if (route == null) {
 			route = env.computeRoute(node, end);
@@ -161,24 +168,20 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 		}
 		IPosition target = null;
 		double toWalk;
-		try {
-			do {
-				target = route.getPoint(curStep);
-				toWalk = target.getDistanceTo(curPos);
-				if (toWalk > maxWalk) {
-					return MapUtils.getDestinationLocation(curPos, target, maxWalk);
-				}
-				curStep++;
-				maxWalk -= toWalk;
-			} while (curStep != route.getPointsNumber());
-			/*
-			 * I've followed the whole route
-			 */
-			resetRoute();
-			target = end;
-		} catch (final UncomparableDistancesException e) {
-			L.error(e);
-		}
+		do {
+			target = route.getPoint(curStep);
+			toWalk = target.getDistanceTo(curPos);
+			if (toWalk > maxWalk) {
+				return MapUtils.getDestinationLocation(curPos, target, maxWalk);
+			}
+			curStep++;
+			maxWalk -= toWalk;
+		} while (curStep != route.getPointsNumber());
+		/*
+		 * I've followed the whole route
+		 */
+		resetRoute();
+		target = end;
 		return MapUtils.getDestinationLocation(curPos, target, maxWalk);
 	}
 
@@ -195,6 +198,13 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 	 */
 	protected IReaction<T> getReaction() {
 		return rt;
+	}
+
+	/**
+	 * @return the average speed
+	 */
+	protected final double getSpeed() {
+		return sp;
 	}
 
 	/**
@@ -218,13 +228,20 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 		route = null;
 		curStep = 0;
 	}
-
+	
 	/**
 	 * @param p
 	 *            the new target
 	 */
 	protected final void setTargetPoint(final IPosition p) {
 		end = p;
+	}
+	
+	/**
+	 * @return the current route, or null if no route is currently being followed
+	 */
+	protected final IRoute getCurrentRoute() {
+		return route;
 	}
 
 }
