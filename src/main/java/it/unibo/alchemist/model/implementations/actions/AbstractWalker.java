@@ -37,7 +37,11 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 	/**
 	 * Default interaction range.
 	 */
-	public static final double DEFAULT_RANGE = 10;
+	public static final double DEFAULT_RANGE = 0;
+	/**
+	 * Default interaction factor.
+	 */
+	public static final double DEFAULT_INTERACTION = 0;
 	private static final long serialVersionUID = -2268285113653315764L;
 	private IPosition end;
 	private IRoute route;
@@ -55,7 +59,7 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 	 *            every step, relying on {@link IReaction}'s getRate() method.
 	 */
 	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		this(environment, node, reaction, DEFAULT_RANGE);
+		this(environment, node, reaction, DEFAULT_INTERACTION);
 	}
 
 	/**
@@ -205,6 +209,20 @@ public abstract class AbstractWalker<T> extends AbstractMoveNode<T> {
 	 */
 	protected final double getSpeed() {
 		return sp;
+	}
+
+	/**
+	 * @return the interaction coefficient
+	 */
+	protected final double getInteractionCoefficient() {
+		return in;
+	}
+
+	/**
+	 * @return the interaction range
+	 */
+	protected final double getInteractionRange() {
+		return rd;
 	}
 
 	/**
