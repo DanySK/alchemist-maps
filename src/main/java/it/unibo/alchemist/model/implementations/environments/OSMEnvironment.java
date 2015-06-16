@@ -228,7 +228,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		 * Try to load as resource, then try to load a file
 		 */
 		final URL resource = OSMEnvironment.class.getResource(file);
-		final String resFile = resource == null ? "" : resource.getFile();
+		final String resFile = resource == null ? "" : resource.getPath();
 		final File mapfile = resFile.isEmpty() ? new File(file) : new File(resFile);
 		if (!mapfile.exists()) {
 			throw new FileNotFoundException(file);
@@ -253,8 +253,8 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		}
 		forceStreets = onStreets;
 		onlyStreet = onlyOnStreets;
-		mapFile = file;
 		initDir(mapfile);
+		mapFile = mapfile.getAbsolutePath();
 		initAll();
 	}
 	
