@@ -26,6 +26,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
@@ -223,7 +224,12 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	@SuppressWarnings("unchecked")
 	protected OSMEnvironment(final String file, final String tfile, final double ttime, final boolean onStreets, final boolean onlyOnStreets, final boolean useIds) throws IOException, ClassNotFoundException {
 		super();
-		final File mapfile = new File(file);
+		/*
+		 * Try to load as resource, then try to load a file
+		 */
+		final URL resource = OSMEnvironment.class.getResource(file);
+		final String resFile = resource == null ? "" : resource.getFile();
+		final File mapfile = resFile.isEmpty() ? new File(file) : new File(resFile);
 		if (!mapfile.exists()) {
 			throw new FileNotFoundException(file);
 		}
