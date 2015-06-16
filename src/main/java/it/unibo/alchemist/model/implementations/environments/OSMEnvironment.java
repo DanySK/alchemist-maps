@@ -432,21 +432,25 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
 		final String append = Global.SLASH + mapfile.getName() + code;
 		dir = Global.PERSISTENTPATH + append;
+		System.out.println("Test with " + dir);
 		if (!canWriteOnDir()) {
 			/*
 			 * Default directory can not be used. Fall back to tmpdir.
 			 */
 			dir = System.getProperty("java.io.tmpdir") + append;
+			System.out.println("Test with " + dir);
 			if (!canWriteOnDir()) {
 				/*
 				 * UGH! Not even the tmpdir! Last attempt with classpath root.
 				 */
 				dir = System.getProperty("user.dir") + append;
+				System.out.println("Test with " + dir);
 				if (canWriteOnDir()) {
 					/*
 					 * Give up.
 					 */
-					throw new IllegalStateException("None of: " + Global.PERSISTENTPATH + ", " + System.getProperty("java.io.tmpdir") + " or " + System.getProperty("user.dir") + " is writeable.");
+					System.out.println("FAILURE");
+					throw new IOException("None of: " + Global.PERSISTENTPATH + ", " + System.getProperty("java.io.tmpdir") + " or " + System.getProperty("user.dir") + " is writeable.");
 				}
 			}
 		}
