@@ -1,6 +1,7 @@
 package it.unibo.alchemist.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import it.unibo.alchemist.model.implementations.actions.TargetWalker;
 import it.unibo.alchemist.model.implementations.environments.OSMEnvironment;
 import it.unibo.alchemist.model.implementations.linkingrules.NoLinks;
@@ -57,20 +58,24 @@ public class TestTargetWalker {
 	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws ClassNotFoundException, IOException {
-		env = new OSMEnvironment<>(TESTMAP, true, true);
-		env.setLinkingRule(new NoLinks<>());
-		node = new GenericNode<Object>(true) {
-			private static final long serialVersionUID = -3982001064673078159L;
-			@Override
-			protected Object createT() {
-				return null;
-			}
-		};
-		reaction = new Event<Object>(node, new DiracComb<>(1));
-//		walker = new TargetWalker<Object>(env, node, reaction, TRACK, INTERACTING);
-		reaction.setActions(Lists.newArrayList(new TargetWalker<Object>(env, node, reaction, TRACK, INTERACTING)));
-		node.addReaction(reaction);
-		env.addNode(node, STARTPOSITION);
+		try {
+			env = new OSMEnvironment<>(TESTMAP, true, true);
+			env.setLinkingRule(new NoLinks<>());
+			node = new GenericNode<Object>(true) {
+				private static final long serialVersionUID = -3982001064673078159L;
+				@Override
+				protected Object createT() {
+					return null;
+				}
+			};
+			reaction = new Event<Object>(node, new DiracComb<>(1));
+			reaction.setActions(Lists.newArrayList(new TargetWalker<Object>(env, node, reaction, TRACK, INTERACTING)));
+			node.addReaction(reaction);
+			env.addNode(node, STARTPOSITION);
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+			fail(e.getMessage());
+		}
 	}
 
 	private void run() {
