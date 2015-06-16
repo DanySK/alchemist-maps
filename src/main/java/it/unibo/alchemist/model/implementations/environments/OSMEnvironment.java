@@ -258,36 +258,40 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		initAll();
 	}
 	
-	private static void mkdirsIfNeeded(final File target) throws IOException {
-		if (!target.exists()) {
-			if (!target.mkdirs()) {
-				throw new IOException("Can not create the required directory structure: " + target);
-			}
-		}
+	private static boolean mkdirsIfNeeded(final File target) {
+		return target.exists() || target.mkdirs();
+	}
+
+	private static boolean mkdirsIfNeeded(final String target) {
+		return mkdirsIfNeeded(new File(target));
 	}
 
 	private void initAll() throws IOException {
 		final File workdir = new File(dir);
 		mkdirsIfNeeded(workdir);
-		Arrays.stream(Vehicle.values()).parallel().forEach((v) -> {
-			final String internalWorkdir = workdir + Global.SLASH + v;
-			final File iwdf = new File(internalWorkdir);
-			try {
-				mkdirsIfNeeded(iwdf);
-				final GraphHopper gh = new GraphHopper().forServer();
-				gh.init(CmdArgs.read(new String[] {
-						"graph.location=" + internalWorkdir,
-						"osmreader.osm=" + mapFile,
-						"osmreader.acceptWay=" + v }));
-				gh.setCHShortcuts(ROUTING_STRATEGY);
-				gh.importOrLoad();
-				mapLock.write();
-				navigators.put(v, gh);
-				mapLock.release();
-			} catch (IOException e) {
-				L.error(e);
-			}
-		});
+		boolean processOK = Arrays.stream(Vehicle.values()).parallel()
+			.map((v) -> {
+				final String internalWorkdir = workdir + Global.SLASH + v;
+				final File iwdf = new File(internalWorkdir);
+				if (mkdirsIfNeeded(iwdf)) {
+					final GraphHopper gh = new GraphHopper().forDesktop();
+					gh.init(CmdArgs.read(new String[] {
+							"graph.location=" + internalWorkdir,
+							"osmreader.osm=" + mapFile,
+							"osmreader.acceptWay=" + v }));
+					gh.setCHShortcuts(ROUTING_STRATEGY);
+					gh.importOrLoad();
+					mapLock.write();
+					navigators.put(v, gh);
+					mapLock.release();
+					return true;
+				}
+				return false;
+			})
+			.reduce((a, b) -> a && b).orElse(false);
+		if (!processOK) {
+			throw new IllegalStateException("GraphHopper could not be initialized.");
+		}
 	}
 
 	@Override
@@ -431,24 +435,21 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	private void initDir(final File mapfile) throws IOException {
 		final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
 		final String append = Global.SLASH + mapfile.getName() + code;
-		dir = Global.PERSISTENTPATH + append;
+		final String[] prefixes = new String[] {
+				Global.PERSISTENTPATH,
+				System.getProperty("java.io.tmpdir"),
+				System.getProperty("user.dir"),
+				"."};
+		dir = prefixes[0] + append;
+		for (int i = 1; (!mkdirsIfNeeded(dir) || !canWriteOnDir()) && i < prefixes.length; i++) {
+			L.warn("Can not write on " + dir + ", trying " + prefixes[i]);
+			dir = prefixes[i] + append;
+		}
 		if (!canWriteOnDir()) {
 			/*
-			 * Default directory can not be used. Fall back to tmpdir.
+			 * Give up.
 			 */
-			dir = System.getProperty("java.io.tmpdir") + append;
-			if (!canWriteOnDir()) {
-				/*
-				 * UGH! Not even the tmpdir! Last attempt with classpath root.
-				 */
-				dir = System.getProperty("user.dir") + append;
-				if (canWriteOnDir()) {
-					/*
-					 * Give up.
-					 */
-					throw new IOException("None of: " + Global.PERSISTENTPATH + ", " + System.getProperty("java.io.tmpdir") + " or " + System.getProperty("user.dir") + " is writeable.");
-				}
-			}
+			throw new IOException("None of: " + Arrays.toString(prefixes) + " is writeable. I can not initialize GraphHopper cache.");
 		}
 	}
 	
