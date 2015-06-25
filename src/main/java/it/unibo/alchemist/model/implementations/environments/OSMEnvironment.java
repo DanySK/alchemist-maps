@@ -269,7 +269,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	private void initAll() throws IOException {
 		final File workdir = new File(dir);
 		mkdirsIfNeeded(workdir);
-		boolean processOK = Arrays.stream(Vehicle.values()).parallel()
+		final boolean processOK = Arrays.stream(Vehicle.values()).parallel()
 			.map((v) -> {
 				final String internalWorkdir = workdir + Global.SLASH + v;
 				final File iwdf = new File(internalWorkdir);
