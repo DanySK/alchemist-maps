@@ -205,9 +205,9 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            slow down the {@link AbstractWalker}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-			final IMolecule trackMolecule, final String interactingMolecule, final double speed, final double interaction,
+			final String trackMolecule, final String interactingMolecule, final double speed, final double interaction,
 			final double range) {
-		this(environment, node, reaction, trackMolecule, new Molecule(interactingMolecule), speed, interaction, range);
+		this(environment, node, reaction, new Molecule(trackMolecule), new Molecule(interactingMolecule), speed, interaction, range);
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            slow down the {@link AbstractWalker}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-			final IMolecule trackMolecule, final String interactingMolecule, final double interaction, final double range) {
+			final String trackMolecule, final String interactingMolecule, final double interaction, final double range) {
 		this(environment, node, reaction, trackMolecule, interactingMolecule, DEFAULT_SPEED, interaction, range);
 	}
 
@@ -275,7 +275,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            when obstacles are found
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-			final IMolecule trackMolecule, final String interactingMolecule, final double interaction) {
+			final String trackMolecule, final String interactingMolecule, final double interaction) {
 		this(environment, node, reaction, trackMolecule, interactingMolecule, interaction, DEFAULT_RANGE);
 	}
 
@@ -305,7 +305,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            value.
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-			final IMolecule trackMolecule, final String interactingMolecule) {
+			final String trackMolecule, final String interactingMolecule) { 
 		this(environment, node, reaction, trackMolecule, interactingMolecule, DEFAULT_INTERACTION);
 	}
 
