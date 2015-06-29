@@ -13,16 +13,17 @@ import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.model.interfaces.IReaction;
 import it.unibo.alchemist.model.interfaces.IRoute;
+import it.unibo.alchemist.model.interfaces.strategies.RoutingStrategy;
+import it.unibo.alchemist.model.interfaces.strategies.SpeedSelectionStrategy;
+import it.unibo.alchemist.model.interfaces.strategies.TargetSelectionStrategy;
 import it.unibo.alchemist.utils.MapUtils;
-
-import java.util.Collection;
 
 /**
  * @author Danilo Pianini
  * 
  * @param <T>
  */
-public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
+public class MoveOnMap<T> extends AbstractMoveNode<T> {
 
 	/**
 	 * Minimum distance to walk per step in meters. Under this value, the
@@ -33,53 +34,27 @@ public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 	private static final long serialVersionUID = -2268285113653315764L;
 	private IPosition end;
 	private IRoute route;
-	private final IReaction<T> rt;
 	private int curStep;
-	private final double sp, in, rd;
+	private final RoutingStrategy<T> routeStrategy;
+	private final SpeedSelectionStrategy<T> speedStrategy;
+	private final TargetSelectionStrategy<T> targetStrategy;
 
 	/**
 	 * @param environment
 	 *            the environment
 	 * @param node
 	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param speed
-	 *            the speed at which this {@link AbstractMoveOnMap} will move
-	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
-	 *            when obstacles are found
-	 * @param range
-	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractMoveOnMap}
+	 * @param rt the {@link RoutingStrategy}
+	 * @param sp
+	 *            the {@link SpeedSelectionStrategy}
+	 * @param tg
+	 *            {@link TargetSelectionStrategy}
 	 */
-	public AbstractMoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double speed, final double interaction, final double range) {
+	public MoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final RoutingStrategy<T> rt, final SpeedSelectionStrategy<T> sp, final TargetSelectionStrategy<T> tg) {
 		super(environment, node, true);
-		assert interaction >= 0 : "Interaction can not be negative";
-		rt = reaction;
-		sp = speed / reaction.getRate();
-		in = interaction;
-		rd = range;
-	}
-
-	/**
-	 * @return the speed in this very moment, computed considering the
-	 *         interacting nodes in the surroundings
-	 */
-	protected double getCurrentSpeed() {
-		double crowd = 0;
-		final IMapEnvironment<T> env = getEnvironment();
-		final INode<T> node = getNode();
-		final Collection<? extends INode<T>> neighs = env.getNodesWithinRange(node, rd);
-		if (neighs.size() > 1 / in) {
-			for (final INode<T> neigh : neighs) {
-				if (isInteractingNode(neigh)) {
-					crowd += 1 / env.getDistanceBetweenNodes(node, neigh);
-				}
-			}
-		}
-		return Math.max(sp / (crowd * in + 1), MINIMUM_DISTANCE_WALKED);
+		routeStrategy = rt;
+		speedStrategy = sp;
+		targetStrategy = tg;
 	}
 
 	@Override
@@ -90,22 +65,22 @@ public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 	@Override
 	public IPosition getNextPosition() {
 		final IPosition previousEnd = end;
-		end = getNextTarget();
+		end = targetStrategy.getNextTarget();
 		if (!end.equals(previousEnd)) {
 			resetRoute();
 		}
-		double maxWalk = getCurrentSpeed();
+		double maxWalk = speedStrategy.getCurrentSpeed(end);
 		final IMapEnvironment<T> env = getEnvironment();
 		final INode<T> node = getNode();
 		final IPosition curPos = env.getPosition(node);
 		if (curPos.getDistanceTo(end) <= maxWalk) {
 			final IPosition destination = end;
-			end = getNextTarget();
+			end = targetStrategy.getNextTarget();
 			resetRoute();
 			return destination;
 		}
 		if (route == null) {
-			route = computeRoute(curPos, end);
+			route = routeStrategy.computeRoute(curPos, end);
 		}
 		if (route.getPointsNumber() < 1) {
 			resetRoute();
@@ -131,54 +106,11 @@ public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 	}
 
 	/**
-	 * this method is called when the {@link AbstractMoveOnMap} needs a new target
-	 * (e.g. because it reached the previous)
-	 * 
-	 * @return the new target
-	 */
-	protected abstract IPosition getNextTarget();
-
-	/**
-	 * @return the reaction
-	 */
-	protected IReaction<T> getReaction() {
-		return rt;
-	}
-
-	/**
-	 * @return the average speed
-	 */
-	protected final double getSpeed() {
-		return sp;
-	}
-
-	/**
-	 * @return the interaction coefficient
-	 */
-	protected final double getInteractionCoefficient() {
-		return in;
-	}
-
-	/**
-	 * @return the interaction range
-	 */
-	protected final double getInteractionRange() {
-		return rd;
-	}
-
-	/**
 	 * @return the current target
 	 */
 	protected final IPosition getTargetPoint() {
 		return end;
 	}
-
-	/**
-	 * @param n
-	 *            determines wether a node is interacting
-	 * @return true if the passed node is to be considered an obstacle
-	 */
-	protected abstract boolean isInteractingNode(final INode<T> n);
 
 	/**
 	 * Resets the current route, e.g. because the target has been reached
@@ -202,14 +134,13 @@ public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 	protected final IRoute getCurrentRoute() {
 		return route;
 	}
-	
-	/**
-	 * Subclasses must produce routes that this class can follow.
-	 * 
-	 * @param currentPos the current node position
-	 * @param finalPos the position where the route should end
-	 * @return a route connecting the beginning and the end.
-	 */
-	protected abstract IRoute computeRoute(IPosition currentPos, IPosition finalPos);
 
+	@Override
+	public MoveOnMap<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r) {
+		/*
+		 * Routing strategies can not be cloned at the moment.
+		 */
+		throw new UnsupportedOperationException("Routing strategies can not be cloned.");
+	}
+	
 }

@@ -3,26 +3,23 @@
  */
 package it.unibo.alchemist.model.implementations.actions;
 
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.regex.Matcher;
-
 import it.unibo.alchemist.model.implementations.molecules.Molecule;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.interfaces.IAction;
+import it.unibo.alchemist.model.implementations.strategies.routing.OnStreets;
+import it.unibo.alchemist.model.implementations.strategies.speed.InteractWithOthers;
+import it.unibo.alchemist.model.implementations.strategies.target.FollowTarget;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
 import it.unibo.alchemist.model.interfaces.IMolecule;
 import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.model.interfaces.IReaction;
-import static org.danilopianini.lang.RegexUtil.FLOAT_PATTERN;
+import it.unibo.alchemist.model.interfaces.Vehicle;
 
 /**
  * @author Danilo Pianini
  * @param <T>
  *
  */
-public class TargetWalker<T> extends AbstractWalker<T> {
+public class TargetWalker<T> extends MoveOnMap<T> {
 
 	/**
 	 * Default speed in meters per second.
@@ -38,8 +35,6 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	public static final double DEFAULT_INTERACTION = 0;
 	
 	private static final long serialVersionUID = 5097382908560832035L;
-	private final IMolecule track;
-	private final IMolecule interacting;
 
 	/**
 	 * @param environment
@@ -66,20 +61,21 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractMoveOnMap} will move
+	 *            the speed at which this {@link MoveOnMap} will move
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
+	 *            the higher, the more the {@link MoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractMoveOnMap}
+	 *            slow down the {@link MoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final IMolecule trackMolecule, final IMolecule interactingMolecule, final double speed, final double interaction,
 			final double range) {
-		super(environment, node, reaction, speed, interaction, range);
-		track = trackMolecule;
-		interacting = interactingMolecule;
+		super(environment, node,
+				new OnStreets<>(environment, Vehicle.FOOT),
+				new InteractWithOthers<>(environment, node, reaction, interactingMolecule, speed, range, interaction),
+				new FollowTarget<>(environment, node, trackMolecule));
 	}
 
 	/**
@@ -107,7 +103,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractMoveOnMap} will move
+	 *            the speed at which this {@link MoveOnMap} will move
 	 *            when obstacles are found
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
@@ -170,13 +166,13 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractMoveOnMap} will move
+	 *            the speed at which this {@link MoveOnMap} will move
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
+	 *            the higher, the more the {@link MoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractMoveOnMap}
+	 *            slow down the {@link MoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final String trackMolecule, final String interactingMolecule, final double speed, final double interaction,
@@ -209,7 +205,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractMoveOnMap} will move
+	 *            the speed at which this {@link MoveOnMap} will move
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final String trackMolecule, final String interactingMolecule, final double speed) {
@@ -244,70 +240,6 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final String trackMolecule, final String interactingMolecule) { 
 		this(environment, node, reaction, trackMolecule, interactingMolecule, DEFAULT_SPEED);
-	}
-
-	@Override
-	public IAction<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r) {
-		return new TargetWalker<>(getEnvironment(), getNode(), getReaction(), track, interacting, getSpeed(),
-				getInteractionCoefficient(), getInteractionRange());
-	}
-
-	@Override
-	protected IPosition getNextTarget() {
-		final Optional<T> optt = getConcentration(track);
-		if (optt.isPresent()) {
-			final T conc = optt.get();
-			if (conc instanceof LatLongPosition) {
-				return (LatLongPosition) conc;
-			}
-			double lat = Double.NaN;
-			double lon = Double.NaN;
-			if (conc instanceof Iterable) {
-				final Iterator<?> iterator = ((Iterable<?>) conc).iterator();
-				while (iterator.hasNext() && Double.isNaN(lon)) {
-					final Object elem = iterator.next();
-					double val;
-					if (elem instanceof Number) {
-						val = ((Number) elem).doubleValue();
-					} else if (elem == null) {
-						return getCurrentPosition();
-					} else {
-						try {
-							val = Double.parseDouble(elem.toString());
-						} catch (NumberFormatException e) {
-							return getCurrentPosition();
-						}
-					}
-					if (Double.isNaN(lat)) {
-						lat = val;
-					} else {
-						lon = val;
-					}
-				}
-			} else {
-				final Matcher m = FLOAT_PATTERN.matcher(conc instanceof CharSequence ? (CharSequence) conc : conc.toString());
-				while (Double.isNaN(lon) && m.find()) {
-					final String val = m.group();
-					/*
-					 * It can not fail, unless the RegexUtil utility is broken
-					 */
-					if (Double.isNaN(lat)) {
-						lat = Double.parseDouble(val);
-					} else {
-						lon = Double.parseDouble(val);
-					}
-				}
-			}
-			if (!Double.isNaN(lon)) {
-				return new LatLongPosition(lat, lon);
-			}
-		}
-		return getCurrentPosition();
-	}
-	
-	@Override
-	protected boolean isInteractingNode(final INode<T> n) {
-		return n.contains(interacting);
 	}
 
 }
