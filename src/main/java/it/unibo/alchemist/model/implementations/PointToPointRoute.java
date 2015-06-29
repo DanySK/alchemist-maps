@@ -8,6 +8,7 @@ import it.unibo.alchemist.model.interfaces.IRoute;
 
 import java.util.List;
 
+import org.danilopianini.lang.HashUtils;
 import org.danilopianini.lang.LangUtils;
 
 import com.google.common.collect.Lists;
@@ -25,6 +26,7 @@ public class PointToPointRoute implements IRoute {
 	 */
 	private static final long serialVersionUID = -6937104566388182150L;
 	private final IPosition s, e;
+	private String string;
 	private double dist = Double.NaN;
 	private List<IPosition> l; // Optional is not Serializable!
 
@@ -72,4 +74,26 @@ public class PointToPointRoute implements IRoute {
 		return Double.NaN;
 	}
 
+	@Override
+	public String toString() {
+		if (string == null) {
+			string = "[" + s + " >> " + e + "]";
+		}
+		return string;
+	}
+	
+	@Override
+	public boolean equals(final Object obj) {
+		if (obj instanceof IRoute) {
+			final IRoute r = (IRoute) obj;
+			return getPoints().equals(r.getPoints());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashUtils.hash32(getPoints());
+	}
+	
 }
