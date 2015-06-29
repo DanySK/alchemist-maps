@@ -56,13 +56,13 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractWalker} will move
+	 *            the speed at which this {@link AbstractMoveOnMap} will move
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractWalker}
+	 *            slow down the {@link AbstractMoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final IMolecule trackMolecule, final IMolecule interactingMolecule, final double speed, final double interaction,
@@ -97,11 +97,11 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractWalker}
+	 *            slow down the {@link AbstractMoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final IMolecule trackMolecule, final IMolecule interactingMolecule, final double interaction, final double range) {
@@ -133,7 +133,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
@@ -196,13 +196,13 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param speed
-	 *            the speed at which this {@link AbstractWalker} will move
+	 *            the speed at which this {@link AbstractMoveOnMap} will move
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractWalker}
+	 *            slow down the {@link AbstractMoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final String trackMolecule, final String interactingMolecule, final double speed, final double interaction,
@@ -235,11 +235,11 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 * @param range
 	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractWalker}
+	 *            slow down the {@link AbstractMoveOnMap}
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
 			final String trackMolecule, final String interactingMolecule, final double interaction, final double range) {
@@ -271,7 +271,7 @@ public class TargetWalker<T> extends AbstractWalker<T> {
 	 *            "interacting" if such molecule is present, regardless its
 	 *            value.
 	 * @param interaction
-	 *            the higher, the more the {@link AbstractWalker} slows down
+	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
 	 *            when obstacles are found
 	 */
 	public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
