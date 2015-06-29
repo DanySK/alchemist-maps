@@ -38,7 +38,7 @@ public class GPSTracesWalker<T> extends AbstractWalker<T> {
 	 *            the reaction
 	 */
 	public GPSTracesWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		super(environment, node, reaction);
+		super(environment, node, reaction, 0, 0, 0);
 	}
 
 	@Override

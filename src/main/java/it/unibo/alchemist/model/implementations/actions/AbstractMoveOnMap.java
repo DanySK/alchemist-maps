@@ -25,77 +25,17 @@ import java.util.Collection;
 public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 
 	/**
-	 * Default speed in meters per second.
-	 */
-	public static final double DEFAULT_SPEED = 1.5;
-	/**
 	 * Minimum distance to walk per step in meters. Under this value, the
 	 * movement will become imprecise, due to errors in computation of the
 	 * distance between two points on the surface of the Earth.
 	 */
 	public static final double MINIMUM_DISTANCE_WALKED = 1.0;
-	/**
-	 * Default interaction range.
-	 */
-	public static final double DEFAULT_RANGE = 0;
-	/**
-	 * Default interaction factor.
-	 */
-	public static final double DEFAULT_INTERACTION = 0;
 	private static final long serialVersionUID = -2268285113653315764L;
 	private IPosition end;
 	private IRoute route;
 	private final IReaction<T> rt;
 	private int curStep;
 	private final double sp, in, rd;
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 */
-	public AbstractMoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		this(environment, node, reaction, DEFAULT_INTERACTION);
-	}
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
-	 *            when obstacles are found
-	 */
-	public AbstractMoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double interaction) {
-		this(environment, node, reaction, interaction, DEFAULT_RANGE);
-	}
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
-	 *            when obstacles are found
-	 * @param range
-	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractMoveOnMap}
-	 */
-	public AbstractMoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double interaction, final double range) {
-		this(environment, node, reaction, DEFAULT_SPEED, interaction, range);
-	}
 
 	/**
 	 * @param environment
@@ -116,6 +56,7 @@ public abstract class AbstractMoveOnMap<T> extends AbstractMoveNode<T> {
 	 */
 	public AbstractMoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double speed, final double interaction, final double range) {
 		super(environment, node, true);
+		assert interaction >= 0 : "Interaction can not be negative";
 		rt = reaction;
 		sp = speed / reaction.getRate();
 		in = interaction;

@@ -24,54 +24,6 @@ public abstract class AbstractWalker<T> extends AbstractMoveOnMap<T> {
 	 * @param reaction
 	 *            the reaction. Will be used to compute the distance to walk in
 	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 */
-	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		super(environment, node, reaction);
-	}
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
-	 *            when obstacles are found
-	 */
-	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double interaction) {
-		super(environment, node, reaction, interaction);
-	}
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param interaction
-	 *            the higher, the more the {@link AbstractMoveOnMap} slows down
-	 *            when obstacles are found
-	 * @param range
-	 *            the range in which searching for possible obstacles. Obstacles
-	 *            slow down the {@link AbstractMoveOnMap}
-	 */
-	public AbstractWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double interaction, final double range) {
-		super(environment, node, reaction, interaction, range);
-	}
-
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
 	 * @param speed
 	 *            the speed at which this {@link AbstractMoveOnMap} will move
 	 * @param interaction

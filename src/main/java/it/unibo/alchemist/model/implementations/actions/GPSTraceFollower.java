@@ -33,7 +33,7 @@ public class GPSTraceFollower<T> extends AbstractMoveOnMap<T> {
 	 * @param speed the speed
 	 */
 	public GPSTraceFollower(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double speed) {
-		super(environment, node, reaction, speed);
+		super(environment, node, reaction, speed, 0, 0);
 	}
 
 	@Override
