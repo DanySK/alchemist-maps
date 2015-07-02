@@ -3,7 +3,7 @@ package it.unibo.alchemist.model.implementations.actions;
 import it.unibo.alchemist.model.implementations.strategies.routing.IgnoreStreets;
 import it.unibo.alchemist.model.implementations.strategies.speed.ConstantSpeed;
 import it.unibo.alchemist.model.implementations.strategies.speed.StraightLineTraceDependantSpeed;
-import it.unibo.alchemist.model.implementations.strategies.target.FollowRoute;
+import it.unibo.alchemist.model.implementations.strategies.target.FollowTrace;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
 import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IReaction;
@@ -30,7 +30,7 @@ public class ReproduceGPSTrace<T> extends MoveOnMap<T> {
 		super(environment, node,
 				new IgnoreStreets<>(),
 				new StraightLineTraceDependantSpeed<>(environment, node, reaction),
-				new FollowRoute<>(environment, node, reaction));
+				new FollowTrace<>(environment, node, reaction));
 	}
 	
 	/**
@@ -48,7 +48,7 @@ public class ReproduceGPSTrace<T> extends MoveOnMap<T> {
 		super(environment, node,
 				new IgnoreStreets<>(),
 				new ConstantSpeed<>(reaction, speed),
-				new FollowRoute<>(environment, node, reaction));
+				new FollowTrace<>(environment, node, reaction));
 	}
 	
 }

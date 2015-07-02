@@ -14,7 +14,7 @@ import it.unibo.alchemist.model.interfaces.strategies.TargetSelectionStrategy;
  *
  * @param <T>
  */
-public class FollowRoute<T> implements TargetSelectionStrategy<T> {
+public class FollowTrace<T> implements TargetSelectionStrategy<T> {
 	
 	private static final long serialVersionUID = -446053307821810437L;
 	private final IMapEnvironment<T> environment;
@@ -29,7 +29,7 @@ public class FollowRoute<T> implements TargetSelectionStrategy<T> {
 	 * @param r
 	 *            the reaction
 	 */
-	public FollowRoute(final IMapEnvironment<T> env, final INode<T> n, final IReaction<T> r) {
+	public FollowTrace(final IMapEnvironment<T> env, final INode<T> n, final IReaction<T> r) {
 		environment = env;
 		node = n;
 		reaction = r;
