@@ -29,10 +29,10 @@ public enum Vehicle {
 	 */
 	FOOT,
 	
-	/**
-	 * Bikes, with improved elevation interpolation.
-	 */
-	BIKE2,
+//	/**
+//	 * Bikes, with improved elevation interpolation.
+//	 */
+//	BIKE2,
 	
 	/**
 	 * Racing Bikes.
