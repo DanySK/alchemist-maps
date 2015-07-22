@@ -15,8 +15,38 @@ package it.unibo.alchemist.model.interfaces;
 public enum Vehicle {
 
 	/**
-	 * 
+	 * Bikes.
 	 */
-	BIKE, CAR, FOOT
+	BIKE,
+	
+	/**
+	 * Cars.
+	 */
+	CAR,
+	
+	/**
+	 * Pedestrians.
+	 */
+	FOOT,
+	
+	/**
+	 * Bikes, with improved elevation interpolation.
+	 */
+	BIKE2,
+	
+	/**
+	 * Racing Bikes.
+	 */
+	RACINGBIKE,
+	
+	/**
+	 * Mountain Bikes.
+	 */
+	MTB,
+	
+	/**
+	 * Motorcycles.
+	 */
+	MOTORCYCLE
 
 }
