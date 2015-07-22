@@ -8,6 +8,9 @@
  */
 package at.jku.traces.json;
 
+import org.danilopianini.lang.HashUtils;
+
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
 import it.unibo.alchemist.model.interfaces.IGPSPoint;
 import it.unibo.alchemist.model.interfaces.IPosition;
@@ -80,6 +83,21 @@ public class GPSPoint implements IGPSPoint {
 	@Override
 	public String toString() {
 		return "[" + la + "," + lo + "]@" + t;
+	}
+	
+	@Override
+	@SuppressFBWarnings("FE_FLOATING_POINT_EQUALITY")
+	public boolean equals(final Object obj) {
+		if (obj instanceof IGPSPoint) {
+			final IGPSPoint pt = (IGPSPoint) obj;
+			return pt.getLatitude() == la && pt.getLongitude() == lo && pt.getTime() == t;
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return HashUtils.hash32(la, lo, t);
 	}
 
 }
