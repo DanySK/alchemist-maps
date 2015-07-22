@@ -263,7 +263,13 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		return mkdirsIfNeeded(new File(target));
 	}
 
-	private void initAll(final String mapFile) throws IOException {
+	private void initAll(final String file) throws IOException {
+		final URL resource = OSMEnvironment.class.getResource(file);
+		final String resFile = resource == null ? "" : resource.getPath();
+		final File mapFile = resFile.isEmpty() ? new File(file) : new File(resFile);
+		if (!mapFile.exists()) {
+			throw new FileNotFoundException(file);
+		}
 		final String dir = initDir(mapFile);
 		final File workdir = new File(dir);
 		mkdirsIfNeeded(workdir);
@@ -277,7 +283,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 					final GraphHopper gh = new GraphHopper().forDesktop();
 					gh.init(CmdArgs.read(new String[] {
 							"graph.location=" + internalWorkdir,
-							"osmreader.osm=" + mapFile,
+							"osmreader.osm=" + mapFile.getAbsolutePath(),
 							"osmreader.acceptWay=" + v }));
 					gh.setCHShortcuts(ROUTING_STRATEGY);
 					gh.importOrLoad();
@@ -294,13 +300,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		}
 	}
 	
-	private String initDir(final String file) throws IOException {
-		final URL resource = OSMEnvironment.class.getResource(file);
-		final String resFile = resource == null ? "" : resource.getPath();
-		final File mapfile = resFile.isEmpty() ? new File(file) : new File(resFile);
-		if (!mapfile.exists()) {
-			throw new FileNotFoundException(file);
-		}
+	private String initDir(final File mapfile) throws IOException {
 		final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
 		final String append = Global.SLASH + mapfile.getName() + code;
 		final String[] prefixes = new String[] {
