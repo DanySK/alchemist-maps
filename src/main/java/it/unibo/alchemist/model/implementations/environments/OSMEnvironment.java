@@ -299,7 +299,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 			})
 			.reduce((a, b) -> a && b).orElse(false);
 		if (!processOK) {
-			L.warn("Initialization completed with errors. Not all the navigation means supported by GraphHopper could be initialized with the map data provided.");;
+			L.warn("Initialization completed with errors. Not all the navigation means supported by GraphHopper could be initialized with the map data provided.");
 		}
 	}
 	
