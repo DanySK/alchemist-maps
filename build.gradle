@@ -8,6 +8,9 @@ apply plugin: 'maven'
 apply plugin: 'build-dashboard'
 apply plugin: 'signing'
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
 task wrapper(type: Wrapper) {
     gradleVersion = gradleVersionToUse
 }
@@ -32,12 +35,18 @@ configurations {
 }
 
 dependencies {
-    compile "it.unibo.alchemist:alchemist-implementationbase:$implbaseVersion"
-    compile "it.unibo.alchemist:alchemist-enginedependentmodel:$enginedepmodelVersion"
-    compile "org.danilopianini:javalib:$javalibVersion"
+    compile "org.danilopianini:javalib-java7:$javalib7Version"
     compile "com.google.code.gson:gson:$gsonVersion"
     compile "com.javadocmd:simplelatlng:$latlngVersion"
     compile "com.graphhopper:graphhopper:$graphhopperVersion"
+    compile "org.apache.commons:commons-math3:$math3Version"
+    compile "net.sf.trove4j:trove4j:$troveVersion"
+    compile "com.google.guava:guava:$guavaVersion"
+    
+    compile "it.unibo.alchemist:alchemist-interfaces:$interfacesVersion"
+    compile "it.unibo.alchemist:alchemist-baselib:$baselibVersion"
+    compile "it.unibo.alchemist:alchemist-implementationbase:$implbaseVersion"
+    compile "it.unibo.alchemist:alchemist-enginedependentmodel:$enginedepmodelVersion"
     
     testCompile "junit:junit:$junitVersion"
     

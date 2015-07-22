@@ -15,8 +15,10 @@ import it.unibo.alchemist.model.interfaces.IMolecule;
 import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.model.interfaces.IReaction;
+import it.unibo.alchemist.utils.L;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
@@ -59,6 +61,7 @@ public class TestTargetWalker {
 	@Before
 	public void setUp() throws ClassNotFoundException, IOException {
 		try {
+			L.setLoggingLevel(Level.ALL);
 			env = new OSMEnvironment<>(TESTMAP, true, true);
 			env.setLinkingRule(new NoLinks<>());
 			node = new GenericNode<Object>(true) {

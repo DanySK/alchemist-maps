@@ -17,11 +17,12 @@ import static org.apache.commons.math3.util.FastMath.sin;
 import static org.apache.commons.math3.util.FastMath.sqrt;
 import static org.apache.commons.math3.util.FastMath.toDegrees;
 import static org.apache.commons.math3.util.FastMath.toRadians;
+
+import org.apache.commons.math3.util.Pair;
+
 import it.unibo.alchemist.exceptions.UncomparableDistancesException;
 import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.utils.L;
-
-import org.danilopianini.lang.Couple;
 
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.util.LengthUnit;
@@ -180,7 +181,7 @@ public class LatLongPosition extends LatLng implements IPosition {
 	}
 
 	@Override
-	public Couple<IPosition> buildBoundingBox(final double range) {
+	public Pair<IPosition, IPosition> buildBoundingBox(final double range) {
 
 		if (range < 0d) {
 			throw new IllegalArgumentException();
@@ -213,7 +214,7 @@ public class LatLongPosition extends LatLng implements IPosition {
 			minLon = MIN_LON;
 			maxLon = MAX_LON;
 		}
-		return new Couple<IPosition>(new LatLongPosition(toDegrees(minLat), toDegrees(minLon)), new LatLongPosition(toDegrees(maxLat), toDegrees(maxLon)));
+		return new Pair<>(new LatLongPosition(toDegrees(minLat), toDegrees(minLon)), new LatLongPosition(toDegrees(maxLat), toDegrees(maxLon)));
 	}
 
 	@Override

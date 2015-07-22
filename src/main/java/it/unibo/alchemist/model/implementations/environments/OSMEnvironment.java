@@ -8,6 +8,36 @@
  */
 package it.unibo.alchemist.model.implementations.environments;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.tuple.ImmutableTriple;
+import org.apache.commons.lang3.tuple.Triple;
+import org.danilopianini.concurrency.FastReadWriteLock;
+import org.danilopianini.io.FileUtilities;
+
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
+import com.graphhopper.GHRequest;
+import com.graphhopper.GHResponse;
+import com.graphhopper.GraphHopper;
+import com.graphhopper.routing.util.EdgeFilter;
+import com.graphhopper.storage.index.QueryResult;
+import com.graphhopper.util.CmdArgs;
+import com.graphhopper.util.shapes.GHPoint;
+
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import it.unibo.alchemist.Global;
@@ -21,31 +51,6 @@ import it.unibo.alchemist.model.interfaces.IRoute;
 import it.unibo.alchemist.model.interfaces.ITime;
 import it.unibo.alchemist.model.interfaces.Vehicle;
 import it.unibo.alchemist.utils.L;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.net.URL;
-import java.util.Arrays;
-import java.util.EnumMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-
-import org.danilopianini.concurrency.FastReadWriteLock;
-import org.danilopianini.io.FileUtilities;
-import org.danilopianini.lang.Couple;
-import org.danilopianini.lang.MaxSizeHashMap;
-
-import com.graphhopper.GHRequest;
-import com.graphhopper.GHResponse;
-import com.graphhopper.GraphHopper;
-import com.graphhopper.routing.util.EdgeFilter;
-import com.graphhopper.storage.index.QueryResult;
-import com.graphhopper.util.CmdArgs;
-import com.graphhopper.util.shapes.GHPoint;
 
 /**
  * This class serves as template for more specific implementations of
@@ -90,18 +95,17 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	 */
 	public static final boolean DEFAULT_FORCE_STREETS = true;
 	
-	private static final int ROUTES_CACHE_SIZE = 100000;
+	private static final int ROUTES_CACHE_SIZE = 10000;
 
 	private static final String MONITOR = "MapDisplay";
 	private static final long serialVersionUID = -8100726226966471621L;
 
-	private final String mapFile;
-	private String dir;
+	private final String mapResource;
 	private final TIntObjectMap<IGPSTrace> traces = new TIntObjectHashMap<>();
 	private final boolean forceStreets, onlyStreet;
-	private final transient FastReadWriteLock mapLock = new FastReadWriteLock();
-	private final transient Map<Vehicle, GraphHopper> navigators = new EnumMap<>(Vehicle.class);
-	private final transient Map<Couple<IPosition>, IRoute> routecache = new MaxSizeHashMap<>(ROUTES_CACHE_SIZE);
+	private transient FastReadWriteLock mapLock;
+	private transient Map<Vehicle, GraphHopper> navigators;
+	private transient LoadingCache<Triple<Vehicle, IPosition, IPosition>, IRoute> routecache;
 
 	/**
 	 * @param file
@@ -227,12 +231,6 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		/*
 		 * Try to load as resource, then try to load a file
 		 */
-		final URL resource = OSMEnvironment.class.getResource(file);
-		final String resFile = resource == null ? "" : resource.getPath();
-		final File mapfile = resFile.isEmpty() ? new File(file) : new File(resFile);
-		if (!mapfile.exists()) {
-			throw new FileNotFoundException(file);
-		}
 		List<IGPSTrace> trcs = null;
 		if (tfile != null) {
 			trcs = (List<IGPSTrace>) FileUtilities.fileToObject(tfile);
@@ -253,9 +251,8 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		}
 		forceStreets = onStreets;
 		onlyStreet = onlyOnStreets;
-		initDir(mapfile);
-		mapFile = mapfile.getAbsolutePath();
-		initAll();
+		mapResource = file;
+		initAll(file);
 	}
 	
 	private static boolean mkdirsIfNeeded(final File target) {
@@ -266,9 +263,12 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		return mkdirsIfNeeded(new File(target));
 	}
 
-	private void initAll() throws IOException {
+	private void initAll(final String mapFile) throws IOException {
+		final String dir = initDir(mapFile);
 		final File workdir = new File(dir);
 		mkdirsIfNeeded(workdir);
+		navigators = new EnumMap<>(Vehicle.class);
+		mapLock = new FastReadWriteLock();
 		final boolean processOK = Arrays.stream(Vehicle.values()).parallel()
 			.map((v) -> {
 				final String internalWorkdir = workdir + Global.SLASH + v;
@@ -293,6 +293,34 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 			throw new IllegalStateException("GraphHopper could not be initialized.");
 		}
 	}
+	
+	private String initDir(final String file) throws IOException {
+		final URL resource = OSMEnvironment.class.getResource(file);
+		final String resFile = resource == null ? "" : resource.getPath();
+		final File mapfile = resFile.isEmpty() ? new File(file) : new File(resFile);
+		if (!mapfile.exists()) {
+			throw new FileNotFoundException(file);
+		}
+		final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
+		final String append = Global.SLASH + mapfile.getName() + code;
+		final String[] prefixes = new String[] {
+				Global.PERSISTENTPATH,
+				System.getProperty("java.io.tmpdir"),
+				System.getProperty("user.dir"),
+				"."};
+		String dir = prefixes[0] + append;
+		for (int i = 1; (!mkdirsIfNeeded(dir) || !canWriteOnDir(dir)) && i < prefixes.length; i++) {
+			L.warn("Can not write on " + dir + ", trying " + prefixes[i]);
+			dir = prefixes[i] + append;
+		}
+		if (!canWriteOnDir(dir)) {
+			/*
+			 * Give up.
+			 */
+			throw new IOException("None of: " + Arrays.toString(prefixes) + " is writeable. I can not initialize GraphHopper cache.");
+		}
+		return dir;
+	}
 
 	@Override
 	public IRoute computeRoute(final INode<T> node, final INode<T> node2) {
@@ -306,19 +334,33 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 
 	@Override
 	public IRoute computeRoute(final IPosition p1, final IPosition p2, final Vehicle vehicle) {
-		final IRoute query = routecache.get(new Couple<>(p1, p2));
-		if (query != null) {
-			return query;
+		if (routecache == null) {
+			routecache = CacheBuilder
+				.newBuilder()
+				.maximumSize(ROUTES_CACHE_SIZE)
+				.expireAfterAccess(10, TimeUnit.MINUTES)
+				.build(new CacheLoader<Triple<Vehicle, IPosition, IPosition>, IRoute>() {
+					@Override
+					public IRoute load(final Triple<Vehicle, IPosition, IPosition> key) {
+						final Vehicle vehicle = key.getLeft();
+						final IPosition p1 = key.getMiddle();
+						final IPosition p2 = key.getRight();
+						final GHRequest req = new GHRequest(p1.getCoordinate(1), p1.getCoordinate(0), p2.getCoordinate(1), p2.getCoordinate(0));
+						req.setAlgorithm(DEFAULT_ALGORITHM);
+						req.setVehicle(vehicle.toString());
+						mapLock.read();
+						final GHResponse resp = navigators.get(vehicle).route(req);
+						mapLock.release();
+						return new GraphHopperRoute(resp);
+					}
+				});
 		}
-		final GHRequest req = new GHRequest(p1.getCoordinate(1), p1.getCoordinate(0), p2.getCoordinate(1), p2.getCoordinate(0));
-		req.setAlgorithm(DEFAULT_ALGORITHM);
-		req.setVehicle(vehicle.toString());
-		mapLock.read();
-		final GHResponse resp = navigators.get(vehicle).route(req);
-		mapLock.release();
-		final IRoute result = new GraphHopperRoute(resp);
-		routecache.put(new Couple<>(p1, p2), result);
-		return result;
+		try {
+			return routecache.get(new ImmutableTriple<>(vehicle, p1, p2));
+		} catch (ExecutionException e) {
+			L.error(e);
+			throw new IllegalStateException("The navigator was unable to compute a route from " + p1 + " to " + p2 + " using the navigator " + vehicle + ". This is most likely a bug");
+		}
 	}
 
 	@Override
@@ -341,14 +383,6 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 			return Optional.of(new LatLongPosition(pt.lat, pt.lon));
 		}
 		return Optional.empty();
-	}
-
-	/**
-	 * @return the mapFile
-	 */
-	@Override
-	public File getMapFile() {
-		return new File(mapFile);
 	}
 
 	@Override
@@ -432,39 +466,13 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		return traces.get(node.getId());
 	}
 
-	private void initDir(final File mapfile) throws IOException {
-		final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
-		final String append = Global.SLASH + mapfile.getName() + code;
-		final String[] prefixes = new String[] {
-				Global.PERSISTENTPATH,
-				System.getProperty("java.io.tmpdir"),
-				System.getProperty("user.dir"),
-				"."};
-		dir = prefixes[0] + append;
-		for (int i = 1; (!mkdirsIfNeeded(dir) || !canWriteOnDir()) && i < prefixes.length; i++) {
-			L.warn("Can not write on " + dir + ", trying " + prefixes[i]);
-			dir = prefixes[i] + append;
-		}
-		if (!canWriteOnDir()) {
-			/*
-			 * Give up.
-			 */
-			throw new IOException("None of: " + Arrays.toString(prefixes) + " is writeable. I can not initialize GraphHopper cache.");
-		}
-	}
-	
-	private boolean canWriteOnDir() {
+	private boolean canWriteOnDir(final String dir) {
 		return new File(dir).canWrite();
 	}
 
 	private void readObject(final ObjectInputStream s) throws IOException, ClassNotFoundException {
 		s.defaultReadObject();
-		final File f = new File(mapFile);
-		if (!f.exists()) {
-			throw new FileNotFoundException(mapFile + " does not exist.");
-		}
-		initDir(new File(mapFile));
-		initAll();
+		initAll(mapResource);
 	}
 
 }

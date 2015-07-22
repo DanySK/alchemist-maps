@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.danilopianini.lang.Couple;
+import org.apache.commons.math3.util.Pair;
 
 /**
  * @author Danilo Pianini
@@ -100,7 +100,7 @@ public class UserTrace implements IGPSTrace {
 
 	@Override
 	public IGPSPoint interpolate(final double time) {
-		final Couple<IGPSPoint> coords = searchPoint(time);
+		final Pair<IGPSPoint, IGPSPoint> coords = searchPoint(time);
 		final IGPSPoint prev = coords.getFirst();
 		final IGPSPoint next = coords.getSecond();
 		final double tdtime = next.getTime() - prev.getTime();
@@ -132,15 +132,15 @@ public class UserTrace implements IGPSTrace {
 		}
 	}
 
-	private Couple<IGPSPoint> searchPoint(final double time) {
+	private Pair<IGPSPoint, IGPSPoint> searchPoint(final double time) {
 		if (trace.length < 2 || time < trace[0].getTime()) {
-			return new Couple<IGPSPoint>(trace[0], trace[0]);
+			return new Pair<>(trace[0], trace[0]);
 		}
 		if (trace.length < 3) {
-			return new Couple<IGPSPoint>(trace[0], trace[1]);
+			return new Pair<>(trace[0], trace[1]);
 		}
 		if (time > trace[trace.length - 1].getTime()) {
-			return new Couple<IGPSPoint>(trace[trace.length - 1], trace[trace.length - 1]);
+			return new Pair<>(trace[trace.length - 1], trace[trace.length - 1]);
 		}
 		int low = 0;
 		int high = trace.length - 1;
@@ -151,7 +151,7 @@ public class UserTrace implements IGPSTrace {
 				high = i;
 			}
 		}
-		return new Couple<IGPSPoint>(trace[low], trace[high]);
+		return new Pair<>(trace[low], trace[high]);
 	}
 
 	@Override

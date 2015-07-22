@@ -8,8 +8,6 @@
  */
 package it.unibo.alchemist.model.interfaces;
 
-import java.io.File;
-
 /**
  * @author Danilo Pianini
  * 
@@ -106,11 +104,6 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
 	 *         follow
 	 */
 	IRoute computeRoute(INode<T> node, IPosition coord, Vehicle vehicle);
-
-	/**
-	 * @return the map file
-	 */
-	File getMapFile();
 
 	/**
 	 * Works only if the node is associated with a {@link IGPSTrace}.
