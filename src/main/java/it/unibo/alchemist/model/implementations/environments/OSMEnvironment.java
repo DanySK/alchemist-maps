@@ -36,7 +36,6 @@ import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EdgeFilter;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.storage.index.QueryResult;
-import com.graphhopper.util.CmdArgs;
 import com.graphhopper.util.shapes.GHPoint;
 
 import gnu.trove.map.TIntObjectMap;
@@ -276,26 +275,31 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		mkdirsIfNeeded(workdir);
 		navigators = new EnumMap<>(Vehicle.class);
 		mapLock = new FastReadWriteLock();
-		final boolean processOK = Arrays.stream(Vehicle.values()).parallel()
+		final boolean processOK = Arrays.stream(Vehicle.values())//.parallel()
 			.map((v) -> {
-				final String internalWorkdir = workdir + Global.SLASH + v;
-				final File iwdf = new File(internalWorkdir);
-				if (mkdirsIfNeeded(iwdf)) {
-					final GraphHopper gh = new GraphHopper().forDesktop();
-					gh.setOSMFile(mapFile.getAbsolutePath());
-					gh.setGraphHopperLocation(internalWorkdir);
-					gh.setEncodingManager(new EncodingManager(v.toString()));
-					gh.importOrLoad();
-					mapLock.write();
-					navigators.put(v, gh);
-					mapLock.release();
-					return true;
+				try {
+					final String internalWorkdir = workdir + Global.SLASH + v;
+					final File iwdf = new File(internalWorkdir);
+					if (mkdirsIfNeeded(iwdf)) {
+						final GraphHopper gh = new GraphHopper().forDesktop();
+						gh.setOSMFile(mapFile.getAbsolutePath());
+						gh.setGraphHopperLocation(internalWorkdir);
+						gh.setEncodingManager(new EncodingManager(v.toString()));
+						gh.importOrLoad();
+						mapLock.write();
+						navigators.put(v, gh);
+						mapLock.release();
+						return true;
+					}
+				} catch (final Exception e) {
+					L.warn(e);
 				}
+				L.warn("Unable to initialize navigation data for " + v);
 				return false;
 			})
 			.reduce((a, b) -> a && b).orElse(false);
 		if (!processOK) {
-			throw new IllegalStateException("GraphHopper could not be initialized.");
+			L.warn("Initialization completed with errors. Not all the navigation means supported by GraphHopper could be initialized with the map data provided.");;
 		}
 	}
 	
@@ -349,9 +353,13 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 								.setVehicle(vehicle.toString())
 								.setWeighting(ROUTING_STRATEGY);
 						mapLock.read();
-						final GHResponse resp = navigators.get(vehicle).route(req);
+						final GraphHopper gh = navigators.get(vehicle);
 						mapLock.release();
-						return new GraphHopperRoute(resp);
+						if (gh != null) {
+								final GHResponse resp = gh.route(req);
+								return new GraphHopperRoute(resp);
+						}
+						return null;
 					}
 				});
 		}
