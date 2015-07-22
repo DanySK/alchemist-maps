@@ -18,7 +18,10 @@ import static org.apache.commons.math3.util.FastMath.sqrt;
 import static org.apache.commons.math3.util.FastMath.toDegrees;
 import static org.apache.commons.math3.util.FastMath.toRadians;
 
+import java.util.Arrays;
+
 import org.apache.commons.math3.util.Pair;
+import org.danilopianini.lang.HashUtils;
 
 import it.unibo.alchemist.exceptions.UncomparableDistancesException;
 import it.unibo.alchemist.model.interfaces.IPosition;
@@ -27,6 +30,8 @@ import it.unibo.alchemist.utils.L;
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 /**
  * Unmodifiable state version of {@link LatLng}, also implementing the
  * {@link IPostion} interface.
@@ -34,7 +39,7 @@ import com.javadocmd.simplelatlng.util.LengthUnit;
  * @author Danilo Pianini
  * 
  */
-public class LatLongPosition extends LatLng implements IPosition {
+public class LatLongPosition implements IPosition {
 
 	/**
 	 * The default distance formula.
@@ -52,6 +57,8 @@ public class LatLongPosition extends LatLng implements IPosition {
 	private static final long serialVersionUID = -8972065367390749356L;
 
 	private final DistanceFormula df;
+	private final LatLng latlng;
+	private int hash;
 
 	/**
 	 * Possible methods to compute the distance between two latitude-longitude
@@ -152,7 +159,7 @@ public class LatLongPosition extends LatLng implements IPosition {
 	 *            the formula to use to compute distances
 	 */
 	public LatLongPosition(final double lat, final double lon, final DistanceFormula distanceFormula) {
-		super(lat, lon);
+		latlng = new LatLng(lat, lon);
 		df = distanceFormula;
 	}
 
@@ -254,6 +261,20 @@ public class LatLongPosition extends LatLng implements IPosition {
 		throw new IllegalArgumentException("Pass 0 for longitude and 1 for latitude. No other value accepted.");
 	}
 
+	/**
+	 * @return the latitude
+	 */
+	public double getLatitude() {
+		return latlng.getLatitude();
+	}
+
+	/**
+	 * @return the longitude
+	 */
+	public double getLongitude() {
+		return latlng.getLongitude();
+	}
+
 	@Override
 	public int getDimensions() {
 		return 2;
@@ -261,15 +282,38 @@ public class LatLongPosition extends LatLng implements IPosition {
 
 	@Override
 	public double getDistanceTo(final IPosition p) {
-		if (p instanceof LatLng) {
-			return distance(this, (LatLng) p, LengthUnit.METER, df);
+		if (p instanceof LatLongPosition) {
+			return distance(latlng, ((LatLongPosition) p).latlng, LengthUnit.METER, df);
 		}
 		final int pDims = p.getDimensions();
 		if (pDims == 2) {
 			final double[] coords = p.getCartesianCoordinates();
-			return distance(this, new LatLongPosition(coords[1], coords[0]), LengthUnit.METER, df);
+			return distance(latlng, new LatLng(coords[1], coords[0]), LengthUnit.METER, df);
 		}
 		throw new UncomparableDistancesException(this, p);
+	}
+	
+	@Override
+	@SuppressFBWarnings(justification = "Exact floating point equality is required here.")
+	public boolean equals(final Object obj) {
+		if (obj instanceof LatLongPosition) {
+			final LatLongPosition llp = (LatLongPosition) obj;
+			return getLatitude() == llp.getLatitude() && getLongitude() == llp.getLongitude();
+		}
+		return obj instanceof IPosition && Arrays.equals(getCartesianCoordinates(), ((IPosition) obj).getCartesianCoordinates());
+	}
+	
+	@Override
+	public int hashCode() {
+		if (hash == 0) {
+			hash = HashUtils.hash32(getLatitude(), getLongitude());
+		}
+		return hash;
+	}
+	
+	@Override
+	public String toString() {
+		return latlng.toString();
 	}
 
 }
