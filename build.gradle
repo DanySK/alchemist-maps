@@ -40,6 +40,7 @@ dependencies {
     compile "com.javadocmd:simplelatlng:$latlngVersion"
     compile "com.graphhopper:graphhopper:$graphhopperVersion"
     compile "org.apache.commons:commons-math3:$math3Version"
+    compile "org.apache.commons:commons-lang3:$math3Version"
     compile "net.sf.trove4j:trove4j:$troveVersion"
     compile "com.google.guava:guava:$guavaVersion"
     
