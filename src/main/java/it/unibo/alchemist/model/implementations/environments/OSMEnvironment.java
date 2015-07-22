@@ -34,6 +34,7 @@ import com.graphhopper.GHRequest;
 import com.graphhopper.GHResponse;
 import com.graphhopper.GraphHopper;
 import com.graphhopper.routing.util.EdgeFilter;
+import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.storage.index.QueryResult;
 import com.graphhopper.util.CmdArgs;
 import com.graphhopper.util.shapes.GHPoint;
@@ -281,11 +282,9 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 				final File iwdf = new File(internalWorkdir);
 				if (mkdirsIfNeeded(iwdf)) {
 					final GraphHopper gh = new GraphHopper().forDesktop();
-					gh.init(CmdArgs.read(new String[] {
-							"graph.location=" + internalWorkdir,
-							"osmreader.osm=" + mapFile.getAbsolutePath(),
-							"osmreader.acceptWay=" + v }));
-					gh.setCHShortcuts(ROUTING_STRATEGY);
+					gh.setOSMFile(mapFile.getAbsolutePath());
+					gh.setGraphHopperLocation(internalWorkdir);
+					gh.setEncodingManager(new EncodingManager(v.toString()));
 					gh.importOrLoad();
 					mapLock.write();
 					navigators.put(v, gh);
@@ -345,9 +344,10 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 						final Vehicle vehicle = key.getLeft();
 						final IPosition p1 = key.getMiddle();
 						final IPosition p2 = key.getRight();
-						final GHRequest req = new GHRequest(p1.getCoordinate(1), p1.getCoordinate(0), p2.getCoordinate(1), p2.getCoordinate(0));
-						req.setAlgorithm(DEFAULT_ALGORITHM);
-						req.setVehicle(vehicle.toString());
+						final GHRequest req = new GHRequest(p1.getCoordinate(1), p1.getCoordinate(0), p2.getCoordinate(1), p2.getCoordinate(0))
+								.setAlgorithm(DEFAULT_ALGORITHM)
+								.setVehicle(vehicle.toString())
+								.setWeighting(ROUTING_STRATEGY);
 						mapLock.read();
 						final GHResponse resp = navigators.get(vehicle).route(req);
 						mapLock.release();

@@ -76,6 +76,7 @@ public class TestTargetWalker {
 			node.addReaction(reaction);
 			env.addNode(node, STARTPOSITION);
 		} catch (IllegalStateException e) {
+			L.error(e);
 			fail(e.getMessage());
 		}
 	}
