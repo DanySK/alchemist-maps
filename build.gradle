@@ -30,6 +30,10 @@ repositories {
 configurations.all {
   	resolutionStrategy {
 	    failOnVersionConflict()
+	    force "com.google.protobuf:protobuf-java:2.6.1"
+    }
+    resolutionStrategy.dependencySubstitution {
+	    substitute module('com.google.guava:guava') with module('com.google.guava:guava:19.0-rc1')
     }
 }
 
