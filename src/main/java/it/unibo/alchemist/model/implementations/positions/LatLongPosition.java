@@ -18,15 +18,15 @@ import static org.apache.commons.math3.util.FastMath.sqrt;
 import static org.apache.commons.math3.util.FastMath.toDegrees;
 import static org.apache.commons.math3.util.FastMath.toRadians;
 
-import java.util.Arrays;
+import java.util.List;
 
-import org.apache.commons.math3.util.Pair;
 import org.danilopianini.lang.HashUtils;
 
 import it.unibo.alchemist.exceptions.UncomparableDistancesException;
 import it.unibo.alchemist.model.interfaces.IPosition;
 import it.unibo.alchemist.utils.L;
 
+import com.google.common.collect.Lists;
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.util.LengthUnit;
 
@@ -39,7 +39,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * @author Danilo Pianini
  * 
  */
-public class LatLongPosition implements IPosition {
+public final class LatLongPosition implements IPosition {
 
 	/**
 	 * The default distance formula.
@@ -188,13 +188,13 @@ public class LatLongPosition implements IPosition {
 	}
 
 	@Override
-	public Pair<IPosition, IPosition> buildBoundingBox(final double range) {
-
+	public List<IPosition> buildBoundingBox(final double range) {
 		if (range < 0d) {
-			throw new IllegalArgumentException();
+			throw new IllegalArgumentException("Negative ranges make no sense.");
 		}
-
-		// angular distance in radians on a great circle
+		/*
+		 *  angular distance in radians on a great circle
+		 */
 		final double radDist = range / EARTH_MEAN_RADIUS_METERS;
 		final double radLat = toRadians(getLatitude());
 		final double radLon = toRadians(getLongitude());
@@ -221,7 +221,9 @@ public class LatLongPosition implements IPosition {
 			minLon = MIN_LON;
 			maxLon = MAX_LON;
 		}
-		return new Pair<>(new LatLongPosition(toDegrees(minLat), toDegrees(minLon)), new LatLongPosition(toDegrees(maxLat), toDegrees(maxLon)));
+		return Lists.newArrayList(
+				new LatLongPosition(toDegrees(minLat), toDegrees(minLon)),
+				new LatLongPosition(toDegrees(maxLat), toDegrees(maxLon)));
 	}
 
 	@Override
@@ -300,7 +302,7 @@ public class LatLongPosition implements IPosition {
 			final LatLongPosition llp = (LatLongPosition) obj;
 			return getLatitude() == llp.getLatitude() && getLongitude() == llp.getLongitude();
 		}
-		return obj instanceof IPosition && Arrays.equals(getCartesianCoordinates(), ((IPosition) obj).getCartesianCoordinates());
+		return false;
 	}
 	
 	@Override
@@ -314,6 +316,18 @@ public class LatLongPosition implements IPosition {
 	@Override
 	public String toString() {
 		return latlng.toString();
+	}
+
+	@Override
+	public IPosition sum(final IPosition other) {
+		if (other instanceof LatLongPosition) {
+			final LatLng l = ((LatLongPosition) other).latlng;
+			return new LatLongPosition(
+					latlng.getLatitude() + l.getLatitude(),
+					latlng.getLongitude() + l.getLongitude());
+		}
+		throw new IllegalArgumentException(
+				"You are summing a " + getClass() + "with a " + other.getClass() + ". This is not supported.");
 	}
 
 }
