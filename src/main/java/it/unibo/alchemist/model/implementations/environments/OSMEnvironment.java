@@ -8,6 +8,20 @@
  */
 package it.unibo.alchemist.model.implementations.environments;
 
+import gnu.trove.map.TIntObjectMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import it.unibo.alchemist.Global;
+import it.unibo.alchemist.model.implementations.GraphHopperRoute;
+import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
+import it.unibo.alchemist.model.interfaces.IGPSTrace;
+import it.unibo.alchemist.model.interfaces.IMapEnvironment;
+import it.unibo.alchemist.model.interfaces.INode;
+import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.IRoute;
+import it.unibo.alchemist.model.interfaces.ITime;
+import it.unibo.alchemist.model.interfaces.Vehicle;
+import it.unibo.alchemist.utils.L;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -17,7 +31,6 @@ import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -37,20 +50,6 @@ import com.graphhopper.routing.util.EdgeFilter;
 import com.graphhopper.routing.util.EncodingManager;
 import com.graphhopper.storage.index.QueryResult;
 import com.graphhopper.util.shapes.GHPoint;
-
-import gnu.trove.map.TIntObjectMap;
-import gnu.trove.map.hash.TIntObjectHashMap;
-import it.unibo.alchemist.Global;
-import it.unibo.alchemist.model.implementations.GraphHopperRoute;
-import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.interfaces.IGPSTrace;
-import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
-import it.unibo.alchemist.model.interfaces.IRoute;
-import it.unibo.alchemist.model.interfaces.ITime;
-import it.unibo.alchemist.model.interfaces.Vehicle;
-import it.unibo.alchemist.utils.L;
 
 /**
  * This class serves as template for more specific implementations of
@@ -382,6 +381,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	}
 
 	private Optional<IPosition> getNearestStreetPoint(final IPosition position) {
+		assert position != null;
 		mapLock.read();
 		final GraphHopper gh = navigators.get(Vehicle.BIKE);
 		mapLock.release();
@@ -425,29 +425,44 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 	protected double getMaxLongitude() {
 		return getOffset()[0] + getSize()[0];
 	}
-
+	
+	/**
+	 * There is a single case in which nodes are discarded: if there are no
+	 * traces for this node and nodes are required to lay on streets, but the
+	 * navigation engine can not resolve any such position.
+	 */
 	@Override
-	public void addNode(final INode<T> node, final IPosition position) {
-		Objects.requireNonNull(position, "The position cannot be null.");
+	protected boolean nodeShouldBeAdded(final INode<T> node, final IPosition position) {
+		assert node != null;
+		return traces.containsKey(node.getId())
+				|| !onlyStreet
+				|| getNearestStreetPoint(position).isPresent();
+	}
+	
+	@Override
+	protected IPosition computeActualInsertionPosition(final INode<T> node, final IPosition position) {
 		final IGPSTrace trace = traces.get(node.getId());
 		if (trace == null) {
-			final Optional<IPosition> computed = forceStreets ? getNearestStreetPoint(position) : Optional.of(position);
-			if (computed.isPresent()) {
-				super.addNode(node, computed.get());
-			} else if (!onlyStreet) {
-				super.addNode(node, position);
-			}
-		} else {
-			super.addNode(node, trace.getPreviousPosition(0).toIPosition());
+			/*
+			 * No traces available for this node. If it must be located on
+			 * streets, query the navigation engine for a street point.
+			 * Otherwise, put it where it is declared.
+			 */
+			assert position != null;
+			return forceStreets ? getNearestStreetPoint(position).orElse(position) : position;
 		}
+		assert trace.getPreviousPosition(0) != null;
+		assert trace.getPreviousPosition(0).toIPosition() != null;
+		return trace.getPreviousPosition(0).toIPosition();
 	}
-
+	
 	@Override
 	public IPosition getNextPosition(final INode<T> node, final ITime time) {
 		final IGPSTrace trace = traces.get(node.getId());
 		if (trace == null) {
 			return getPosition(node);
 		}
+		assert trace.getNextPosition(time.toDouble()) != null;
 		return trace.getNextPosition(time.toDouble()).toIPosition();
 	}
 
@@ -457,6 +472,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
 		if (trace == null) {
 			return getPosition(node);
 		}
+		assert trace.getPreviousPosition(time.toDouble()) != null;
 		return trace.getPreviousPosition(time.toDouble()).toIPosition();
 	}
 
