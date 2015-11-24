@@ -135,8 +135,6 @@ public final class LatLongPosition implements IPosition {
     }
 
     /**
-     * See {@link Location}.
-     * 
      * @param lat
      *            latitude
      * @param lon
@@ -172,8 +170,6 @@ public final class LatLongPosition implements IPosition {
     }
 
     /**
-     * See {@link Location}.
-     * 
      * @param lat
      *            latitude
      * @param lon
