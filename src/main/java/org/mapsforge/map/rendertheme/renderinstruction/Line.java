@@ -18,33 +18,33 @@ import org.mapsforge.map.rendertheme.RenderCallback;
  * Represents a polyline on the map.
  */
 public class Line implements RenderInstruction {
-	private final int level;
-	private final Paint stroke;
-	private final float strokeWidth;
+    private final int level;
+    private final Paint stroke;
+    private final float strokeWidth;
 
-	public Line(final LineBuilder lineBuilder) {
-		this.level = lineBuilder.getLevel();
-		this.stroke = lineBuilder.getStroke();
-		this.strokeWidth = lineBuilder.getStrokeWidth();
-	}
+    public Line(final LineBuilder lineBuilder) {
+        this.level = lineBuilder.getLevel();
+        this.stroke = lineBuilder.getStroke();
+        this.strokeWidth = lineBuilder.getStrokeWidth();
+    }
 
-	@Override
-	public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
-		// do nothing
-	}
+    @Override
+    public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
+        // do nothing
+    }
 
-	@Override
-	public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
-		renderCallback.renderWay(this.stroke, this.level);
-	}
+    @Override
+    public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
+        renderCallback.renderWay(this.stroke, this.level);
+    }
 
-	@Override
-	public void scaleStrokeWidth(final float scaleFactor) {
-		this.stroke.setStrokeWidth(this.strokeWidth * scaleFactor);
-	}
+    @Override
+    public void scaleStrokeWidth(final float scaleFactor) {
+        this.stroke.setStrokeWidth(this.strokeWidth * scaleFactor);
+    }
 
-	@Override
-	public void scaleTextSize(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleTextSize(final float scaleFactor) {
+        // do nothing
+    }
 }

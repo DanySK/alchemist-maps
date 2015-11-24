@@ -13,41 +13,41 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class NegativeMatcher implements AttributeMatcher {
-	private final List<String> keyList;
-	private final List<String> valueList;
+    private final List<String> keyList;
+    private final List<String> valueList;
 
-	public NegativeMatcher(final List<String> keyList, final List<String> valueList) {
-		this.keyList = keyList;
-		this.valueList = valueList;
-	}
+    public NegativeMatcher(final List<String> keyList, final List<String> valueList) {
+        this.keyList = keyList;
+        this.valueList = valueList;
+    }
 
-	@Override
-	public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
-		return false;
-	}
+    @Override
+    public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
+        return false;
+    }
 
-	private boolean keyListDoesNotContainKeys(final List<Tag> tags) {
-		final int n = tags.size();
-		for (int i = 0; i < n; ++i) {
-			if (this.keyList.contains(tags.get(i).getKey())) {
-				return false;
-			}
-		}
-		return true;
-	}
+    private boolean keyListDoesNotContainKeys(final List<Tag> tags) {
+        final int n = tags.size();
+        for (int i = 0; i < n; ++i) {
+            if (this.keyList.contains(tags.get(i).getKey())) {
+                return false;
+            }
+        }
+        return true;
+    }
 
-	@Override
-	public boolean matches(final List<Tag> tags) {
-		if (keyListDoesNotContainKeys(tags)) {
-			return true;
-		}
+    @Override
+    public boolean matches(final List<Tag> tags) {
+        if (keyListDoesNotContainKeys(tags)) {
+            return true;
+        }
 
-		final int n = tags.size();
-		for (int i = 0; i < n; ++i) {
-			if (this.valueList.contains(tags.get(i).getValue())) {
-				return true;
-			}
-		}
-		return false;
-	}
+        final int n = tags.size();
+        for (int i = 0; i < n; ++i) {
+            if (this.valueList.contains(tags.get(i).getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

@@ -12,19 +12,19 @@ import org.mapsforge.core.model.Dimension;
 import org.mapsforge.map.model.common.Observable;
 
 public class MapViewModel extends Observable {
-	private Dimension dimension;
+    private Dimension dimension;
 
-	/**
-	 * @return the current dimension of the {@code MapView} (may be null).
-	 */
-	public synchronized Dimension getDimension() {
-		return this.dimension;
-	}
+    /**
+     * @return the current dimension of the {@code MapView} (may be null).
+     */
+    public synchronized Dimension getDimension() {
+        return this.dimension;
+    }
 
-	public void setDimension(final Dimension dimension) {
-		synchronized (this) {
-			this.dimension = dimension;
-		}
-		notifyObservers();
-	}
+    public void setDimension(final Dimension dimension) {
+        synchronized (this) {
+            this.dimension = dimension;
+        }
+        notifyObservers();
+    }
 }

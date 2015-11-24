@@ -22,59 +22,59 @@ import org.mapsforge.map.model.Model;
 import org.mapsforge.map.view.FrameBuffer;
 
 public abstract class MapView extends Container implements org.mapsforge.map.view.MapView {
-	private static final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
-	private static final long serialVersionUID = 1L;
+    private static final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
+    private static final long serialVersionUID = 1L;
 
-	private final FrameBuffer frameBuffer;
-	private final LayerManager layerManager;
-	private final FrameBufferController fBController;
-	private final LayerManagerController lMController;
-	private final MapViewController mVController;
+    private final FrameBuffer frameBuffer;
+    private final LayerManager layerManager;
+    private final FrameBufferController fBController;
+    private final LayerManagerController lMController;
+    private final MapViewController mVController;
 
-	public MapView(final Model model) {
-		super();
-		
-		this.frameBuffer = new FrameBuffer(model.getFrameBufferModel(), GRAPHIC_FACTORY);
-		fBController = new FrameBufferController(this.frameBuffer, model);
+    public MapView(final Model model) {
+        super();
+    
+        this.frameBuffer = new FrameBuffer(model.getFrameBufferModel(), GRAPHIC_FACTORY);
+        fBController = new FrameBufferController(this.frameBuffer, model);
 
-		this.layerManager = new LayerManager(this, model.getMapViewPosition(), GRAPHIC_FACTORY);
-		this.layerManager.start();
-		lMController = new LayerManagerController(this.layerManager, model);
+        this.layerManager = new LayerManager(this, model.getMapViewPosition(), GRAPHIC_FACTORY);
+        this.layerManager.start();
+        lMController = new LayerManagerController(this.layerManager, model);
 
-		mVController = new MapViewController(this, model);
-	}
-	
-	public void dispose() {
-		fBController.dispose();
-		lMController.dispose();
-		mVController.dispose();
-	}
+        mVController = new MapViewController(this, model);
+    }
 
-	private void drawMap(final Graphics graphics) {
-		if (graphics instanceof Graphics2D) {
-			this.frameBuffer.draw(AwtGraphicFactory.createCanvas((Graphics2D) graphics));
-		} else {
-			throw new IllegalArgumentException("unexpected type: " + graphics);
-		}
+    public void dispose() {
+        fBController.dispose();
+        lMController.dispose();
+        mVController.dispose();
+    }
 
-		drawOnMap((Graphics2D) graphics);
-	}
+    private void drawMap(final Graphics graphics) {
+        if (graphics instanceof Graphics2D) {
+            this.frameBuffer.draw(AwtGraphicFactory.createCanvas((Graphics2D) graphics));
+        } else {
+            throw new IllegalArgumentException("unexpected type: " + graphics);
+        }
 
-	public abstract void drawOnMap(Graphics2D g);
+        drawOnMap((Graphics2D) graphics);
+    }
 
-	@Override
-	public FrameBuffer getFrameBuffer() {
-		return this.frameBuffer;
-	}
+    public abstract void drawOnMap(Graphics2D g);
 
-	@Override
-	public LayerManager getLayerManager() {
-		return this.layerManager;
-	}
+    @Override
+    public FrameBuffer getFrameBuffer() {
+        return this.frameBuffer;
+    }
 
-	@Override
-	public void paint(final Graphics graphics) {
-		drawMap(graphics);
-		super.paint(graphics);
-	}
+    @Override
+    public LayerManager getLayerManager() {
+        return this.layerManager;
+    }
+
+    @Override
+    public void paint(final Graphics graphics) {
+        drawMap(graphics);
+        super.paint(graphics);
+    }
 }

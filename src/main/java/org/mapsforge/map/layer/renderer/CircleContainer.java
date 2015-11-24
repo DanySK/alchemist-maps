@@ -11,24 +11,24 @@ package org.mapsforge.map.layer.renderer;
 import org.mapsforge.core.model.Point;
 
 public class CircleContainer implements ShapeContainer {
-	private final Point point;
-	private final float radius;
+    private final Point point;
+    private final float radius;
 
-	public CircleContainer(final Point point, final float radius) {
-		this.point = point;
-		this.radius = radius;
-	}
+    public CircleContainer(final Point point, final float radius) {
+        this.point = point;
+        this.radius = radius;
+    }
 
-	public Point getPoint() {
-		return point;
-	}
+    public Point getPoint() {
+        return point;
+    }
 
-	public float getRadius() {
-		return radius;
-	}
+    public float getRadius() {
+        return radius;
+    }
 
-	@Override
-	public ShapeType getShapeType() {
-		return ShapeType.CIRCLE;
-	}
+    @Override
+    public ShapeType getShapeType() {
+        return ShapeType.CIRCLE;
+    }
 }

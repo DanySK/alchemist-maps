@@ -20,65 +20,65 @@ import org.xml.sax.SAXException;
  * A builder for {@link LineSymbol} instances.
  */
 public class LineSymbolBuilder {
-	private static final String ALIGN_CENTER = "align-center";
-	private static final String REPEAT = "repeat";
-	private static final String SRC = "src";
+    private static final String ALIGN_CENTER = "align-center";
+    private static final String REPEAT = "repeat";
+    private static final String SRC = "src";
 
-	private boolean alignCenter;
-	private Bitmap bitmap;
-	private boolean repeat;
+    private boolean alignCenter;
+    private Bitmap bitmap;
+    private boolean repeat;
 
-	public LineSymbolBuilder(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
-		extractValues(graphicFactory, elementName, attributes, relativePathPrefix);
-	}
+    public LineSymbolBuilder(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
+        extractValues(graphicFactory, elementName, attributes, relativePathPrefix);
+    }
 
-	/**
-	 * @return a new {@code LineSymbol} instance.
-	 */
-	public LineSymbol build() {
-		return new LineSymbol(this);
-	}
+    /**
+     * @return a new {@code LineSymbol} instance.
+     */
+    public LineSymbol build() {
+        return new LineSymbol(this);
+    }
 
-	private void extractValues(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
-		for (int i = 0; i < attributes.getLength(); ++i) {
-			final String name = attributes.getQName(i);
-			final String value = attributes.getValue(i);
+    private void extractValues(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
+        for (int i = 0; i < attributes.getLength(); ++i) {
+            final String name = attributes.getQName(i);
+            final String value = attributes.getValue(i);
 
-			if (SRC.equals(name)) {
-				this.bitmap = XmlUtils.createBitmap(graphicFactory, relativePathPrefix, value);
-			} else if (ALIGN_CENTER.equals(name)) {
-				this.alignCenter = Boolean.parseBoolean(value);
-			} else if (REPEAT.equals(name)) {
-				this.repeat = Boolean.parseBoolean(value);
-			} else {
-				throw XmlUtils.createSAXException(elementName, name, value, i);
-			}
-		}
+            if (SRC.equals(name)) {
+                this.bitmap = XmlUtils.createBitmap(graphicFactory, relativePathPrefix, value);
+            } else if (ALIGN_CENTER.equals(name)) {
+                this.alignCenter = Boolean.parseBoolean(value);
+            } else if (REPEAT.equals(name)) {
+                this.repeat = Boolean.parseBoolean(value);
+            } else {
+                throw XmlUtils.createSAXException(elementName, name, value, i);
+            }
+        }
 
-		XmlUtils.checkMandatoryAttribute(elementName, SRC, this.bitmap);
-	}
+        XmlUtils.checkMandatoryAttribute(elementName, SRC, this.bitmap);
+    }
 
-	public Bitmap getBitmap() {
-		return bitmap;
-	}
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
-	public boolean isAlignCenter() {
-		return alignCenter;
-	}
+    public boolean isAlignCenter() {
+        return alignCenter;
+    }
 
-	public boolean isRepeat() {
-		return repeat;
-	}
+    public boolean isRepeat() {
+        return repeat;
+    }
 
-	public void setAlignCenter(final boolean alignCenter) {
-		this.alignCenter = alignCenter;
-	}
+    public void setAlignCenter(final boolean alignCenter) {
+        this.alignCenter = alignCenter;
+    }
 
-	public void setBitmap(final Bitmap bitmap) {
-		this.bitmap = bitmap;
-	}
+    public void setBitmap(final Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 
-	public void setRepeat(final boolean repeat) {
-		this.repeat = repeat;
-	}
+    public void setRepeat(final boolean repeat) {
+        this.repeat = repeat;
+    }
 }

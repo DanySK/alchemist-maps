@@ -15,52 +15,52 @@ import java.nio.ByteBuffer;
 import org.mapsforge.core.graphics.Bitmap;
 
 public class AwtBitmap implements Bitmap {
-	private final BufferedImage bufferedImage;
+    private final BufferedImage bufferedImage;
 
-	AwtBitmap(final BufferedImage bufferedImage) {
-		this.bufferedImage = bufferedImage;
-	}
+    AwtBitmap(final BufferedImage bufferedImage) {
+        this.bufferedImage = bufferedImage;
+    }
 
-	AwtBitmap(final int width, final int height) {
-		this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	}
+    AwtBitmap(final int width, final int height) {
+        this.bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    }
 
-	@Override
-	public void copyPixelsFromBuffer(final ByteBuffer byteBuffer) {
-		final int[] pixels = new int[byteBuffer.array().length / 4];
-		for (int i = 0; i < pixels.length; ++i) {
-			pixels[i] = byteBuffer.getInt();
-		}
+    @Override
+    public void copyPixelsFromBuffer(final ByteBuffer byteBuffer) {
+        final int[] pixels = new int[byteBuffer.array().length / 4];
+        for (int i = 0; i < pixels.length; ++i) {
+            pixels[i] = byteBuffer.getInt();
+        }
 
-		this.bufferedImage.setRGB(0, 0, getWidth(), getHeight(), pixels, 0, getWidth());
-	}
+        this.bufferedImage.setRGB(0, 0, getWidth(), getHeight(), pixels, 0, getWidth());
+    }
 
-	@Override
-	public void copyPixelsToBuffer(final ByteBuffer byteBuffer) {
-		final int[] pixels = this.bufferedImage.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
-		for (final int pixel : pixels) {
-			byteBuffer.putInt(pixel);
-		}
-	}
+    @Override
+    public void copyPixelsToBuffer(final ByteBuffer byteBuffer) {
+        final int[] pixels = this.bufferedImage.getRGB(0, 0, getWidth(), getHeight(), null, 0, getWidth());
+        for (final int pixel : pixels) {
+            byteBuffer.putInt(pixel);
+        }
+    }
 
-	@Override
-	public void fillColor(final int color) {
-		final Graphics2D graphics2D = this.bufferedImage.createGraphics();
-		graphics2D.setColor(new java.awt.Color(color));
-		graphics2D.fillRect(0, 0, getWidth(), getHeight());
-	}
+    @Override
+    public void fillColor(final int color) {
+        final Graphics2D graphics2D = this.bufferedImage.createGraphics();
+        graphics2D.setColor(new java.awt.Color(color));
+        graphics2D.fillRect(0, 0, getWidth(), getHeight());
+    }
 
-	public BufferedImage getBufferedImage() {
-		return bufferedImage;
-	}
+    public BufferedImage getBufferedImage() {
+        return bufferedImage;
+    }
 
-	@Override
-	public int getHeight() {
-		return this.bufferedImage.getHeight();
-	}
+    @Override
+    public int getHeight() {
+        return this.bufferedImage.getHeight();
+    }
 
-	@Override
-	public int getWidth() {
-		return this.bufferedImage.getWidth();
-	}
+    @Override
+    public int getWidth() {
+        return this.bufferedImage.getWidth();
+    }
 }

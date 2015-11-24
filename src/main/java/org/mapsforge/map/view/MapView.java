@@ -11,15 +11,15 @@ package org.mapsforge.map.view;
 import org.mapsforge.map.layer.LayerManager;
 
 public interface MapView {
-	/**
-	 * @return the FrameBuffer used in this MapView.
-	 */
-	FrameBuffer getFrameBuffer();
+    /**
+     * @return the FrameBuffer used in this MapView.
+     */
+    FrameBuffer getFrameBuffer();
 
-	LayerManager getLayerManager();
+    LayerManager getLayerManager();
 
-	/**
-	 * Requests a redrawing as soon as possible.
-	 */
-	void repaint();
+    /**
+     * Requests a redrawing as soon as possible.
+     */
+    void repaint();
 }

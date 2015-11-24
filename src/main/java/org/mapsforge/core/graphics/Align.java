@@ -9,13 +9,12 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public enum Align {
 
-	/**
-	 * 
-	 */
-	CENTER, LEFT, RIGHT;
+    /**
+     * 
+     */
+    CENTER, LEFT, RIGHT;
 }

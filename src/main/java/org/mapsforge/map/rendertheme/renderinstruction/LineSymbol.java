@@ -18,33 +18,33 @@ import org.mapsforge.map.rendertheme.RenderCallback;
  * Represents an icon along a polyline on the map.
  */
 public class LineSymbol implements RenderInstruction {
-	private final boolean alignCenter;
-	private final Bitmap bitmap;
-	private final boolean repeat;
+    private final boolean alignCenter;
+    private final Bitmap bitmap;
+    private final boolean repeat;
 
-	LineSymbol(final LineSymbolBuilder lineSymbolBuilder) {
-		this.alignCenter = lineSymbolBuilder.isAlignCenter();
-		this.bitmap = lineSymbolBuilder.getBitmap();
-		this.repeat = lineSymbolBuilder.isRepeat();
-	}
+    LineSymbol(final LineSymbolBuilder lineSymbolBuilder) {
+        this.alignCenter = lineSymbolBuilder.isAlignCenter();
+        this.bitmap = lineSymbolBuilder.getBitmap();
+        this.repeat = lineSymbolBuilder.isRepeat();
+    }
 
-	@Override
-	public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
-		// do nothing
-	}
+    @Override
+    public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
+        // do nothing
+    }
 
-	@Override
-	public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
-		renderCallback.renderWaySymbol(this.bitmap, this.alignCenter, this.repeat);
-	}
+    @Override
+    public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
+        renderCallback.renderWaySymbol(this.bitmap, this.alignCenter, this.repeat);
+    }
 
-	@Override
-	public void scaleStrokeWidth(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleStrokeWidth(final float scaleFactor) {
+        // do nothing
+    }
 
-	@Override
-	public void scaleTextSize(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleTextSize(final float scaleFactor) {
+        // do nothing
+    }
 }

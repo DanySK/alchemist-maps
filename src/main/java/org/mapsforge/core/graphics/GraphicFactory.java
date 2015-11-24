@@ -11,72 +11,71 @@ package org.mapsforge.core.graphics;
 import java.io.InputStream;
 
 /**
- * @author Mapsforge
  * 
  */
 public interface GraphicFactory {
-	/**
-	 * @param inputStream
-	 *            inputStream
-	 * @return Bitmap
-	 */
-	Bitmap createBitmap(InputStream inputStream);
+    /**
+     * @param inputStream
+     *            inputStream
+     * @return Bitmap
+     */
+    Bitmap createBitmap(InputStream inputStream);
 
-	/**
-	 * @param width
-	 *            width
-	 * @param height
-	 *            height
-	 * @return bitmap
-	 */
-	Bitmap createBitmap(int width, int height);
+    /**
+     * @param width
+     *            width
+     * @param height
+     *            height
+     * @return bitmap
+     */
+    Bitmap createBitmap(int width, int height);
 
-	/**
-	 * @return canvas
-	 */
-	Canvas createCanvas();
+    /**
+     * @return canvas
+     */
+    Canvas createCanvas();
 
-	/**
-	 * @param color
-	 *            color
-	 * @return color
-	 */
-	int createColor(Color color);
+    /**
+     * @param color
+     *            color
+     * @return color
+     */
+    int createColor(Color color);
 
-	/**
-	 * @param alpha
-	 *            alpha
-	 * @param red
-	 *            red
-	 * @param green
-	 *            green
-	 * @param blue
-	 *            blue
-	 * @return color
-	 */
-	int createColor(int alpha, int red, int green, int blue);
+    /**
+     * @param alpha
+     *            alpha
+     * @param red
+     *            red
+     * @param green
+     *            green
+     * @param blue
+     *            blue
+     * @return color
+     */
+    int createColor(int alpha, int red, int green, int blue);
 
-	/**
-	 * Supported formats are {@code #RRGGBB} and {@code #AARRGGBB}.
-	 * 
-	 * @param colorString
-	 *            colorString
-	 * @return color
-	 */
-	int createColor(String colorString);
+    /**
+     * Supported formats are {@code #RRGGBB} and {@code #AARRGGBB}.
+     * 
+     * @param colorString
+     *            colorString
+     * @return color
+     */
+    int createColor(String colorString);
 
-	/**
-	 * @return matrix
-	 */
-	Matrix createMatrix();
+    /**
+     * @return matrix
+     */
+    Matrix createMatrix();
 
-	/**
-	 * @return paint
-	 */
-	Paint createPaint();
+    /**
+     * @return paint
+     */
+    Paint createPaint();
 
-	/**
-	 * @return path
-	 */
-	Path createPath();
+    /**
+     * @return path
+     */
+    Path createPath();
 }

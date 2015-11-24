@@ -20,55 +20,53 @@ import com.graphhopper.GHResponse;
 import com.graphhopper.util.PointList;
 
 /**
- * @author Danilo Pianini
- * 
  */
 public class GraphHopperRoute implements IRoute {
 
-	private static final long serialVersionUID = -1455332156736222268L;
-	private final int size;
-	private final double distance, time;
-	private final List<IPosition> points;
+    private static final long serialVersionUID = -1455332156736222268L;
+    private final int size;
+    private final double distance, time;
+    private final List<IPosition> points;
 
-	/**
-	 * @param resp
-	 *            the response to use
-	 */
-	public GraphHopperRoute(final GHResponse resp) {
-		time = resp.getMillis() / 1000d;
-		distance = resp.getDistance();
-		final PointList pts = resp.getPoints();
-		size = pts.getSize();
-		final List<IPosition> temp = new ArrayList<>(size);
-		for (int i = 0; i < pts.getSize(); i++) {
-			temp.add(new LatLongPosition(pts.getLatitude(i), pts.getLongitude(i)));
-		}
-		points = Collections.unmodifiableList(temp);
-	}
+    /**
+     * @param resp
+     *            the response to use
+     */
+    public GraphHopperRoute(final GHResponse resp) {
+        time = resp.getMillis() / 1000d;
+        distance = resp.getDistance();
+        final PointList pts = resp.getPoints();
+        size = pts.getSize();
+        final List<IPosition> temp = new ArrayList<>(size);
+        for (int i = 0; i < pts.getSize(); i++) {
+            temp.add(new LatLongPosition(pts.getLatitude(i), pts.getLongitude(i)));
+        }
+        points = Collections.unmodifiableList(temp);
+    }
 
-	@Override
-	public double getDistance() {
-		return distance;
-	}
+    @Override
+    public double getDistance() {
+        return distance;
+    }
 
-	@Override
-	public IPosition getPoint(final int step) {
-		return points.get(step);
-	}
+    @Override
+    public IPosition getPoint(final int step) {
+        return points.get(step);
+    }
 
-	@Override
-	public List<IPosition> getPoints() {
-		return points;
-	}
+    @Override
+    public List<IPosition> getPoints() {
+        return points;
+    }
 
-	@Override
-	public int getPointsNumber() {
-		return size;
-	}
+    @Override
+    public int getPointsNumber() {
+        return size;
+    }
 
-	@Override
-	public double getTime() {
-		return time;
-	}
+    @Override
+    public double getTime() {
+        return time;
+    }
 
 }

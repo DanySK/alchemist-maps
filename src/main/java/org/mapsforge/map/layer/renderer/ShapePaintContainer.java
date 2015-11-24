@@ -11,20 +11,20 @@ package org.mapsforge.map.layer.renderer;
 import org.mapsforge.core.graphics.Paint;
 
 public class ShapePaintContainer {
-	private final Paint paint;
-	private final ShapeContainer shapeContainer;
+    private final Paint paint;
+    private final ShapeContainer shapeContainer;
 
-	public ShapePaintContainer(final ShapeContainer shapeContainer, final Paint paint) {
-		this.shapeContainer = shapeContainer;
-		this.paint = paint;
-	}
+    public ShapePaintContainer(final ShapeContainer shapeContainer, final Paint paint) {
+        this.shapeContainer = shapeContainer;
+        this.paint = paint;
+    }
 
-	public Paint getPaint() {
-		return paint;
-	}
+    public Paint getPaint() {
+        return paint;
+    }
 
-	public ShapeContainer getShapeContainer() {
-		return shapeContainer;
-	}
+    public ShapeContainer getShapeContainer() {
+        return shapeContainer;
+    }
 
 }

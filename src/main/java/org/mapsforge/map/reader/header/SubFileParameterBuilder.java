@@ -11,71 +11,71 @@ package org.mapsforge.map.reader.header;
 import org.mapsforge.core.model.BoundingBox;
 
 public class SubFileParameterBuilder {
-	private byte baseZoomLevel;
-	private BoundingBox boundingBox;
-	private long indexStartAddress;
-	private long startAddress;
-	private long subFileSize;
-	private byte zoomLevelMax;
-	private byte zoomLevelMin;
+    private byte baseZoomLevel;
+    private BoundingBox boundingBox;
+    private long indexStartAddress;
+    private long startAddress;
+    private long subFileSize;
+    private byte zoomLevelMax;
+    private byte zoomLevelMin;
 
-	public SubFileParameter build() {
-		return new SubFileParameter(this);
-	}
+    public SubFileParameter build() {
+        return new SubFileParameter(this);
+    }
 
-	public byte getBaseZoomLevel() {
-		return baseZoomLevel;
-	}
+    public byte getBaseZoomLevel() {
+        return baseZoomLevel;
+    }
 
-	public BoundingBox getBoundingBox() {
-		return boundingBox;
-	}
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
+    }
 
-	public long getIndexStartAddress() {
-		return indexStartAddress;
-	}
+    public long getIndexStartAddress() {
+        return indexStartAddress;
+    }
 
-	public long getStartAddress() {
-		return startAddress;
-	}
+    public long getStartAddress() {
+        return startAddress;
+    }
 
-	public long getSubFileSize() {
-		return subFileSize;
-	}
+    public long getSubFileSize() {
+        return subFileSize;
+    }
 
-	public byte getZoomLevelMax() {
-		return zoomLevelMax;
-	}
+    public byte getZoomLevelMax() {
+        return zoomLevelMax;
+    }
 
-	public byte getZoomLevelMin() {
-		return zoomLevelMin;
-	}
+    public byte getZoomLevelMin() {
+        return zoomLevelMin;
+    }
 
-	public void setBaseZoomLevel(final byte baseZoomLevel) {
-		this.baseZoomLevel = baseZoomLevel;
-	}
+    public void setBaseZoomLevel(final byte baseZoomLevel) {
+        this.baseZoomLevel = baseZoomLevel;
+    }
 
-	public void setBoundingBox(final BoundingBox boundingBox) {
-		this.boundingBox = boundingBox;
-	}
+    public void setBoundingBox(final BoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
+    }
 
-	public void setIndexStartAddress(final long indexStartAddress) {
-		this.indexStartAddress = indexStartAddress;
-	}
+    public void setIndexStartAddress(final long indexStartAddress) {
+        this.indexStartAddress = indexStartAddress;
+    }
 
-	public void setStartAddress(final long startAddress) {
-		this.startAddress = startAddress;
-	}
+    public void setStartAddress(final long startAddress) {
+        this.startAddress = startAddress;
+    }
 
-	public void setSubFileSize(final long subFileSize) {
-		this.subFileSize = subFileSize;
-	}
+    public void setSubFileSize(final long subFileSize) {
+        this.subFileSize = subFileSize;
+    }
 
-	public void setZoomLevelMax(final byte zoomLevelMax) {
-		this.zoomLevelMax = zoomLevelMax;
-	}
+    public void setZoomLevelMax(final byte zoomLevelMax) {
+        this.zoomLevelMax = zoomLevelMax;
+    }
 
-	public void setZoomLevelMin(final byte zoomLevelMin) {
-		this.zoomLevelMin = zoomLevelMin;
-	}
+    public void setZoomLevelMin(final byte zoomLevelMin) {
+        this.zoomLevelMin = zoomLevelMin;
+    }
 }

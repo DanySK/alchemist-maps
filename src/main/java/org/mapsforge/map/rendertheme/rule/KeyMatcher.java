@@ -14,34 +14,34 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class KeyMatcher implements AttributeMatcher {
-	private final List<String> keys;
+    private final List<String> keys;
 
-	public KeyMatcher(final List<String> keys) {
-		this.keys = keys;
-	}
+    public KeyMatcher(final List<String> keys) {
+        this.keys = keys;
+    }
 
-	@Override
-	public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
-		if (attributeMatcher == this) {
-			return true;
-		}
+    @Override
+    public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
+        if (attributeMatcher == this) {
+            return true;
+        }
 
-		final List<Tag> tags = new ArrayList<Tag>(this.keys.size());
-		final int n = this.keys.size();
-		for (int i = 0; i < n; ++i) {
-			tags.add(new Tag(this.keys.get(i), null));
-		}
-		return attributeMatcher.matches(tags);
-	}
+        final List<Tag> tags = new ArrayList<Tag>(this.keys.size());
+        final int n = this.keys.size();
+        for (int i = 0; i < n; ++i) {
+            tags.add(new Tag(this.keys.get(i), null));
+        }
+        return attributeMatcher.matches(tags);
+    }
 
-	@Override
-	public boolean matches(final List<Tag> tags) {
-		final int n = tags.size();
-		for (int i = 0; i < n; ++i) {
-			if (this.keys.contains(tags.get(i).getKey())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean matches(final List<Tag> tags) {
+        final int n = tags.size();
+        for (int i = 0; i < n; ++i) {
+            if (this.keys.contains(tags.get(i).getKey())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

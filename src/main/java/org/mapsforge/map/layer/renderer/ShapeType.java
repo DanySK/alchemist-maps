@@ -9,5 +9,5 @@
 package org.mapsforge.map.layer.renderer;
 
 enum ShapeType {
-	CIRCLE, WAY;
+    CIRCLE, WAY;
 }

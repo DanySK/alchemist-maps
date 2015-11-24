@@ -10,17 +10,15 @@ import it.unibo.alchemist.model.interfaces.strategies.RoutingStrategy;
  * starting and ending point with a straight line using
  * {@link PointToPointRoute}.
  * 
- * @author Danilo Pianini
- *
  * @param <T>
  */
 public class IgnoreStreets<T> implements RoutingStrategy<T> {
 
-	private static final long serialVersionUID = 2678088737744440021L;
+    private static final long serialVersionUID = 2678088737744440021L;
 
-	@Override
-	public IRoute computeRoute(final IPosition currentPos, final IPosition finalPos) {
-		return new PointToPointRoute(currentPos, finalPos);
-	}
+    @Override
+    public IRoute computeRoute(final IPosition currentPos, final IPosition finalPos) {
+        return new PointToPointRoute(currentPos, finalPos);
+    }
 
 }

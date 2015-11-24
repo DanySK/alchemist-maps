@@ -9,13 +9,12 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public enum FontStyle {
 
-	/**
-	 * 
-	 */
-	BOLD, BOLD_ITALIC, ITALIC, NORMAL;
+    /**
+     * 
+     */
+    BOLD, BOLD_ITALIC, ITALIC, NORMAL;
 }

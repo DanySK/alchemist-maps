@@ -18,46 +18,46 @@ import org.mapsforge.core.model.Tag;
  * (closed way).
  */
 public class Way {
-	/**
-	 * The position of the area label (may be null).
-	 */
-	private final LatLong labelPosition;
+    /**
+     * The position of the area label (may be null).
+     */
+    private final LatLong labelPosition;
 
-	/**
-	 * The geographical coordinates of the way nodes.
-	 */
-	private final LatLong[][] latLongs;
+    /**
+     * The geographical coordinates of the way nodes.
+     */
+    private final LatLong[][] latLongs;
 
-	/**
-	 * The layer of this way + 5 (to avoid negative values).
-	 */
-	private final byte layer;
+    /**
+     * The layer of this way + 5 (to avoid negative values).
+     */
+    private final byte layer;
 
-	/**
-	 * The tags of this way.
-	 */
-	private final List<Tag> tags;
+    /**
+     * The tags of this way.
+     */
+    private final List<Tag> tags;
 
-	public Way(final byte layer, final List<Tag> tags, final LatLong[][] latLongs, final LatLong labelPosition) {
-		this.layer = layer;
-		this.tags = tags;
-		this.latLongs = latLongs;
-		this.labelPosition = labelPosition;
-	}
+    public Way(final byte layer, final List<Tag> tags, final LatLong[][] latLongs, final LatLong labelPosition) {
+        this.layer = layer;
+        this.tags = tags;
+        this.latLongs = latLongs;
+        this.labelPosition = labelPosition;
+    }
 
-	public LatLong getLabelPosition() {
-		return labelPosition;
-	}
+    public LatLong getLabelPosition() {
+        return labelPosition;
+    }
 
-	public LatLong[][] getLatLongs() {
-		return latLongs;
-	}
+    public LatLong[][] getLatLongs() {
+        return latLongs;
+    }
 
-	public byte getLayer() {
-		return layer;
-	}
+    public byte getLayer() {
+        return layer;
+    }
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 }

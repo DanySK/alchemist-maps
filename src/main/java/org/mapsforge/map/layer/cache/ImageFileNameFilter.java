@@ -12,18 +12,18 @@ import java.io.File;
 import java.io.FilenameFilter;
 
 final class ImageFileNameFilter implements FilenameFilter {
-	private static final ImageFileNameFilter INSTANCE = new ImageFileNameFilter();
+    private static final ImageFileNameFilter INSTANCE = new ImageFileNameFilter();
 
-	public static ImageFileNameFilter getInstance() {
-		return INSTANCE;
-	}
+    public static ImageFileNameFilter getInstance() {
+        return INSTANCE;
+    }
 
-	private ImageFileNameFilter() {
-		// do nothing
-	}
+    private ImageFileNameFilter() {
+        // do nothing
+    }
 
-	@Override
-	public boolean accept(final File directory, final String fileName) {
-		return fileName.endsWith(FileSystemTileCache.FILE_EXTENSION);
-	}
+    @Override
+    public boolean accept(final File directory, final String fileName) {
+        return fileName.endsWith(FileSystemTileCache.FILE_EXTENSION);
+    }
 }

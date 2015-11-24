@@ -9,25 +9,24 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public interface Path {
-	/**
-	 * @param x
-	 *            x
-	 * @param y
-	 *            y
-	 */
-	void addPoint(int x, int y);
+    /**
+     * @param x
+     *            x
+     * @param y
+     *            y
+     */
+    void addPoint(int x, int y);
 
-	/**
-	 * 
-	 */
-	void clear();
+    /**
+     * 
+     */
+    void clear();
 
-	/**
-	 * @return empty
-	 */
-	boolean isEmpty();
+    /**
+     * @return empty
+     */
+    boolean isEmpty();
 }

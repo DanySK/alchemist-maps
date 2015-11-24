@@ -16,45 +16,41 @@ import java.util.Map;
  * automatically removed from the cache when new mappings are added. This
  * implementation uses an {@link LinkedHashMap} internally.
  * 
- * @author Mapsforge
- * @author Giovanni Ciatto
- * @author Danilo Pianini
- *
  * @param <K>
  *            the type of the map key, see {@link Map}.
  * @param <V>
  *            the type of the map value, see {@link Map}.
  */
 public class LRUCache<K, V> extends LinkedHashMap<K, V> {
-	private static final float LOAD_FACTOR = 0.6f;
-	private static final long serialVersionUID = 1L;
-	private final int capacity;
+    private static final float LOAD_FACTOR = 0.6f;
+    private static final long serialVersionUID = 1L;
+    private final int capacity;
 
-	private static int calculateInitialCapacity(final int capacity) {
-		if (capacity < 0) {
-			throw new IllegalArgumentException("capacity must not be negative: " + capacity);
-		}
-		return (int) (capacity / LOAD_FACTOR) + 2;
-	}
+    private static int calculateInitialCapacity(final int capacity) {
+        if (capacity < 0) {
+            throw new IllegalArgumentException("capacity must not be negative: " + capacity);
+        }
+        return (int) (capacity / LOAD_FACTOR) + 2;
+    }
 
-	/**
-	 * @param cpy
-	 *            the maximum capacity of this cache.
-	 */
-	public LRUCache(final int cpy) {
-		super(calculateInitialCapacity(cpy), LOAD_FACTOR, true);
-		this.capacity = cpy;
-	}
+    /**
+     * @param cpy
+     *            the maximum capacity of this cache.
+     */
+    public LRUCache(final int cpy) {
+        super(calculateInitialCapacity(cpy), LOAD_FACTOR, true);
+        this.capacity = cpy;
+    }
 
-	/**
-	 * @return capacity
-	 */
-	public int getCapacity() {
-		return this.capacity;
-	}
+    /**
+     * @return capacity
+     */
+    public int getCapacity() {
+        return this.capacity;
+    }
 
-	@Override
-	protected boolean removeEldestEntry(final Map.Entry<K, V> eldest) {
-		return size() > this.capacity;
-	}
+    @Override
+    protected boolean removeEldestEntry(final Map.Entry<K, V> eldest) {
+        return size() > this.capacity;
+    }
 }

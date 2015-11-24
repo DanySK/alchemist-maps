@@ -18,37 +18,37 @@ import org.mapsforge.map.rendertheme.RenderCallback;
  * Represents a closed polygon on the map.
  */
 public class Area implements RenderInstruction {
-	private final Paint fill;
-	private final int level;
-	private final Paint stroke;
-	private final float strokeWidth;
+    private final Paint fill;
+    private final int level;
+    private final Paint stroke;
+    private final float strokeWidth;
 
-	public Area(final AreaBuilder areaBuilder) {
-		this.fill = areaBuilder.getFill();
-		this.level = areaBuilder.getLevel();
-		this.stroke = areaBuilder.getStroke();
-		this.strokeWidth = areaBuilder.getStrokeWidth();
-	}
+    public Area(final AreaBuilder areaBuilder) {
+        this.fill = areaBuilder.getFill();
+        this.level = areaBuilder.getLevel();
+        this.stroke = areaBuilder.getStroke();
+        this.strokeWidth = areaBuilder.getStrokeWidth();
+    }
 
-	@Override
-	public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
-		// do nothing
-	}
+    @Override
+    public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
+        // do nothing
+    }
 
-	@Override
-	public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
-		renderCallback.renderArea(this.fill, this.stroke, this.level);
-	}
+    @Override
+    public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
+        renderCallback.renderArea(this.fill, this.stroke, this.level);
+    }
 
-	@Override
-	public void scaleStrokeWidth(final float scaleFactor) {
-		if (this.stroke != null) {
-			this.stroke.setStrokeWidth(this.strokeWidth * scaleFactor);
-		}
-	}
+    @Override
+    public void scaleStrokeWidth(final float scaleFactor) {
+        if (this.stroke != null) {
+            this.stroke.setStrokeWidth(this.strokeWidth * scaleFactor);
+        }
+    }
 
-	@Override
-	public void scaleTextSize(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleTextSize(final float scaleFactor) {
+        // do nothing
+    }
 }

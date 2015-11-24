@@ -11,19 +11,19 @@ package org.mapsforge.map.layer.renderer;
 import org.mapsforge.core.model.Point;
 
 public class WayContainer implements ShapeContainer {
-	private final Point[][] coordinates;
+    private final Point[][] coordinates;
 
-	public WayContainer(final Point[][] coordinates) {
-		this.coordinates = coordinates;
-	}
+    public WayContainer(final Point[][] coordinates) {
+        this.coordinates = coordinates;
+    }
 
-	public Point[][] getCoordinates() {
-		return coordinates;
-	}
+    public Point[][] getCoordinates() {
+        return coordinates;
+    }
 
-	@Override
-	public ShapeType getShapeType() {
-		return ShapeType.WAY;
-	}
+    @Override
+    public ShapeType getShapeType() {
+        return ShapeType.WAY;
+    }
 
 }

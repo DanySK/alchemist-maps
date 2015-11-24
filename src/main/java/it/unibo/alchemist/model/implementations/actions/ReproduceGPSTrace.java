@@ -9,46 +9,44 @@ import it.unibo.alchemist.model.interfaces.INode;
 import it.unibo.alchemist.model.interfaces.IReaction;
 
 /**
- * @author Danilo Pianini
- * 
  * @param <T>
  */
 public class ReproduceGPSTrace<T> extends MoveOnMap<T> {
 
-	private static final long serialVersionUID = -2291955689914046763L;
+    private static final long serialVersionUID = -2291955689914046763L;
 
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 */
-	public ReproduceGPSTrace(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		super(environment, node,
-				new IgnoreStreets<>(),
-				new StraightLineTraceDependantSpeed<>(environment, node, reaction),
-				new FollowTrace<>(environment, node, reaction));
-	}
-	
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction. Will be used to compute the distance to walk in
-	 *            every step, relying on {@link IReaction}'s getRate() method.
-	 * @param speed
-	 *            the average speed
-	 */
-	public ReproduceGPSTrace(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double speed) {
-		super(environment, node,
-				new IgnoreStreets<>(),
-				new ConstantSpeed<>(reaction, speed),
-				new FollowTrace<>(environment, node, reaction));
-	}
-	
+    /**
+     * @param environment
+     *            the environment
+     * @param node
+     *            the node
+     * @param reaction
+     *            the reaction. Will be used to compute the distance to walk in
+     *            every step, relying on {@link IReaction}'s getRate() method.
+     */
+    public ReproduceGPSTrace(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
+        super(environment, node,
+                new IgnoreStreets<>(),
+                new StraightLineTraceDependantSpeed<>(environment, node, reaction),
+                new FollowTrace<>(environment, node, reaction));
+    }
+
+    /**
+     * @param environment
+     *            the environment
+     * @param node
+     *            the node
+     * @param reaction
+     *            the reaction. Will be used to compute the distance to walk in
+     *            every step, relying on {@link IReaction}'s getRate() method.
+     * @param speed
+     *            the average speed
+     */
+    public ReproduceGPSTrace(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction, final double speed) {
+        super(environment, node,
+                new IgnoreStreets<>(),
+                new ConstantSpeed<>(reaction, speed),
+                new FollowTrace<>(environment, node, reaction));
+    }
+
 }

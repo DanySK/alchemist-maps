@@ -9,5 +9,5 @@
 package org.mapsforge.map.layer.renderer;
 
 interface ShapeContainer {
-	ShapeType getShapeType();
+    ShapeType getShapeType();
 }

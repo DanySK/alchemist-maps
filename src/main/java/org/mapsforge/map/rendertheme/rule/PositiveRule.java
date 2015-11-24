@@ -13,31 +13,31 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class PositiveRule extends Rule {
-	private final AttributeMatcher keyMatcher;
-	private final AttributeMatcher valueMatcher;
+    private final AttributeMatcher keyMatcher;
+    private final AttributeMatcher valueMatcher;
 
-	public PositiveRule(final RuleBuilder ruleBuilder, final AttributeMatcher keyMatcher, final AttributeMatcher valueMatcher) {
-		super(ruleBuilder);
+    public PositiveRule(final RuleBuilder ruleBuilder, final AttributeMatcher keyMatcher, final AttributeMatcher valueMatcher) {
+        super(ruleBuilder);
 
-		this.keyMatcher = keyMatcher;
-		this.valueMatcher = valueMatcher;
-	}
+        this.keyMatcher = keyMatcher;
+        this.valueMatcher = valueMatcher;
+    }
 
-	public AttributeMatcher getKeyMatcher() {
-		return keyMatcher;
-	}
+    public AttributeMatcher getKeyMatcher() {
+        return keyMatcher;
+    }
 
-	public AttributeMatcher getValueMatcher() {
-		return valueMatcher;
-	}
+    public AttributeMatcher getValueMatcher() {
+        return valueMatcher;
+    }
 
-	@Override
-	public boolean matchesNode(final List<Tag> tags, final byte zoomLevel) {
-		return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.NODE) && this.keyMatcher.matches(tags) && this.valueMatcher.matches(tags);
-	}
+    @Override
+    public boolean matchesNode(final List<Tag> tags, final byte zoomLevel) {
+        return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.NODE) && this.keyMatcher.matches(tags) && this.valueMatcher.matches(tags);
+    }
 
-	@Override
-	public boolean matchesWay(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
-		return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.WAY) && this.getClosedMatcher().matches(closed) && this.keyMatcher.matches(tags) && this.valueMatcher.matches(tags);
-	}
+    @Override
+    public boolean matchesWay(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
+        return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.WAY) && this.getClosedMatcher().matches(closed) && this.keyMatcher.matches(tags) && this.valueMatcher.matches(tags);
+    }
 }

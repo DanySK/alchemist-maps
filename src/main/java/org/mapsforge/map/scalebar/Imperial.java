@@ -9,34 +9,34 @@
 package org.mapsforge.map.scalebar;
 
 public final class Imperial implements Adapter {
-	private static final Imperial INSTANCE = new Imperial();
-	private static final double METER_FOOT_RATIO = 0.3048;
-	private static final int ONE_MILE = 5280;
-	private static final int[] SCALE_BAR_VALUES = { 26400000, 10560000, 5280000, 2640000, 1056000, 528000, 264000, 105600, 52800, 26400, 10560, 5280, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1 };
+    private static final Imperial INSTANCE = new Imperial();
+    private static final double METER_FOOT_RATIO = 0.3048;
+    private static final int ONE_MILE = 5280;
+    private static final int[] SCALE_BAR_VALUES = { 26400000, 10560000, 5280000, 2640000, 1056000, 528000, 264000, 105600, 52800, 26400, 10560, 5280, 2000, 1000, 500, 200, 100, 50, 20, 10, 5, 2, 1 };
 
-	public static Imperial getInstance() {
-		return INSTANCE;
-	}
+    public static Imperial getInstance() {
+        return INSTANCE;
+    }
 
-	private Imperial() {
-		// do nothing
-	}
+    private Imperial() {
+        // do nothing
+    }
 
-	@Override
-	public double getMeterRatio() {
-		return METER_FOOT_RATIO;
-	}
+    @Override
+    public double getMeterRatio() {
+        return METER_FOOT_RATIO;
+    }
 
-	@Override
-	public int[] getScaleBarValues() {
-		return SCALE_BAR_VALUES;
-	}
+    @Override
+    public int[] getScaleBarValues() {
+        return SCALE_BAR_VALUES;
+    }
 
-	@Override
-	public String getScaleText(final int mapScaleValue) {
-		if (mapScaleValue < ONE_MILE) {
-			return mapScaleValue + " ft";
-		}
-		return mapScaleValue / ONE_MILE + " mi";
-	}
+    @Override
+    public String getScaleText(final int mapScaleValue) {
+        if (mapScaleValue < ONE_MILE) {
+            return mapScaleValue + " ft";
+        }
+        return mapScaleValue / ONE_MILE + " mi";
+    }
 }

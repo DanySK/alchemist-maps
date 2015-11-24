@@ -10,9 +10,9 @@ package org.mapsforge.map.scalebar;
 
 // TODO rename this
 public interface Adapter {
-	double getMeterRatio();
+    double getMeterRatio();
 
-	int[] getScaleBarValues();
+    int[] getScaleBarValues();
 
-	String getScaleText(int mapScaleValue);
+    String getScaleText(int mapScaleValue);
 }

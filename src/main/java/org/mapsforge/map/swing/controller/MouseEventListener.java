@@ -23,64 +23,64 @@ import org.mapsforge.map.model.MapViewPosition;
 import org.mapsforge.map.model.Model;
 
 public class MouseEventListener implements MouseListener, MouseMotionListener, MouseWheelListener {
-	private Point lastDragPoint;
-	private final MapViewPosition mapViewPosition;
+    private Point lastDragPoint;
+    private final MapViewPosition mapViewPosition;
 
-	public MouseEventListener(final Model model) {
-		this.mapViewPosition = model.getMapViewPosition();
-	}
+    public MouseEventListener(final Model model) {
+        this.mapViewPosition = model.getMapViewPosition();
+    }
 
-	@Override
-	public void mouseClicked(final MouseEvent mouseEvent) {
-		// do nothing
-	}
+    @Override
+    public void mouseClicked(final MouseEvent mouseEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void mouseDragged(final MouseEvent mouseEvent) {
-		if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-			final Point point = mouseEvent.getPoint();
-			if (this.lastDragPoint != null) {
-				final int moveHorizontal = point.x - this.lastDragPoint.x;
-				final int moveVertical = point.y - this.lastDragPoint.y;
-				this.mapViewPosition.moveCenter(moveHorizontal, moveVertical);
-			}
-			this.lastDragPoint = point;
-		}
-	}
+    @Override
+    public void mouseDragged(final MouseEvent mouseEvent) {
+        if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+            final Point point = mouseEvent.getPoint();
+            if (this.lastDragPoint != null) {
+                final int moveHorizontal = point.x - this.lastDragPoint.x;
+                final int moveVertical = point.y - this.lastDragPoint.y;
+                this.mapViewPosition.moveCenter(moveHorizontal, moveVertical);
+            }
+            this.lastDragPoint = point;
+        }
+    }
 
-	@Override
-	public void mouseEntered(final MouseEvent mouseEvent) {
-		// do nothing
-	}
+    @Override
+    public void mouseEntered(final MouseEvent mouseEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void mouseExited(final MouseEvent mouseEvent) {
-		// do nothing
-	}
+    @Override
+    public void mouseExited(final MouseEvent mouseEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void mouseMoved(final MouseEvent mouseEvent) {
-		// do nothing
-	}
+    @Override
+    public void mouseMoved(final MouseEvent mouseEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void mousePressed(final MouseEvent mouseEvent) {
-		if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
-			this.lastDragPoint = mouseEvent.getPoint();
-		}
-		if (SwingUtilities.isRightMouseButton(mouseEvent)) {
-			this.mapViewPosition.setMapPosition(new MapPosition(new LatLong(48.22885564893414, 16.364897946404852), (byte) 20));
-		}
-	}
+    @Override
+    public void mousePressed(final MouseEvent mouseEvent) {
+        if (SwingUtilities.isLeftMouseButton(mouseEvent)) {
+            this.lastDragPoint = mouseEvent.getPoint();
+        }
+        if (SwingUtilities.isRightMouseButton(mouseEvent)) {
+            this.mapViewPosition.setMapPosition(new MapPosition(new LatLong(48.22885564893414, 16.364897946404852), (byte) 20));
+        }
+    }
 
-	@Override
-	public void mouseReleased(final MouseEvent mouseEvent) {
-		this.lastDragPoint = null;
-	}
+    @Override
+    public void mouseReleased(final MouseEvent mouseEvent) {
+        this.lastDragPoint = null;
+    }
 
-	@Override
-	public void mouseWheelMoved(final MouseWheelEvent mouseWheelEvent) {
-		final byte zoomLevelDiff = (byte) -mouseWheelEvent.getWheelRotation();
-		this.mapViewPosition.zoom(zoomLevelDiff);
-	}
+    @Override
+    public void mouseWheelMoved(final MouseWheelEvent mouseWheelEvent) {
+        final byte zoomLevelDiff = (byte) -mouseWheelEvent.getWheelRotation();
+        this.mapViewPosition.zoom(zoomLevelDiff);
+    }
 }

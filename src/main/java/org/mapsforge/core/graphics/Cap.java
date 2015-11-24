@@ -11,13 +11,12 @@ package org.mapsforge.core.graphics;
 /**
  * Specifies the shape to be used for the endpoints of a line.
  * 
- * @author Mapsforge
  * 
  */
 public enum Cap {
 
-	/**
-	 * 
-	 */
-	BUTT, ROUND, SQUARE;
+    /**
+     * 
+     */
+    BUTT, ROUND, SQUARE;
 }

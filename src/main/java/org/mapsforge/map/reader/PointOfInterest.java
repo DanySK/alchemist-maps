@@ -18,37 +18,37 @@ import org.mapsforge.core.model.Tag;
  * interest node (POI).
  */
 public class PointOfInterest {
-	/**
-	 * The layer of this POI + 5 (to avoid negative values).
-	 */
-	private final byte layer;
+    /**
+     * The layer of this POI + 5 (to avoid negative values).
+     */
+    private final byte layer;
 
-	/**
-	 * The position of this POI.
-	 */
-	private final LatLong position;
+    /**
+     * The position of this POI.
+     */
+    private final LatLong position;
 
-	/**
-	 * The tags of this POI.
-	 */
-	private final List<Tag> tags;
+    /**
+     * The tags of this POI.
+     */
+    private final List<Tag> tags;
 
-	public PointOfInterest(final byte layer, final List<Tag> tags, final LatLong position) {
-		this.layer = layer;
-		this.tags = tags;
-		this.position = position;
-	}
+    public PointOfInterest(final byte layer, final List<Tag> tags, final LatLong position) {
+        this.layer = layer;
+        this.tags = tags;
+        this.position = position;
+    }
 
-	public byte getLayer() {
-		return layer;
-	}
+    public byte getLayer() {
+        return layer;
+    }
 
-	public LatLong getPosition() {
-		return position;
-	}
+    public LatLong getPosition() {
+        return position;
+    }
 
-	public List<Tag> getTags() {
-		return tags;
-	}
+    public List<Tag> getTags() {
+        return tags;
+    }
 
 }

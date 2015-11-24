@@ -11,35 +11,34 @@ package org.mapsforge.core.graphics;
 import java.nio.ByteBuffer;
 
 /**
- * @author Mapsforge
  * 
  */
 public interface Bitmap {
-	/**
-	 * @param byteBuffer
-	 *            byteBuffer
-	 */
-	void copyPixelsFromBuffer(ByteBuffer byteBuffer);
+    /**
+     * @param byteBuffer
+     *            byteBuffer
+     */
+    void copyPixelsFromBuffer(ByteBuffer byteBuffer);
 
-	/**
-	 * @param byteBuffer
-	 *            byteBuffer
-	 */
-	void copyPixelsToBuffer(ByteBuffer byteBuffer);
+    /**
+     * @param byteBuffer
+     *            byteBuffer
+     */
+    void copyPixelsToBuffer(ByteBuffer byteBuffer);
 
-	/**
-	 * @param color
-	 *            color
-	 */
-	void fillColor(int color);
+    /**
+     * @param color
+     *            color
+     */
+    void fillColor(int color);
 
-	/**
-	 * @return the height of this bitmap in pixels.
-	 */
-	int getHeight();
+    /**
+     * @return the height of this bitmap in pixels.
+     */
+    int getHeight();
 
-	/**
-	 * @return the width of this bitmap in pixels.
-	 */
-	int getWidth();
+    /**
+     * @return the width of this bitmap in pixels.
+     */
+    int getWidth();
 }

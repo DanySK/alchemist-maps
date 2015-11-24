@@ -9,13 +9,12 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public enum Color {
 
-	/**
-	 * 
-	 */
-	BLACK, BLUE, GREEN, RED, TRANSPARENT, WHITE;
+    /**
+     * 
+     */
+    BLACK, BLUE, GREEN, RED, TRANSPARENT, WHITE;
 }

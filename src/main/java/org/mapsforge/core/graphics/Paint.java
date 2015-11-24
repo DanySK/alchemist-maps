@@ -9,99 +9,98 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public interface Paint {
 
-	/**
-	 * @return color
-	 */
-	int getColor();
+    /**
+     * @return color
+     */
+    int getColor();
 
-	/**
-	 * @return StrokeCap
-	 */
-	Cap getStrokeCap();
+    /**
+     * @return StrokeCap
+     */
+    Cap getStrokeCap();
 
-	/**
-	 * @return StrokeWidth
-	 */
-	float getStrokeWidth();
+    /**
+     * @return StrokeWidth
+     */
+    float getStrokeWidth();
 
-	/**
-	 * @param text
-	 *            text
-	 * @return TextHeight
-	 */
-	int getTextHeight(String text);
+    /**
+     * @param text
+     *            text
+     * @return TextHeight
+     */
+    int getTextHeight(String text);
 
-	/**
-	 * @param text
-	 *            text
-	 * @return TextWidth
-	 */
-	int getTextWidth(String text);
+    /**
+     * @param text
+     *            text
+     * @return TextWidth
+     */
+    int getTextWidth(String text);
 
-	/**
-	 * @param alpha
-	 *            alpha
-	 */
-	void setAlpha(int alpha);
+    /**
+     * @param alpha
+     *            alpha
+     */
+    void setAlpha(int alpha);
 
-	/**
-	 * @param bitmap
-	 *            bitmap
-	 */
-	void setBitmapShader(Bitmap bitmap);
+    /**
+     * @param bitmap
+     *            bitmap
+     */
+    void setBitmapShader(Bitmap bitmap);
 
-	/**
-	 * @param color
-	 *            color
-	 */
-	void setColor(int color);
+    /**
+     * @param color
+     *            color
+     */
+    void setColor(int color);
 
-	/**
-	 * @param strokeDasharray
-	 *            strokeDasharray
-	 */
-	void setDashPathEffect(float[] strokeDasharray);
+    /**
+     * @param strokeDasharray
+     *            strokeDasharray
+     */
+    void setDashPathEffect(float[] strokeDasharray);
 
-	/**
-	 * @param cap
-	 *            cap
-	 */
-	void setStrokeCap(Cap cap);
+    /**
+     * @param cap
+     *            cap
+     */
+    void setStrokeCap(Cap cap);
 
-	/**
-	 * @param strokeWidth
-	 *            strokeWidth
-	 */
-	void setStrokeWidth(float strokeWidth);
+    /**
+     * @param strokeWidth
+     *            strokeWidth
+     */
+    void setStrokeWidth(float strokeWidth);
 
-	/**
-	 * @param style
-	 *            style
-	 */
-	void setStyle(Style style);
+    /**
+     * @param style
+     *            style
+     */
+    void setStyle(Style style);
 
-	/**
-	 * @param align
-	 *            align
-	 */
-	void setTextAlign(Align align);
+    /**
+     * @param align
+     *            align
+     */
+    void setTextAlign(Align align);
 
-	/**
-	 * @param textSize
-	 *            textSize
-	 */
-	void setTextSize(float textSize);
+    /**
+     * @param textSize
+     *            textSize
+     */
+    void setTextSize(float textSize);
 
-	/**
-	 * @param fontFamily
-	 *            fontFamily
-	 * @param fontStyle
-	 *            fontStyle
-	 */
-	void setTypeface(FontFamily fontFamily, FontStyle fontStyle);
+    /**
+     * @param fontFamily
+     *            fontFamily
+     * @param fontStyle
+     *            fontStyle
+     */
+    void setTypeface(FontFamily fontFamily, FontStyle fontStyle);
 }

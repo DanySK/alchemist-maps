@@ -12,48 +12,48 @@ import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.map.layer.queue.Job;
 
 public class TwoLevelTileCache implements TileCache {
-	private final TileCache firstLevelTileCache;
-	private final TileCache secondLevelTileCache;
+    private final TileCache firstLevelTileCache;
+    private final TileCache secondLevelTileCache;
 
-	public TwoLevelTileCache(final TileCache firstLevelTileCache, final TileCache secondLevelTileCache) {
-		this.firstLevelTileCache = firstLevelTileCache;
-		this.secondLevelTileCache = secondLevelTileCache;
-	}
+    public TwoLevelTileCache(final TileCache firstLevelTileCache, final TileCache secondLevelTileCache) {
+        this.firstLevelTileCache = firstLevelTileCache;
+        this.secondLevelTileCache = secondLevelTileCache;
+    }
 
-	@Override
-	public synchronized boolean containsKey(final Job key) {
-		return this.firstLevelTileCache.containsKey(key) || this.secondLevelTileCache.containsKey(key);
-	}
+    @Override
+    public synchronized boolean containsKey(final Job key) {
+        return this.firstLevelTileCache.containsKey(key) || this.secondLevelTileCache.containsKey(key);
+    }
 
-	@Override
-	public synchronized void destroy() {
-		this.firstLevelTileCache.destroy();
-		this.secondLevelTileCache.destroy();
-	}
+    @Override
+    public synchronized void destroy() {
+        this.firstLevelTileCache.destroy();
+        this.secondLevelTileCache.destroy();
+    }
 
-	@Override
-	public synchronized Bitmap get(final Job key) {
-		Bitmap returnBitmap = this.firstLevelTileCache.get(key);
-		if (returnBitmap != null) {
-			return returnBitmap;
-		}
+    @Override
+    public synchronized Bitmap get(final Job key) {
+        Bitmap returnBitmap = this.firstLevelTileCache.get(key);
+        if (returnBitmap != null) {
+            return returnBitmap;
+        }
 
-		returnBitmap = this.secondLevelTileCache.get(key);
-		if (returnBitmap != null) {
-			this.firstLevelTileCache.put(key, returnBitmap);
-			return returnBitmap;
-		}
+        returnBitmap = this.secondLevelTileCache.get(key);
+        if (returnBitmap != null) {
+            this.firstLevelTileCache.put(key, returnBitmap);
+            return returnBitmap;
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	@Override
-	public synchronized int getCapacity() {
-		return Math.max(this.firstLevelTileCache.getCapacity(), this.secondLevelTileCache.getCapacity());
-	}
+    @Override
+    public synchronized int getCapacity() {
+        return Math.max(this.firstLevelTileCache.getCapacity(), this.secondLevelTileCache.getCapacity());
+    }
 
-	@Override
-	public synchronized void put(final Job key, final Bitmap bitmap) {
-		this.secondLevelTileCache.put(key, bitmap);
-	}
+    @Override
+    public synchronized void put(final Job key, final Bitmap bitmap) {
+        this.secondLevelTileCache.put(key, bitmap);
+    }
 }

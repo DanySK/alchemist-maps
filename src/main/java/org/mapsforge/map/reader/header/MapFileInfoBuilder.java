@@ -12,98 +12,98 @@ import org.mapsforge.core.model.BoundingBox;
 import org.mapsforge.core.model.Tag;
 
 public class MapFileInfoBuilder {
-	private BoundingBox boundingBox;
-	private long fileSize;
-	private int fileVersion;
-	private long mapDate;
-	private byte numberOfSubFiles;
-	private OptionalFields optionalFields;
-	private Tag[] poiTags;
-	private String projectionName;
-	private int tilePixelSize;
-	private Tag[] wayTags;
+    private BoundingBox boundingBox;
+    private long fileSize;
+    private int fileVersion;
+    private long mapDate;
+    private byte numberOfSubFiles;
+    private OptionalFields optionalFields;
+    private Tag[] poiTags;
+    private String projectionName;
+    private int tilePixelSize;
+    private Tag[] wayTags;
 
-	public MapFileInfo build() {
-		return new MapFileInfo(this);
-	}
+    public MapFileInfo build() {
+        return new MapFileInfo(this);
+    }
 
-	public BoundingBox getBoundingBox() {
-		return boundingBox;
-	}
+    public BoundingBox getBoundingBox() {
+        return boundingBox;
+    }
 
-	public long getFileSize() {
-		return fileSize;
-	}
+    public long getFileSize() {
+        return fileSize;
+    }
 
-	public int getFileVersion() {
-		return fileVersion;
-	}
+    public int getFileVersion() {
+        return fileVersion;
+    }
 
-	public long getMapDate() {
-		return mapDate;
-	}
+    public long getMapDate() {
+        return mapDate;
+    }
 
-	public byte getNumberOfSubFiles() {
-		return numberOfSubFiles;
-	}
+    public byte getNumberOfSubFiles() {
+        return numberOfSubFiles;
+    }
 
-	public OptionalFields getOptionalFields() {
-		return optionalFields;
-	}
+    public OptionalFields getOptionalFields() {
+        return optionalFields;
+    }
 
-	public Tag[] getPoiTags() {
-		return poiTags;
-	}
+    public Tag[] getPoiTags() {
+        return poiTags;
+    }
 
-	public String getProjectionName() {
-		return projectionName;
-	}
+    public String getProjectionName() {
+        return projectionName;
+    }
 
-	public int getTilePixelSize() {
-		return tilePixelSize;
-	}
+    public int getTilePixelSize() {
+        return tilePixelSize;
+    }
 
-	public Tag[] getWayTags() {
-		return wayTags;
-	}
+    public Tag[] getWayTags() {
+        return wayTags;
+    }
 
-	public void setBoundingBox(final BoundingBox boundingBox) {
-		this.boundingBox = boundingBox;
-	}
+    public void setBoundingBox(final BoundingBox boundingBox) {
+        this.boundingBox = boundingBox;
+    }
 
-	public void setFileSize(final long fileSize) {
-		this.fileSize = fileSize;
-	}
+    public void setFileSize(final long fileSize) {
+        this.fileSize = fileSize;
+    }
 
-	public void setFileVersion(final int fileVersion) {
-		this.fileVersion = fileVersion;
-	}
+    public void setFileVersion(final int fileVersion) {
+        this.fileVersion = fileVersion;
+    }
 
-	public void setMapDate(final long mapDate) {
-		this.mapDate = mapDate;
-	}
+    public void setMapDate(final long mapDate) {
+        this.mapDate = mapDate;
+    }
 
-	public void setNumberOfSubFiles(final byte numberOfSubFiles) {
-		this.numberOfSubFiles = numberOfSubFiles;
-	}
+    public void setNumberOfSubFiles(final byte numberOfSubFiles) {
+        this.numberOfSubFiles = numberOfSubFiles;
+    }
 
-	public void setOptionalFields(final OptionalFields optionalFields) {
-		this.optionalFields = optionalFields;
-	}
+    public void setOptionalFields(final OptionalFields optionalFields) {
+        this.optionalFields = optionalFields;
+    }
 
-	public void setPoiTags(final Tag[] poiTags) {
-		this.poiTags = poiTags;
-	}
+    public void setPoiTags(final Tag[] poiTags) {
+        this.poiTags = poiTags;
+    }
 
-	public void setProjectionName(final String projectionName) {
-		this.projectionName = projectionName;
-	}
+    public void setProjectionName(final String projectionName) {
+        this.projectionName = projectionName;
+    }
 
-	public void setTilePixelSize(final int tilePixelSize) {
-		this.tilePixelSize = tilePixelSize;
-	}
+    public void setTilePixelSize(final int tilePixelSize) {
+        this.tilePixelSize = tilePixelSize;
+    }
 
-	public void setWayTags(final Tag[] wayTags) {
-		this.wayTags = wayTags;
-	}
+    public void setWayTags(final Tag[] wayTags) {
+        this.wayTags = wayTags;
+    }
 }

@@ -11,19 +11,19 @@ package org.mapsforge.map.reader;
 import java.util.List;
 
 public class PoiWayBundle {
-	private final List<PointOfInterest> pois;
-	private final List<Way> ways;
+    private final List<PointOfInterest> pois;
+    private final List<Way> ways;
 
-	public PoiWayBundle(final List<PointOfInterest> pois, final List<Way> ways) {
-		this.pois = pois;
-		this.ways = ways;
-	}
+    public PoiWayBundle(final List<PointOfInterest> pois, final List<Way> ways) {
+        this.pois = pois;
+        this.ways = ways;
+    }
 
-	public List<PointOfInterest> getPois() {
-		return pois;
-	}
+    public List<PointOfInterest> getPois() {
+        return pois;
+    }
 
-	public List<Way> getWays() {
-		return ways;
-	}
+    public List<Way> getWays() {
+        return ways;
+    }
 }

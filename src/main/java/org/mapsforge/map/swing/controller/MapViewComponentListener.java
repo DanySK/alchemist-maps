@@ -17,32 +17,32 @@ import org.mapsforge.map.model.MapViewModel;
 import org.mapsforge.map.view.MapView;
 
 public class MapViewComponentListener implements ComponentListener {
-	private final MapView mapView;
-	private final MapViewModel mapViewModel;
+    private final MapView mapView;
+    private final MapViewModel mapViewModel;
 
-	public MapViewComponentListener(final MapView mapView, final MapViewModel mapViewModel) {
-		this.mapView = mapView;
-		this.mapViewModel = mapViewModel;
-	}
+    public MapViewComponentListener(final MapView mapView, final MapViewModel mapViewModel) {
+        this.mapView = mapView;
+        this.mapViewModel = mapViewModel;
+    }
 
-	@Override
-	public void componentHidden(final ComponentEvent componentEvent) {
-		// do nothing
-	}
+    @Override
+    public void componentHidden(final ComponentEvent componentEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void componentMoved(final ComponentEvent componentEvent) {
-		// do nothing
-	}
+    @Override
+    public void componentMoved(final ComponentEvent componentEvent) {
+        // do nothing
+    }
 
-	@Override
-	public void componentResized(final ComponentEvent componentEvent) {
-		final Dimension size = ((Component) this.mapView).getSize();
-		this.mapViewModel.setDimension(new org.mapsforge.core.model.Dimension(size.width, size.height));
-	}
+    @Override
+    public void componentResized(final ComponentEvent componentEvent) {
+        final Dimension size = ((Component) this.mapView).getSize();
+        this.mapViewModel.setDimension(new org.mapsforge.core.model.Dimension(size.width, size.height));
+    }
 
-	@Override
-	public void componentShown(final ComponentEvent componentEvent) {
-		// do nothing
-	}
+    @Override
+    public void componentShown(final ComponentEvent componentEvent) {
+        // do nothing
+    }
 }

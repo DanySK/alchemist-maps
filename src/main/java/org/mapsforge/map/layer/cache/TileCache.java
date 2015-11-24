@@ -17,34 +17,34 @@ import org.mapsforge.map.layer.queue.Job;
  * Interface for tile image caches.
  */
 public interface TileCache {
-	/**
-	 * @return true if this cache contains an image for the given key, false
-	 *         otherwise.
-	 * @see Map#containsKey
-	 */
-	boolean containsKey(Job key);
+    /**
+     * @return true if this cache contains an image for the given key, false
+     *         otherwise.
+     * @see Map#containsKey
+     */
+    boolean containsKey(Job key);
 
-	/**
-	 * Destroys this cache.
-	 */
-	void destroy();
+    /**
+     * Destroys this cache.
+     */
+    void destroy();
 
-	/**
-	 * @return the image for the given key or null, if this cache contains no
-	 *         image for the key.
-	 * @see Map#get
-	 */
-	Bitmap get(Job key);
+    /**
+     * @return the image for the given key or null, if this cache contains no
+     *         image for the key.
+     * @see Map#get
+     */
+    Bitmap get(Job key);
 
-	/**
-	 * @return the capacity of this cache.
-	 */
-	int getCapacity();
+    /**
+     * @return the capacity of this cache.
+     */
+    int getCapacity();
 
-	/**
-	 * @throws IllegalArgumentException
-	 *             if any of the parameters is {@code null}.
-	 * @see Map#put
-	 */
-	void put(Job key, Bitmap bitmap);
+    /**
+     * @throws IllegalArgumentException
+     *             if any of the parameters is {@code null}.
+     * @see Map#put
+     */
+    void put(Job key, Bitmap bitmap);
 }

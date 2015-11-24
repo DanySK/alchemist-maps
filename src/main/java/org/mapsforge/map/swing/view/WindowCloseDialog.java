@@ -19,30 +19,30 @@ import org.mapsforge.map.model.Model;
 import org.mapsforge.map.model.common.PreferencesFacade;
 
 public class WindowCloseDialog extends WindowAdapter {
-	private static final String MESSAGE = "Are you sure you want to exit the application?";
-	private static final String TITLE = "Confirm close";
+    private static final String MESSAGE = "Are you sure you want to exit the application?";
+    private static final String TITLE = "Confirm close";
 
-	private final JFrame jFrame;
-	private final Model model;
-	private final PreferencesFacade preferencesFacade;
+    private final JFrame jFrame;
+    private final Model model;
+    private final PreferencesFacade preferencesFacade;
 
-	public WindowCloseDialog(final JFrame jFrame, final Model model, final PreferencesFacade preferencesFacade) {
-		super();
+    public WindowCloseDialog(final JFrame jFrame, final Model model, final PreferencesFacade preferencesFacade) {
+        super();
 
-		this.jFrame = jFrame;
-		this.model = model;
-		this.preferencesFacade = preferencesFacade;
+        this.jFrame = jFrame;
+        this.model = model;
+        this.preferencesFacade = preferencesFacade;
 
-		jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-	}
+        jFrame.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    }
 
-	@Override
-	public void windowClosing(final WindowEvent windowEvent) {
-		final int result = JOptionPane.showConfirmDialog(this.jFrame, MESSAGE, TITLE, JOptionPane.YES_NO_OPTION);
+    @Override
+    public void windowClosing(final WindowEvent windowEvent) {
+        final int result = JOptionPane.showConfirmDialog(this.jFrame, MESSAGE, TITLE, JOptionPane.YES_NO_OPTION);
 
-		if (result == JOptionPane.YES_OPTION) {
-			this.model.save(this.preferencesFacade);
-			this.jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		}
-	}
+        if (result == JOptionPane.YES_OPTION) {
+            this.model.save(this.preferencesFacade);
+            this.jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+    }
 }

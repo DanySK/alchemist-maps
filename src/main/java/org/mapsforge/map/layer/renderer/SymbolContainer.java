@@ -12,35 +12,35 @@ import org.mapsforge.core.graphics.Bitmap;
 import org.mapsforge.core.model.Point;
 
 public class SymbolContainer {
-	private final boolean alignCenter;
-	private final Point point;
-	private final Bitmap symbol;
-	private final float theta;
+    private final boolean alignCenter;
+    private final Point point;
+    private final Bitmap symbol;
+    private final float theta;
 
-	public SymbolContainer(final Bitmap symbol, final Point point) {
-		this(symbol, point, false, 0);
-	}
+    public SymbolContainer(final Bitmap symbol, final Point point) {
+        this(symbol, point, false, 0);
+    }
 
-	public SymbolContainer(final Bitmap symbol, final Point point, final boolean alignCenter, final float theta) {
-		this.symbol = symbol;
-		this.point = point;
-		this.alignCenter = alignCenter;
-		this.theta = theta;
-	}
+    public SymbolContainer(final Bitmap symbol, final Point point, final boolean alignCenter, final float theta) {
+        this.symbol = symbol;
+        this.point = point;
+        this.alignCenter = alignCenter;
+        this.theta = theta;
+    }
 
-	public Point getPoint() {
-		return point;
-	}
+    public Point getPoint() {
+        return point;
+    }
 
-	public Bitmap getSymbol() {
-		return symbol;
-	}
+    public Bitmap getSymbol() {
+        return symbol;
+    }
 
-	public float getTheta() {
-		return theta;
-	}
+    public float getTheta() {
+        return theta;
+    }
 
-	public boolean isAlignCenter() {
-		return alignCenter;
-	}
+    public boolean isAlignCenter() {
+        return alignCenter;
+    }
 }

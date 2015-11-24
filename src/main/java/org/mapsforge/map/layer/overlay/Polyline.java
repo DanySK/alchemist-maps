@@ -28,63 +28,63 @@ import org.mapsforge.map.layer.Layer;
  * parameters such as color, stroke width, pattern and transparency.
  */
 public class Polyline extends Layer {
-	private final List<LatLong> latLongs = new CopyOnWriteArrayList<LatLong>();
-	private Paint paintStroke;
+    private final List<LatLong> latLongs = new CopyOnWriteArrayList<LatLong>();
+    private Paint paintStroke;
 
-	/**
-	 * @param paintStroke
-	 *            the initial {@code Paint} used to stroke this polyline (may be
-	 *            null).
-	 */
-	public Polyline(final Paint paintStroke) {
-		super();
+    /**
+     * @param paintStroke
+     *            the initial {@code Paint} used to stroke this polyline (may be
+     *            null).
+     */
+    public Polyline(final Paint paintStroke) {
+        super();
 
-		this.paintStroke = paintStroke;
-	}
+        this.paintStroke = paintStroke;
+    }
 
-	@Override
-	public synchronized void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
-		if (this.latLongs.isEmpty() || this.paintStroke == null) {
-			return;
-		}
+    @Override
+    public synchronized void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
+        if (this.latLongs.isEmpty() || this.paintStroke == null) {
+            return;
+        }
 
-		final Iterator<LatLong> iterator = this.latLongs.iterator();
-		LatLong latLong = iterator.next();
-		int previousX = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
-		int previousY = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
+        final Iterator<LatLong> iterator = this.latLongs.iterator();
+        LatLong latLong = iterator.next();
+        int previousX = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
+        int previousY = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
 
-		while (iterator.hasNext()) {
-			latLong = iterator.next();
-			final int x = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
-			final int y = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
+        while (iterator.hasNext()) {
+            latLong = iterator.next();
+            final int x = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
+            final int y = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
 
-			canvas.drawLine(previousX, previousY, x, y, this.paintStroke);
+            canvas.drawLine(previousX, previousY, x, y, this.paintStroke);
 
-			previousX = x;
-			previousY = y;
-		}
-	}
+            previousX = x;
+            previousY = y;
+        }
+    }
 
-	/**
-	 * @return a thread-safe list of LatLongs in this polyline.
-	 */
-	public List<LatLong> getLatLongs() {
-		return this.latLongs;
-	}
+    /**
+     * @return a thread-safe list of LatLongs in this polyline.
+     */
+    public List<LatLong> getLatLongs() {
+        return this.latLongs;
+    }
 
-	/**
-	 * @return the {@code Paint} used to stroke this polyline (may be null).
-	 */
-	public synchronized Paint getPaintStroke() {
-		return this.paintStroke;
-	}
+    /**
+     * @return the {@code Paint} used to stroke this polyline (may be null).
+     */
+    public synchronized Paint getPaintStroke() {
+        return this.paintStroke;
+    }
 
-	/**
-	 * @param paintStroke
-	 *            the new {@code Paint} used to stroke this polyline (may be
-	 *            null).
-	 */
-	public synchronized void setPaintStroke(final Paint paintStroke) {
-		this.paintStroke = paintStroke;
-	}
+    /**
+     * @param paintStroke
+     *            the new {@code Paint} used to stroke this polyline (may be
+     *            null).
+     */
+    public synchronized void setPaintStroke(final Paint paintStroke) {
+        this.paintStroke = paintStroke;
+    }
 }

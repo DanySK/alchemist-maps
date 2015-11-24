@@ -13,35 +13,33 @@ import java.io.Serializable;
 import at.jku.traces.json.GPSPoint;
 
 /**
- * @author Danilo Pianini
- * 
  */
 public interface IGPSPoint extends Serializable, Comparable<IGPSPoint> {
 
-	/**
-	 * @return the latitude
-	 */
-	double getLatitude();
+    /**
+     * @return the latitude
+     */
+    double getLatitude();
 
-	/**
-	 * @return the longitude
-	 */
-	double getLongitude();
+    /**
+     * @return the longitude
+     */
+    double getLongitude();
 
-	/**
-	 * @return the time
-	 */
-	double getTime();
+    /**
+     * @return the time
+     */
+    double getTime();
 
-	/**
-	 * @param t
-	 *            time to set
-	 */
-	void setTime(double t);
+    /**
+     * @param t
+     *            time to set
+     */
+    void setTime(double t);
 
-	/**
-	 * @return a new {@link IPosition} representation of this {@link GPSPoint}
-	 */
-	IPosition toIPosition();
+    /**
+     * @return a new {@link IPosition} representation of this {@link GPSPoint}
+     */
+    IPosition toIPosition();
 
 }

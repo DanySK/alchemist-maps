@@ -13,43 +13,43 @@ import org.mapsforge.map.layer.download.tilesource.TileSource;
 import org.mapsforge.map.layer.queue.Job;
 
 public class DownloadJob extends Job {
-	public static final int PRIME = 31;
-	private final TileSource tileSource;
+    public static final int PRIME = 31;
+    private final TileSource tileSource;
 
-	public DownloadJob(final Tile tile, final TileSource tileSource) {
-		super(tile);
+    public DownloadJob(final Tile tile, final TileSource tileSource) {
+        super(tile);
 
-		if (tileSource == null) {
-			throw new IllegalArgumentException("tileSource must not be null");
-		}
+        if (tileSource == null) {
+            throw new IllegalArgumentException("tileSource must not be null");
+        }
 
-		this.tileSource = tileSource;
-	}
+        this.tileSource = tileSource;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!super.equals(obj)) {
-			return false;
-		} else if (!(obj instanceof DownloadJob)) {
-			return false;
-		}
-		final DownloadJob other = (DownloadJob) obj;
-		if (!this.tileSource.equals(other.tileSource)) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!super.equals(obj)) {
+            return false;
+        } else if (!(obj instanceof DownloadJob)) {
+            return false;
+        }
+        final DownloadJob other = (DownloadJob) obj;
+        if (!this.tileSource.equals(other.tileSource)) {
+            return false;
+        }
+        return true;
+    }
 
-	public TileSource getTileSource() {
-		return tileSource;
-	}
+    public TileSource getTileSource() {
+        return tileSource;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = super.hashCode();
-		result = PRIME * result + this.tileSource.hashCode();
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = PRIME * result + this.tileSource.hashCode();
+        return result;
+    }
 }
