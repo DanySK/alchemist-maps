@@ -18,40 +18,40 @@ import org.mapsforge.map.rendertheme.RenderCallback;
  * Represents a text along a polyline on the map.
  */
 public class PathText implements RenderInstruction {
-	private final Paint fill;
-	private final float fontSize;
-	private final Paint stroke;
-	private final TextKey textKey;
+    private final Paint fill;
+    private final float fontSize;
+    private final Paint stroke;
+    private final TextKey textKey;
 
-	public PathText(final PathTextBuilder pathTextBuilder) {
-		this.fill = pathTextBuilder.getFill();
-		this.fontSize = pathTextBuilder.getFontSize();
-		this.stroke = pathTextBuilder.getStroke();
-		this.textKey = pathTextBuilder.getTextKey();
-	}
+    public PathText(final PathTextBuilder pathTextBuilder) {
+        this.fill = pathTextBuilder.getFill();
+        this.fontSize = pathTextBuilder.getFontSize();
+        this.stroke = pathTextBuilder.getStroke();
+        this.textKey = pathTextBuilder.getTextKey();
+    }
 
-	@Override
-	public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
-		// do nothing
-	}
+    @Override
+    public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
+        // do nothing
+    }
 
-	@Override
-	public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
-		final String caption = this.textKey.getValue(tags);
-		if (caption == null) {
-			return;
-		}
-		renderCallback.renderWayText(caption, this.fill, this.stroke);
-	}
+    @Override
+    public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
+        final String caption = this.textKey.getValue(tags);
+        if (caption == null) {
+            return;
+        }
+        renderCallback.renderWayText(caption, this.fill, this.stroke);
+    }
 
-	@Override
-	public void scaleStrokeWidth(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleStrokeWidth(final float scaleFactor) {
+        // do nothing
+    }
 
-	@Override
-	public void scaleTextSize(final float scaleFactor) {
-		this.fill.setTextSize(this.fontSize * scaleFactor);
-		this.stroke.setTextSize(this.fontSize * scaleFactor);
-	}
+    @Override
+    public void scaleTextSize(final float scaleFactor) {
+        this.fill.setTextSize(this.fontSize * scaleFactor);
+        this.stroke.setTextSize(this.fontSize * scaleFactor);
+    }
 }

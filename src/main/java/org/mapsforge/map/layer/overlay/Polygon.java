@@ -31,84 +31,84 @@ import org.mapsforge.map.layer.Layer;
  * stroke width, pattern and transparency.
  */
 public class Polygon extends Layer {
-	private final GraphicFactory graphicFactory;
-	private final List<LatLong> latLongs = new CopyOnWriteArrayList<LatLong>();
-	private Paint paintFill;
-	private Paint paintStroke;
+    private final GraphicFactory graphicFactory;
+    private final List<LatLong> latLongs = new CopyOnWriteArrayList<LatLong>();
+    private Paint paintFill;
+    private Paint paintStroke;
 
-	/**
-	 * @param paintFill
-	 *            the initial {@code Paint} used to fill this polygon (may be
-	 *            null).
-	 * @param paintStroke
-	 *            the initial {@code Paint} used to stroke this polygon (may be
-	 *            null).
-	 */
-	public Polygon(final Paint paintFill, final Paint paintStroke, final GraphicFactory graphicFactory) {
-		super();
+    /**
+     * @param paintFill
+     *            the initial {@code Paint} used to fill this polygon (may be
+     *            null).
+     * @param paintStroke
+     *            the initial {@code Paint} used to stroke this polygon (may be
+     *            null).
+     */
+    public Polygon(final Paint paintFill, final Paint paintStroke, final GraphicFactory graphicFactory) {
+        super();
 
-		this.paintFill = paintFill;
-		this.paintStroke = paintStroke;
-		this.graphicFactory = graphicFactory;
-	}
+        this.paintFill = paintFill;
+        this.paintStroke = paintStroke;
+        this.graphicFactory = graphicFactory;
+    }
 
-	@Override
-	public synchronized void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
-		if (this.latLongs.isEmpty() || this.paintStroke == null && this.paintFill == null) {
-			return;
-		}
+    @Override
+    public synchronized void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
+        if (this.latLongs.isEmpty() || this.paintStroke == null && this.paintFill == null) {
+            return;
+        }
 
-		final Path path = this.graphicFactory.createPath();
+        final Path path = this.graphicFactory.createPath();
 
-		for (final LatLong latLong : this.latLongs) {
-			final int x = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
-			final int y = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
-			path.addPoint(x, y);
-		}
+        for (final LatLong latLong : this.latLongs) {
+            final int x = (int) (MercatorProjection.longitudeToPixelX(latLong.getLongitude(), zoomLevel) - canvasPosition.getX());
+            final int y = (int) (MercatorProjection.latitudeToPixelY(latLong.getLatitude(), zoomLevel) - canvasPosition.getY());
+            path.addPoint(x, y);
+        }
 
-		if (this.paintStroke != null) {
-			canvas.drawPath(path, this.paintStroke);
-		}
-		if (this.paintFill != null) {
-			canvas.drawPath(path, this.paintFill);
-		}
-	}
+        if (this.paintStroke != null) {
+            canvas.drawPath(path, this.paintStroke);
+        }
+        if (this.paintFill != null) {
+            canvas.drawPath(path, this.paintFill);
+        }
+    }
 
-	/**
-	 * @return a thread-safe list of LatLongs in this polygon.
-	 */
-	public List<LatLong> getLatLongs() {
-		return this.latLongs;
-	}
+    /**
+     * @return a thread-safe list of LatLongs in this polygon.
+     */
+    public List<LatLong> getLatLongs() {
+        return this.latLongs;
+    }
 
-	/**
-	 * @return the {@code Paint} used to fill this polygon (may be null).
-	 */
-	public synchronized Paint getPaintFill() {
-		return this.paintFill;
-	}
+    /**
+     * @return the {@code Paint} used to fill this polygon (may be null).
+     */
+    public synchronized Paint getPaintFill() {
+        return this.paintFill;
+    }
 
-	/**
-	 * @return the {@code Paint} used to stroke this polygon (may be null).
-	 */
-	public synchronized Paint getPaintStroke() {
-		return this.paintStroke;
-	}
+    /**
+     * @return the {@code Paint} used to stroke this polygon (may be null).
+     */
+    public synchronized Paint getPaintStroke() {
+        return this.paintStroke;
+    }
 
-	/**
-	 * @param paintFill
-	 *            the new {@code Paint} used to fill this polygon (may be null).
-	 */
-	public synchronized void setPaintFill(final Paint paintFill) {
-		this.paintFill = paintFill;
-	}
+    /**
+     * @param paintFill
+     *            the new {@code Paint} used to fill this polygon (may be null).
+     */
+    public synchronized void setPaintFill(final Paint paintFill) {
+        this.paintFill = paintFill;
+    }
 
-	/**
-	 * @param paintStroke
-	 *            the new {@code Paint} used to stroke this polygon (may be
-	 *            null).
-	 */
-	public synchronized void setPaintStroke(final Paint paintStroke) {
-		this.paintStroke = paintStroke;
-	}
+    /**
+     * @param paintStroke
+     *            the new {@code Paint} used to stroke this polygon (may be
+     *            null).
+     */
+    public synchronized void setPaintStroke(final Paint paintStroke) {
+        this.paintStroke = paintStroke;
+    }
 }

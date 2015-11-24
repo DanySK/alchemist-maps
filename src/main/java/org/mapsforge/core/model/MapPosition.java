@@ -15,77 +15,73 @@ import org.danilopianini.lang.HashUtils;
 /**
  * A MapPosition represents an immutable pair of {@link LatLong} and zoom level.
  * 
- * @author Mapsforge
- * @author Giovanni Ciatto
- * @author Danilo Pianini
- *
  */
 public class MapPosition implements Serializable {
-	private static final long serialVersionUID = 1L;
-	private static final int EXTIMED_SIZE = 50;
+    private static final long serialVersionUID = 1L;
+    private static final int EXTIMED_SIZE = 50;
 
-	private final LatLong latLong;
-	private final byte zoomLevel;
-	
-	private int hash;
+    private final LatLong latLong;
+    private final byte zoomLevel;
 
-	/**
-	 * @param pos
-	 *            the geographical coordinates of the map center.
-	 * @param zoom
-	 *            the zoom level of the map.
-	 */
-	public MapPosition(final LatLong pos, final byte zoom) {
-		if (pos == null) {
-			throw new IllegalArgumentException("latLong must not be null");
-		} else if (zoom < 0) {
-			throw new IllegalArgumentException("zoomLevel must not be negative: " + zoom);
-		}
-		this.latLong = pos;
-		this.zoomLevel = zoom;
-	}
+    private int hash;
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof MapPosition)) {
-			return false;
-		}
-		final MapPosition other = (MapPosition) obj;
-		return latLong == null && other.latLong == null || latLong != null && latLong.equals(other.latLong) && zoomLevel == other.zoomLevel;
-	}
+    /**
+     * @param pos
+     *            the geographical coordinates of the map center.
+     * @param zoom
+     *            the zoom level of the map.
+     */
+    public MapPosition(final LatLong pos, final byte zoom) {
+        if (pos == null) {
+            throw new IllegalArgumentException("latLong must not be null");
+        } else if (zoom < 0) {
+            throw new IllegalArgumentException("zoomLevel must not be negative: " + zoom);
+        }
+        this.latLong = pos;
+        this.zoomLevel = zoom;
+    }
 
-	/**
-	 * @return latlong
-	 */
-	public LatLong getLatLong() {
-		return latLong;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof MapPosition)) {
+            return false;
+        }
+        final MapPosition other = (MapPosition) obj;
+        return latLong == null && other.latLong == null || latLong != null && latLong.equals(other.latLong) && zoomLevel == other.zoomLevel;
+    }
 
-	/**
-	 * @return zoom level
-	 */
-	public byte getZoomLevel() {
-		return zoomLevel;
-	}
+    /**
+     * @return latlong
+     */
+    public LatLong getLatLong() {
+        return latLong;
+    }
 
-	@Override
-	public int hashCode() {
-		if (hash == 0) {
-			hash = HashUtils.djb2int32obj(latLong, zoomLevel);
-		}
-		return hash;
-	}
+    /**
+     * @return zoom level
+     */
+    public byte getZoomLevel() {
+        return zoomLevel;
+    }
 
-	@Override
-	public String toString() {
-		// final int EXTIMED_SIZE = 50;
-		final StringBuilder stringBuilder = new StringBuilder(EXTIMED_SIZE);
-		stringBuilder.append("latLong=");
-		stringBuilder.append(this.latLong);
-		stringBuilder.append(", zoomLevel=");
-		stringBuilder.append(this.zoomLevel);
-		return stringBuilder.toString();
-	}
+    @Override
+    public int hashCode() {
+        if (hash == 0) {
+            hash = HashUtils.djb2int32obj(latLong, zoomLevel);
+        }
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        // final int EXTIMED_SIZE = 50;
+        final StringBuilder stringBuilder = new StringBuilder(EXTIMED_SIZE);
+        stringBuilder.append("latLong=");
+        stringBuilder.append(this.latLong);
+        stringBuilder.append(", zoomLevel=");
+        stringBuilder.append(this.zoomLevel);
+        return stringBuilder.toString();
+    }
 }

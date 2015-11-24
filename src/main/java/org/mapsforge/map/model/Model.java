@@ -12,30 +12,30 @@ import org.mapsforge.map.model.common.Persistable;
 import org.mapsforge.map.model.common.PreferencesFacade;
 
 public class Model implements Persistable {
-	private final FrameBufferModel frameBufferModel = new FrameBufferModel();
-	private final MapViewModel mapViewModel = new MapViewModel();
-	private final MapViewPosition mapViewPosition = new MapViewPosition();
+    private final FrameBufferModel frameBufferModel = new FrameBufferModel();
+    private final MapViewModel mapViewModel = new MapViewModel();
+    private final MapViewPosition mapViewPosition = new MapViewPosition();
 
-	public FrameBufferModel getFrameBufferModel() {
-		return frameBufferModel;
-	}
+    public FrameBufferModel getFrameBufferModel() {
+        return frameBufferModel;
+    }
 
-	public MapViewModel getMapViewModel() {
-		return mapViewModel;
-	}
+    public MapViewModel getMapViewModel() {
+        return mapViewModel;
+    }
 
-	public MapViewPosition getMapViewPosition() {
-		return mapViewPosition;
-	}
+    public MapViewPosition getMapViewPosition() {
+        return mapViewPosition;
+    }
 
-	@Override
-	public void init(final PreferencesFacade preferencesFacade) {
-		this.mapViewPosition.init(preferencesFacade);
-	}
+    @Override
+    public void init(final PreferencesFacade preferencesFacade) {
+        this.mapViewPosition.init(preferencesFacade);
+    }
 
-	@Override
-	public void save(final PreferencesFacade preferencesFacade) {
-		this.mapViewPosition.save(preferencesFacade);
-	}
+    @Override
+    public void save(final PreferencesFacade preferencesFacade) {
+        this.mapViewPosition.save(preferencesFacade);
+    }
 
 }

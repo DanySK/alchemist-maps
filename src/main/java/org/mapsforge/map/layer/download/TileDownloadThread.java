@@ -20,42 +20,42 @@ import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.queue.JobQueue;
 
 class TileDownloadThread extends PausableThread {
-	private final GraphicFactory graphicFactory;
-	private final JobQueue<DownloadJob> jobQueue;
-	private final LayerManager layerManager;
-	private final TileCache tileCache;
+    private final GraphicFactory graphicFactory;
+    private final JobQueue<DownloadJob> jobQueue;
+    private final LayerManager layerManager;
+    private final TileCache tileCache;
 
-	TileDownloadThread(final TileCache tileCache, final JobQueue<DownloadJob> jobQueue, final LayerManager layerManager, final GraphicFactory graphicFactory) {
-		super();
+    TileDownloadThread(final TileCache tileCache, final JobQueue<DownloadJob> jobQueue, final LayerManager layerManager, final GraphicFactory graphicFactory) {
+        super();
 
-		this.tileCache = tileCache;
-		this.jobQueue = jobQueue;
-		this.layerManager = layerManager;
-		this.graphicFactory = graphicFactory;
-	}
+        this.tileCache = tileCache;
+        this.jobQueue = jobQueue;
+        this.layerManager = layerManager;
+        this.graphicFactory = graphicFactory;
+    }
 
-	@Override
-	protected void doWork() throws InterruptedException {
-		final DownloadJob downloadJob = this.jobQueue.remove();
+    @Override
+    protected void doWork() throws InterruptedException {
+        final DownloadJob downloadJob = this.jobQueue.remove();
 
-		try {
-			final TileDownloader tileDownloader = new TileDownloader(downloadJob, this.graphicFactory);
-			final Bitmap bitmap = tileDownloader.downloadImage();
+        try {
+            final TileDownloader tileDownloader = new TileDownloader(downloadJob, this.graphicFactory);
+            final Bitmap bitmap = tileDownloader.downloadImage();
 
-			this.tileCache.put(downloadJob, bitmap);
-			this.layerManager.redrawLayers();
-		} catch (final IOException e) {
-			L.warn(e);
-		}
-	}
+            this.tileCache.put(downloadJob, bitmap);
+            this.layerManager.redrawLayers();
+        } catch (final IOException e) {
+            L.warn(e);
+        }
+    }
 
-	@Override
-	protected ThreadPriority getThreadPriority() {
-		return ThreadPriority.BELOW_NORMAL;
-	}
+    @Override
+    protected ThreadPriority getThreadPriority() {
+        return ThreadPriority.BELOW_NORMAL;
+    }
 
-	@Override
-	protected boolean hasWork() {
-		return true;
-	}
+    @Override
+    protected boolean hasWork() {
+        return true;
+    }
 }

@@ -16,60 +16,60 @@ import java.util.function.ToIntFunction;
 import java.util.function.ToLongFunction;
 
 final class QueueItemComparator implements Comparator<QueueItem<?>>, Serializable {
-	private static final long serialVersionUID = 1L;
-	private static final QueueItemComparator INSTANCE = new QueueItemComparator();
+    private static final long serialVersionUID = 1L;
+    private static final QueueItemComparator INSTANCE = new QueueItemComparator();
 
-	public static QueueItemComparator getInstance() {
-		return INSTANCE;
-	}
+    public static QueueItemComparator getInstance() {
+        return INSTANCE;
+    }
 
-	private QueueItemComparator() {
-		// do nothing
-	}
+    private QueueItemComparator() {
+        // do nothing
+    }
 
-	@Override
-	public int compare(final QueueItem<?> queueItem1, final QueueItem<?> queueItem2) {
-		if (queueItem1.getPriority() < queueItem2.getPriority()) {
-			return -1;
-		} else if (queueItem1.getPriority() > queueItem2.getPriority()) {
-			return 1;
-		}
-		return 0;
-	}
+    @Override
+    public int compare(final QueueItem<?> queueItem1, final QueueItem<?> queueItem2) {
+        if (queueItem1.getPriority() < queueItem2.getPriority()) {
+            return -1;
+        } else if (queueItem1.getPriority() > queueItem2.getPriority()) {
+            return 1;
+        }
+        return 0;
+    }
 
-	@Override
-	public Comparator<QueueItem<?>> reversed() {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Comparator<QueueItem<?>> reversed() {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public Comparator<QueueItem<?>> thenComparing(final Comparator<? super QueueItem<?>> other) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Comparator<QueueItem<?>> thenComparing(final Comparator<? super QueueItem<?>> other) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public <U> Comparator<QueueItem<?>> thenComparing(final Function<? super QueueItem<?>, ? extends U> keyExtractor, final Comparator<? super U> keyComparator) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public <U> Comparator<QueueItem<?>> thenComparing(final Function<? super QueueItem<?>, ? extends U> keyExtractor, final Comparator<? super U> keyComparator) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public <U extends Comparable<? super U>> Comparator<QueueItem<?>> thenComparing(final Function<? super QueueItem<?>, ? extends U> keyExtractor) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public <U extends Comparable<? super U>> Comparator<QueueItem<?>> thenComparing(final Function<? super QueueItem<?>, ? extends U> keyExtractor) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public Comparator<QueueItem<?>> thenComparingInt(final ToIntFunction<? super QueueItem<?>> keyExtractor) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Comparator<QueueItem<?>> thenComparingInt(final ToIntFunction<? super QueueItem<?>> keyExtractor) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public Comparator<QueueItem<?>> thenComparingLong(final ToLongFunction<? super QueueItem<?>> keyExtractor) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Comparator<QueueItem<?>> thenComparingLong(final ToLongFunction<? super QueueItem<?>> keyExtractor) {
+        throw new UnsupportedOperationException();
+    }
 
-	@Override
-	public Comparator<QueueItem<?>> thenComparingDouble(final ToDoubleFunction<? super QueueItem<?>> keyExtractor) {
-		throw new UnsupportedOperationException();
-	}
+    @Override
+    public Comparator<QueueItem<?>> thenComparingDouble(final ToDoubleFunction<? super QueueItem<?>> keyExtractor) {
+        throw new UnsupportedOperationException();
+    }
 
 }

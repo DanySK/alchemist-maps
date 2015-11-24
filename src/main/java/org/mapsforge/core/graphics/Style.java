@@ -9,13 +9,12 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public enum Style {
 
-	/**
-	 * 
-	 */
-	FILL, STROKE
+    /**
+     * 
+     */
+    FILL, STROKE
 }

@@ -9,49 +9,49 @@
 package org.mapsforge.map.layer.queue;
 
 class QueueItem<T extends Job> {
-	private double priority;
-	private final T object;
+    private double priority;
+    private final T object;
 
-	protected QueueItem(final T object) {
-		this.object = object;
-	}
+    protected QueueItem(final T object) {
+        this.object = object;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof QueueItem)) {
-			return false;
-		}
-		final QueueItem<?> other = (QueueItem<?>) obj;
-		return this.object.equals(other.object);
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof QueueItem)) {
+            return false;
+        }
+        final QueueItem<?> other = (QueueItem<?>) obj;
+        return this.object.equals(other.object);
+    }
 
-	public T getObject() {
-		return object;
-	}
+    public T getObject() {
+        return object;
+    }
 
-	/**
-	 * @return the current priority of this job, will always be a positive
-	 *         number including zero.
-	 */
-	public double getPriority() {
-		return this.priority;
-	}
+    /**
+     * @return the current priority of this job, will always be a positive
+     *         number including zero.
+     */
+    public double getPriority() {
+        return this.priority;
+    }
 
-	@Override
-	public int hashCode() {
-		return this.object.hashCode();
-	}
+    @Override
+    public int hashCode() {
+        return this.object.hashCode();
+    }
 
-	/**
-	 * @throws IllegalArgumentException
-	 *             if the given priority is negative or {@link Double#NaN}.
-	 */
-	public void setPriority(final double priority) {
-		if (priority < 0 || Double.isNaN(priority)) {
-			throw new IllegalArgumentException("invalid priority: " + priority);
-		}
-		this.priority = priority;
-	}
+    /**
+     * @throws IllegalArgumentException
+     *             if the given priority is negative or {@link Double#NaN}.
+     */
+    public void setPriority(final double priority) {
+        if (priority < 0 || Double.isNaN(priority)) {
+            throw new IllegalArgumentException("invalid priority: " + priority);
+        }
+        this.priority = priority;
+    }
 }

@@ -19,43 +19,43 @@ import org.mapsforge.map.reader.MapDatabase;
  * {@link MapDatabase#openFile(File)}.
  */
 public class FileOpenResult {
-	/**
-	 * Singleton for a FileOpenResult instance with {@code success=true}.
-	 */
-	public static final FileOpenResult SUCCESS = new FileOpenResult();
+    /**
+     * Singleton for a FileOpenResult instance with {@code success=true}.
+     */
+    public static final FileOpenResult SUCCESS = new FileOpenResult();
 
-	private final String errorMessage;
-	private final boolean success;
+    private final String errorMessage;
+    private final boolean success;
 
-	private FileOpenResult() {
-		this.success = true;
-		this.errorMessage = null;
-	}
+    private FileOpenResult() {
+        this.success = true;
+        this.errorMessage = null;
+    }
 
-	/**
-	 * @param errorMessage
-	 *            a textual message describing the error, must not be null.
-	 */
-	public FileOpenResult(final String errorMessage) {
-		if (errorMessage == null) {
-			throw new IllegalArgumentException("error message must not be null");
-		}
+    /**
+     * @param errorMessage
+     *            a textual message describing the error, must not be null.
+     */
+    public FileOpenResult(final String errorMessage) {
+        if (errorMessage == null) {
+            throw new IllegalArgumentException("error message must not be null");
+        }
 
-		this.success = false;
-		this.errorMessage = errorMessage;
-	}
+        this.success = false;
+        this.errorMessage = errorMessage;
+    }
 
-	/**
-	 * @return a textual error description (might be null).
-	 */
-	public String getErrorMessage() {
-		return this.errorMessage;
-	}
+    /**
+     * @return a textual error description (might be null).
+     */
+    public String getErrorMessage() {
+        return this.errorMessage;
+    }
 
-	/**
-	 * @return true if the file could be opened successfully, false otherwise.
-	 */
-	public boolean isSuccess() {
-		return this.success;
-	}
+    /**
+     * @return true if the file could be opened successfully, false otherwise.
+     */
+    public boolean isSuccess() {
+        return this.success;
+    }
 }

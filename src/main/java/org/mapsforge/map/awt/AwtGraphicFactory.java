@@ -26,96 +26,96 @@ import org.mapsforge.core.graphics.Paint;
 import org.mapsforge.core.graphics.Path;
 
 public final class AwtGraphicFactory implements GraphicFactory {
-	public static final GraphicFactory INSTANCE = new AwtGraphicFactory();
-	private static final java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
+    public static final GraphicFactory INSTANCE = new AwtGraphicFactory();
+    private static final java.awt.Color TRANSPARENT = new java.awt.Color(0, 0, 0, 0);
 
-	public static Canvas createCanvas(final Graphics2D graphics2D) {
-		return new AwtCanvas(graphics2D);
-	}
+    public static Canvas createCanvas(final Graphics2D graphics2D) {
+        return new AwtCanvas(graphics2D);
+    }
 
-	public static AffineTransform getAffineTransform(final Matrix matrix) {
-		return ((AwtMatrix) matrix).getAffineTransform();
-	}
+    public static AffineTransform getAffineTransform(final Matrix matrix) {
+        return ((AwtMatrix) matrix).getAffineTransform();
+    }
 
-	public static AwtPaint getAwtPaint(final Paint paint) {
-		return (AwtPaint) paint;
-	}
+    public static AwtPaint getAwtPaint(final Paint paint) {
+        return (AwtPaint) paint;
+    }
 
-	public static BufferedImage getBufferedImage(final Bitmap bitmap) {
-		return ((AwtBitmap) bitmap).getBufferedImage();
-	}
+    public static BufferedImage getBufferedImage(final Bitmap bitmap) {
+        return ((AwtBitmap) bitmap).getBufferedImage();
+    }
 
-	public static Path2D getPath(final Path path) {
-		return ((AwtPath) path).getPath();
-	}
+    public static Path2D getPath(final Path path) {
+        return ((AwtPath) path).getPath();
+    }
 
-	private AwtGraphicFactory() {
-		// do nothing
-	}
+    private AwtGraphicFactory() {
+        // do nothing
+    }
 
-	@Override
-	public Bitmap createBitmap(final InputStream inputStream) {
-		try {
-			final BufferedImage bufferedImage = ImageIO.read(inputStream);
-			return new AwtBitmap(bufferedImage);
-		} catch (final IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+    @Override
+    public Bitmap createBitmap(final InputStream inputStream) {
+        try {
+            final BufferedImage bufferedImage = ImageIO.read(inputStream);
+            return new AwtBitmap(bufferedImage);
+        } catch (final IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
-	@Override
-	public Bitmap createBitmap(final int width, final int height) {
-		return new AwtBitmap(width, height);
-	}
+    @Override
+    public Bitmap createBitmap(final int width, final int height) {
+        return new AwtBitmap(width, height);
+    }
 
-	@Override
-	public Canvas createCanvas() {
-		return new AwtCanvas();
-	}
+    @Override
+    public Canvas createCanvas() {
+        return new AwtCanvas();
+    }
 
-	@Override
-	public int createColor(final Color color) {
-		switch (color) {
-		case BLACK:
-			return java.awt.Color.BLACK.getRGB();
-		case BLUE:
-			return java.awt.Color.BLUE.getRGB();
-		case GREEN:
-			return java.awt.Color.GREEN.getRGB();
-		case RED:
-			return java.awt.Color.RED.getRGB();
-		case TRANSPARENT:
-			return TRANSPARENT.getRGB();
-		case WHITE:
-			return java.awt.Color.WHITE.getRGB();
-		default:
-			throw new IllegalArgumentException("unknown color: " + color);
-		}
-	}
+    @Override
+    public int createColor(final Color color) {
+        switch (color) {
+        case BLACK:
+            return java.awt.Color.BLACK.getRGB();
+        case BLUE:
+            return java.awt.Color.BLUE.getRGB();
+        case GREEN:
+            return java.awt.Color.GREEN.getRGB();
+        case RED:
+            return java.awt.Color.RED.getRGB();
+        case TRANSPARENT:
+            return TRANSPARENT.getRGB();
+        case WHITE:
+            return java.awt.Color.WHITE.getRGB();
+        default:
+            throw new IllegalArgumentException("unknown color: " + color);
+        }
+    }
 
-	@Override
-	public int createColor(final int alpha, final int red, final int green, final int blue) {
-		return new java.awt.Color(alpha, red, green, blue).getRGB();
-	}
+    @Override
+    public int createColor(final int alpha, final int red, final int green, final int blue) {
+        return new java.awt.Color(alpha, red, green, blue).getRGB();
+    }
 
-	@Override
-	public int createColor(final String colorString) {
-		final long parseLong = Long.parseLong(colorString.substring(1), 16);
-		return new java.awt.Color((int) parseLong, true).getRGB();
-	}
+    @Override
+    public int createColor(final String colorString) {
+        final long parseLong = Long.parseLong(colorString.substring(1), 16);
+        return new java.awt.Color((int) parseLong, true).getRGB();
+    }
 
-	@Override
-	public Matrix createMatrix() {
-		return new AwtMatrix();
-	}
+    @Override
+    public Matrix createMatrix() {
+        return new AwtMatrix();
+    }
 
-	@Override
-	public Paint createPaint() {
-		return new AwtPaint();
-	}
+    @Override
+    public Paint createPaint() {
+        return new AwtPaint();
+    }
 
-	@Override
-	public Path createPath() {
-		return new AwtPath();
-	}
+    @Override
+    public Path createPath() {
+        return new AwtPath();
+    }
 }

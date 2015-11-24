@@ -13,43 +13,43 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public final class AnyMatcher implements ElementMatcher, AttributeMatcher, ClosedMatcher {
-	private static final AnyMatcher INSTANCE = new AnyMatcher();
+    private static final AnyMatcher INSTANCE = new AnyMatcher();
 
-	public static AnyMatcher getInstance() {
-		return INSTANCE;
-	}
+    public static AnyMatcher getInstance() {
+        return INSTANCE;
+    }
 
-	private AnyMatcher() {
-		// do nothing
-	}
+    private AnyMatcher() {
+        // do nothing
+    }
 
-	@Override
-	public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
-		return attributeMatcher == this;
-	}
+    @Override
+    public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
+        return attributeMatcher == this;
+    }
 
-	@Override
-	public boolean isCoveredBy(final ClosedMatcher closedMatcher) {
-		return closedMatcher == this;
-	}
+    @Override
+    public boolean isCoveredBy(final ClosedMatcher closedMatcher) {
+        return closedMatcher == this;
+    }
 
-	@Override
-	public boolean isCoveredBy(final ElementMatcher elementMatcher) {
-		return elementMatcher == this;
-	}
+    @Override
+    public boolean isCoveredBy(final ElementMatcher elementMatcher) {
+        return elementMatcher == this;
+    }
 
-	@Override
-	public boolean matches(final Closed closed) {
-		return true;
-	}
+    @Override
+    public boolean matches(final Closed closed) {
+        return true;
+    }
 
-	@Override
-	public boolean matches(final Element element) {
-		return true;
-	}
+    @Override
+    public boolean matches(final Element element) {
+        return true;
+    }
 
-	@Override
-	public boolean matches(final List<Tag> tags) {
-		return true;
-	}
+    @Override
+    public boolean matches(final List<Tag> tags) {
+        return true;
+    }
 }

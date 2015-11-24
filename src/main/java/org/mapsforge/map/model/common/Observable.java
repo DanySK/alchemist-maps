@@ -12,34 +12,34 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Observable {
-	private static final String OBSERVER_MUST_NOT_BE_NULL = "observer must not be null";
-	private final List<Observer> observers = new CopyOnWriteArrayList<Observer>();
+    private static final String OBSERVER_MUST_NOT_BE_NULL = "observer must not be null";
+    private final List<Observer> observers = new CopyOnWriteArrayList<Observer>();
 
-	protected Observable() {
-		// do nothing
-	}
+    protected Observable() {
+        // do nothing
+    }
 
-	public final void addObserver(final Observer observer) {
-		if (observer == null) {
-			throw new IllegalArgumentException(OBSERVER_MUST_NOT_BE_NULL);
-		} else if (this.observers.contains(observer)) {
-			throw new IllegalArgumentException("observer is already registered: " + observer);
-		}
-		this.observers.add(observer);
-	}
+    public final void addObserver(final Observer observer) {
+        if (observer == null) {
+            throw new IllegalArgumentException(OBSERVER_MUST_NOT_BE_NULL);
+        } else if (this.observers.contains(observer)) {
+            throw new IllegalArgumentException("observer is already registered: " + observer);
+        }
+        this.observers.add(observer);
+    }
 
-	protected final void notifyObservers() {
-		for (final Observer observer : this.observers) {
-			observer.onChange();
-		}
-	}
+    protected final void notifyObservers() {
+        for (final Observer observer : this.observers) {
+            observer.onChange();
+        }
+    }
 
-	public final void removeObserver(final Observer observer) {
-		if (observer == null) {
-			throw new IllegalArgumentException(OBSERVER_MUST_NOT_BE_NULL);
-		} else if (!this.observers.contains(observer)) {
-			throw new IllegalArgumentException("observer is not registered: " + observer);
-		}
-		this.observers.remove(observer);
-	}
+    public final void removeObserver(final Observer observer) {
+        if (observer == null) {
+            throw new IllegalArgumentException(OBSERVER_MUST_NOT_BE_NULL);
+        } else if (!this.observers.contains(observer)) {
+            throw new IllegalArgumentException("observer is not registered: " + observer);
+        }
+        this.observers.remove(observer);
+    }
 }

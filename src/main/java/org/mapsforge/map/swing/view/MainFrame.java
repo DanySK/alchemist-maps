@@ -14,14 +14,14 @@ import java.awt.Dimension;
 import javax.swing.JFrame;
 
 public class MainFrame extends JFrame {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	public MainFrame() {
-		super("MapViewer");
+    public MainFrame() {
+        super("MapViewer");
 
-		setSize(new Dimension(800, 600));
-		getContentPane().setLayout(new CardLayout(0, 0));
+        setSize(new Dimension(800, 600));
+        getContentPane().setLayout(new CardLayout(0, 0));
 
-	}
+    }
 
 }

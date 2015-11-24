@@ -12,37 +12,37 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MapReadResultBuilder {
-	private boolean isWater;
-	private final List<PointOfInterest> pointOfInterests;
-	private final List<Way> ways;
+    private boolean isWater;
+    private final List<PointOfInterest> pointOfInterests;
+    private final List<Way> ways;
 
-	public MapReadResultBuilder() {
-		this.pointOfInterests = new ArrayList<PointOfInterest>();
-		this.ways = new ArrayList<Way>();
-	}
+    public MapReadResultBuilder() {
+        this.pointOfInterests = new ArrayList<PointOfInterest>();
+        this.ways = new ArrayList<Way>();
+    }
 
-	public void add(final PoiWayBundle poiWayBundle) {
-		this.pointOfInterests.addAll(poiWayBundle.getPois());
-		this.ways.addAll(poiWayBundle.getWays());
-	}
+    public void add(final PoiWayBundle poiWayBundle) {
+        this.pointOfInterests.addAll(poiWayBundle.getPois());
+        this.ways.addAll(poiWayBundle.getWays());
+    }
 
-	public MapReadResult build() {
-		return new MapReadResult(this);
-	}
+    public MapReadResult build() {
+        return new MapReadResult(this);
+    }
 
-	public List<PointOfInterest> getPointOfInterests() {
-		return pointOfInterests;
-	}
+    public List<PointOfInterest> getPointOfInterests() {
+        return pointOfInterests;
+    }
 
-	public List<Way> getWays() {
-		return ways;
-	}
+    public List<Way> getWays() {
+        return ways;
+    }
 
-	public boolean isWater() {
-		return isWater;
-	}
+    public boolean isWater() {
+        return isWater;
+    }
 
-	public void setWater(final boolean isWater) {
-		this.isWater = isWater;
-	}
+    public void setWater(final boolean isWater) {
+        this.isWater = isWater;
+    }
 }

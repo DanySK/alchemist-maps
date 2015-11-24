@@ -38,78 +38,78 @@ import org.mapsforge.map.swing.view.MapView;
 import org.mapsforge.map.swing.view.WindowCloseDialog;
 
 public final class MapViewer {
-	private static final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
+    private static final GraphicFactory GRAPHIC_FACTORY = AwtGraphicFactory.INSTANCE;
 
-	public static TileCache createLocalTileCache() {
-		final TileCache firstLevelTileCache = new InMemoryTileCache(256);
-		final File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), "mapsforge");
-		final TileCache secondLevelTileCache = new FileSystemTileCache(4096, cacheDirectory, GRAPHIC_FACTORY);
-		return new TwoLevelTileCache(firstLevelTileCache, secondLevelTileCache);
-	}
+    public static TileCache createLocalTileCache() {
+        final TileCache firstLevelTileCache = new InMemoryTileCache(256);
+        final File cacheDirectory = new File(System.getProperty("java.io.tmpdir"), "mapsforge");
+        final TileCache secondLevelTileCache = new FileSystemTileCache(4096, cacheDirectory, GRAPHIC_FACTORY);
+        return new TwoLevelTileCache(firstLevelTileCache, secondLevelTileCache);
+    }
 
-	public static Component createMapView(final MapView mapView, final Model model, final File map) {
-		mapView.addComponentListener(new MapViewComponentListener(mapView, model.getMapViewModel()));
+    public static Component createMapView(final MapView mapView, final Model model, final File map) {
+        mapView.addComponentListener(new MapViewComponentListener(mapView, model.getMapViewModel()));
 
-		final LayerManager layerManager = mapView.getLayerManager();
-		final List<Layer> layers = layerManager.getLayers();
-		final TileCache tileCache = createLocalTileCache();
+        final LayerManager layerManager = mapView.getLayerManager();
+        final List<Layer> layers = layerManager.getLayers();
+        final TileCache tileCache = createLocalTileCache();
 
-		if (map != null && map.exists()) {
-			layers.add(createTileRendererLayer(tileCache, model.getMapViewPosition(), layerManager, map));
-		} else {
-			layers.add(createTileDownloadLayer(tileCache, model.getMapViewPosition(), layerManager));
-		}
-		return mapView;
-	}
+        if (map != null && map.exists()) {
+            layers.add(createTileRendererLayer(tileCache, model.getMapViewPosition(), layerManager, map));
+        } else {
+            layers.add(createTileDownloadLayer(tileCache, model.getMapViewPosition(), layerManager));
+        }
+        return mapView;
+    }
 
-	public static Component createMapView(final Model model, final File map) {
-		final MapView mapView = new MapView(model) {
+    public static Component createMapView(final Model model, final File map) {
+        final MapView mapView = new MapView(model) {
 
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = -7464396061886399840L;
+            /**
+             * 
+             */
+            private static final long serialVersionUID = -7464396061886399840L;
 
-			@Override
-			public void drawOnMap(final Graphics2D g) {
+            @Override
+            public void drawOnMap(final Graphics2D g) {
 
-			}
-		};
-		return createMapView(mapView, model, map);
-	}
+            }
+        };
+        return createMapView(mapView, model, map);
+    }
 
-	public static Layer createTileDownloadLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final LayerManager layerManager) {
+    public static Layer createTileDownloadLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final LayerManager layerManager) {
 
-		final TileSource tileSource = OpenStreetMapMapnik.INSTANCE;
-		return new TileDownloadLayer(tileCache, mapViewPosition, tileSource, layerManager, GRAPHIC_FACTORY);
-	}
+        final TileSource tileSource = OpenStreetMapMapnik.INSTANCE;
+        return new TileDownloadLayer(tileCache, mapViewPosition, tileSource, layerManager, GRAPHIC_FACTORY);
+    }
 
-	public static Layer createTileRendererLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final LayerManager layerManager, final File map) {
-		final TileRendererLayer tileRendererLayer = new TileRendererLayer(tileCache, mapViewPosition, layerManager, GRAPHIC_FACTORY);
-		tileRendererLayer.setMapFile(map);
-		tileRendererLayer.setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
-		return tileRendererLayer;
-	}
+    public static Layer createTileRendererLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final LayerManager layerManager, final File map) {
+        final TileRendererLayer tileRendererLayer = new TileRendererLayer(tileCache, mapViewPosition, layerManager, GRAPHIC_FACTORY);
+        tileRendererLayer.setMapFile(map);
+        tileRendererLayer.setXmlRenderTheme(InternalRenderTheme.OSMARENDER);
+        return tileRendererLayer;
+    }
 
-	public static void main(final String[] args) {
-		final Model model = new Model();
-		final MapView mv = (MapView) createMapView(model, null);
-		final PreferencesFacade preferencesFacade = new JavaUtilPreferences(Preferences.userNodeForPackage(MapViewer.class));
-		model.init(preferencesFacade);
+    public static void main(final String[] args) {
+        final Model model = new Model();
+        final MapView mv = (MapView) createMapView(model, null);
+        final PreferencesFacade preferencesFacade = new JavaUtilPreferences(Preferences.userNodeForPackage(MapViewer.class));
+        model.init(preferencesFacade);
 
-		final MouseEventListener mouseEventListener = new MouseEventListener(model);
-		mv.addMouseListener(mouseEventListener);
-		mv.addMouseMotionListener(mouseEventListener);
-		mv.addMouseWheelListener(mouseEventListener);
+        final MouseEventListener mouseEventListener = new MouseEventListener(model);
+        mv.addMouseListener(mouseEventListener);
+        mv.addMouseMotionListener(mouseEventListener);
+        mv.addMouseWheelListener(mouseEventListener);
 
-		final MainFrame mainFrame = new MainFrame();
-		mainFrame.addWindowListener(new WindowCloseDialog(mainFrame, model, preferencesFacade));
-		mainFrame.add(mv);
+        final MainFrame mainFrame = new MainFrame();
+        mainFrame.addWindowListener(new WindowCloseDialog(mainFrame, model, preferencesFacade));
+        mainFrame.add(mv);
 
-		mainFrame.setVisible(true);
-	}
+        mainFrame.setVisible(true);
+    }
 
-	private MapViewer() {
-		throw new IllegalStateException();
-	}
+    private MapViewer() {
+        throw new IllegalStateException();
+    }
 }

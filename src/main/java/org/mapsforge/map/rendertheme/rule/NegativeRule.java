@@ -13,21 +13,21 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class NegativeRule extends Rule {
-	private final AttributeMatcher attributeMatcher;
+    private final AttributeMatcher attributeMatcher;
 
-	public NegativeRule(final RuleBuilder ruleBuilder, final AttributeMatcher attributeMatcher) {
-		super(ruleBuilder);
+    public NegativeRule(final RuleBuilder ruleBuilder, final AttributeMatcher attributeMatcher) {
+        super(ruleBuilder);
 
-		this.attributeMatcher = attributeMatcher;
-	}
+        this.attributeMatcher = attributeMatcher;
+    }
 
-	@Override
-	public boolean matchesNode(final List<Tag> tags, final byte zoomLevel) {
-		return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.NODE) && this.attributeMatcher.matches(tags);
-	}
+    @Override
+    public boolean matchesNode(final List<Tag> tags, final byte zoomLevel) {
+        return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.NODE) && this.attributeMatcher.matches(tags);
+    }
 
-	@Override
-	public boolean matchesWay(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
-		return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.WAY) && this.getClosedMatcher().matches(closed) && this.attributeMatcher.matches(tags);
-	}
+    @Override
+    public boolean matchesWay(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
+        return this.getZoomMin() <= zoomLevel && this.getZoomMax() >= zoomLevel && this.getElementMatcher().matches(Element.WAY) && this.getClosedMatcher().matches(closed) && this.attributeMatcher.matches(tags);
+    }
 }

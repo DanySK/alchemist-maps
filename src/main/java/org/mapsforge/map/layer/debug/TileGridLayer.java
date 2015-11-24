@@ -20,40 +20,40 @@ import org.mapsforge.core.util.MercatorProjection;
 import org.mapsforge.map.layer.Layer;
 
 public class TileGridLayer extends Layer {
-	private final Paint paint;
+    private final Paint paint;
 
-	private static Paint createPaint(final GraphicFactory graphicFactory) {
-		final Paint paint = graphicFactory.createPaint();
-		paint.setColor(graphicFactory.createColor(Color.BLACK));
-		paint.setStrokeWidth(3);
-		paint.setStyle(Style.STROKE);
-		return paint;
-	}
+    private static Paint createPaint(final GraphicFactory graphicFactory) {
+        final Paint paint = graphicFactory.createPaint();
+        paint.setColor(graphicFactory.createColor(Color.BLACK));
+        paint.setStrokeWidth(3);
+        paint.setStyle(Style.STROKE);
+        return paint;
+    }
 
-	public TileGridLayer(final GraphicFactory graphicFactory) {
-		super();
+    public TileGridLayer(final GraphicFactory graphicFactory) {
+        super();
 
-		this.paint = createPaint(graphicFactory);
-	}
+        this.paint = createPaint(graphicFactory);
+    }
 
-	@Override
-	public void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
-		final long tileLeft = MercatorProjection.longitudeToTileX(boundingBox.getMinLongitude(), zoomLevel);
-		final long tileTop = MercatorProjection.latitudeToTileY(boundingBox.getMaxLatitude(), zoomLevel);
-		final long tileRight = MercatorProjection.longitudeToTileX(boundingBox.getMaxLongitude(), zoomLevel);
-		final long tileBottom = MercatorProjection.latitudeToTileY(boundingBox.getMinLatitude(), zoomLevel);
+    @Override
+    public void draw(final BoundingBox boundingBox, final byte zoomLevel, final Canvas canvas, final Point canvasPosition) {
+        final long tileLeft = MercatorProjection.longitudeToTileX(boundingBox.getMinLongitude(), zoomLevel);
+        final long tileTop = MercatorProjection.latitudeToTileY(boundingBox.getMaxLatitude(), zoomLevel);
+        final long tileRight = MercatorProjection.longitudeToTileX(boundingBox.getMaxLongitude(), zoomLevel);
+        final long tileBottom = MercatorProjection.latitudeToTileY(boundingBox.getMinLatitude(), zoomLevel);
 
-		final int pixelX1 = (int) (MercatorProjection.tileXToPixelX(tileLeft) - canvasPosition.getX());
-		final int pixelY1 = (int) (MercatorProjection.tileYToPixelY(tileTop) - canvasPosition.getY());
-		final int pixelX2 = (int) (MercatorProjection.tileXToPixelX(tileRight) - canvasPosition.getX() + Tile.TILE_SIZE);
-		final int pixelY2 = (int) (MercatorProjection.tileYToPixelY(tileBottom) - canvasPosition.getY() + Tile.TILE_SIZE);
+        final int pixelX1 = (int) (MercatorProjection.tileXToPixelX(tileLeft) - canvasPosition.getX());
+        final int pixelY1 = (int) (MercatorProjection.tileYToPixelY(tileTop) - canvasPosition.getY());
+        final int pixelX2 = (int) (MercatorProjection.tileXToPixelX(tileRight) - canvasPosition.getX() + Tile.TILE_SIZE);
+        final int pixelY2 = (int) (MercatorProjection.tileYToPixelY(tileBottom) - canvasPosition.getY() + Tile.TILE_SIZE);
 
-		for (int lineX = pixelX1; lineX <= pixelX2 + 1; lineX += Tile.TILE_SIZE) {
-			canvas.drawLine(lineX, pixelY1, lineX, pixelY2, this.paint);
-		}
+        for (int lineX = pixelX1; lineX <= pixelX2 + 1; lineX += Tile.TILE_SIZE) {
+            canvas.drawLine(lineX, pixelY1, lineX, pixelY2, this.paint);
+        }
 
-		for (int lineY = pixelY1; lineY <= pixelY2 + 1; lineY += Tile.TILE_SIZE) {
-			canvas.drawLine(pixelX1, lineY, pixelX2, lineY, this.paint);
-		}
-	}
+        for (int lineY = pixelY1; lineY <= pixelY2 + 1; lineY += Tile.TILE_SIZE) {
+            canvas.drawLine(pixelX1, lineY, pixelX2, lineY, this.paint);
+        }
+    }
 }

@@ -9,44 +9,42 @@
 package it.unibo.alchemist.model.interfaces;
 
 /**
- * @author Danilo Pianini
- * 
  */
 public enum Vehicle {
 
-	/**
-	 * Bikes.
-	 */
-	BIKE,
-	
-	/**
-	 * Cars.
-	 */
-	CAR,
-	
-	/**
-	 * Pedestrians.
-	 */
-	FOOT,
-	
-//	/**
-//	 * Bikes, with improved elevation interpolation.
-//	 */
-//	BIKE2,
-	
-	/**
-	 * Racing Bikes.
-	 */
-	RACINGBIKE,
-	
-	/**
-	 * Mountain Bikes.
-	 */
-	MTB,
-	
-	/**
-	 * Motorcycles.
-	 */
-	MOTORCYCLE
+    /**
+     * Bikes.
+     */
+    BIKE,
+
+    /**
+     * Cars.
+     */
+    CAR,
+
+    /**
+     * Pedestrians.
+     */
+    FOOT,
+
+//    /**
+//     * Bikes, with improved elevation interpolation.
+//     */
+//    BIKE2,
+
+    /**
+     * Racing Bikes.
+     */
+    RACINGBIKE,
+
+    /**
+     * Mountain Bikes.
+     */
+    MTB,
+
+    /**
+     * Motorcycles.
+     */
+    MOTORCYCLE
 
 }

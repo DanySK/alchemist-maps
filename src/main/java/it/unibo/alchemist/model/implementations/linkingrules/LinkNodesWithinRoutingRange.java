@@ -22,32 +22,30 @@ import it.unibo.alchemist.model.interfaces.INeighborhood;
 import it.unibo.alchemist.model.interfaces.INode;
 
 /**
- * @author Danilo Pianini
- * 
  * @param <T>
  */
 public class LinkNodesWithinRoutingRange<T> implements ILinkingRule<T> {
 
-	private static final long serialVersionUID = 726751817489962367L;
-	private final Collection<INode<T>> emptyList = Collections.unmodifiableCollection(new ArrayList<INode<T>>(0));
-	private final double range;
+    private static final long serialVersionUID = 726751817489962367L;
+    private final Collection<INode<T>> emptyList = Collections.unmodifiableCollection(new ArrayList<INode<T>>(0));
+    private final double range;
 
-	/**
-	 * @param r range
-	 */
-	public LinkNodesWithinRoutingRange(final double r) {
-		range = r;
-	}
+    /**
+     * @param r range
+     */
+    public LinkNodesWithinRoutingRange(final double r) {
+        range = r;
+    }
 
-	@Override
-	public INeighborhood<T> computeNeighborhood(final INode<T> center, final IEnvironment<T> env) {
-		if (env instanceof IMapEnvironment<?>) {
-			final IMapEnvironment<T> menv = (IMapEnvironment<T>) env;
-			final Stream<INode<T>> stream = menv.getNodesWithinRange(center, range).parallelStream();
-			final Collection<INode<T>> filtered = stream.filter(node -> menv.computeRoute(center, node).getDistance() < range).collect(Collectors.toList());
-			return new Neighborhood<>(center, filtered, menv);
-		}
-		return new Neighborhood<>(center, emptyList, env);
-	}
+    @Override
+    public INeighborhood<T> computeNeighborhood(final INode<T> center, final IEnvironment<T> env) {
+        if (env instanceof IMapEnvironment<?>) {
+            final IMapEnvironment<T> menv = (IMapEnvironment<T>) env;
+            final Stream<INode<T>> stream = menv.getNodesWithinRange(center, range).parallelStream();
+            final Collection<INode<T>> filtered = stream.filter(node -> menv.computeRoute(center, node).getDistance() < range).collect(Collectors.toList());
+            return new Neighborhood<>(center, filtered, menv);
+        }
+        return new Neighborhood<>(center, emptyList, env);
+    }
 
 }

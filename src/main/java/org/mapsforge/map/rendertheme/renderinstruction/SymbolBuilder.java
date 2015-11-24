@@ -20,41 +20,41 @@ import org.xml.sax.SAXException;
  * A builder for {@link Symbol} instances.
  */
 public class SymbolBuilder {
-	private static final String SRC = "src";
+    private static final String SRC = "src";
 
-	private Bitmap bitmap;
+    private Bitmap bitmap;
 
-	public SymbolBuilder(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
-		extractValues(graphicFactory, elementName, attributes, relativePathPrefix);
-	}
+    public SymbolBuilder(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
+        extractValues(graphicFactory, elementName, attributes, relativePathPrefix);
+    }
 
-	/**
-	 * @return a new {@code Symbol} instance.
-	 */
-	public Symbol build() {
-		return new Symbol(this);
-	}
+    /**
+     * @return a new {@code Symbol} instance.
+     */
+    public Symbol build() {
+        return new Symbol(this);
+    }
 
-	private void extractValues(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
-		for (int i = 0; i < attributes.getLength(); ++i) {
-			final String name = attributes.getQName(i);
-			final String value = attributes.getValue(i);
+    private void extractValues(final GraphicFactory graphicFactory, final String elementName, final Attributes attributes, final String relativePathPrefix) throws IOException, SAXException {
+        for (int i = 0; i < attributes.getLength(); ++i) {
+            final String name = attributes.getQName(i);
+            final String value = attributes.getValue(i);
 
-			if (SRC.equals(name)) {
-				this.bitmap = XmlUtils.createBitmap(graphicFactory, relativePathPrefix, value);
-			} else {
-				throw XmlUtils.createSAXException(elementName, name, value, i);
-			}
-		}
+            if (SRC.equals(name)) {
+                this.bitmap = XmlUtils.createBitmap(graphicFactory, relativePathPrefix, value);
+            } else {
+                throw XmlUtils.createSAXException(elementName, name, value, i);
+            }
+        }
 
-		XmlUtils.checkMandatoryAttribute(elementName, SRC, this.bitmap);
-	}
+        XmlUtils.checkMandatoryAttribute(elementName, SRC, this.bitmap);
+    }
 
-	public Bitmap getBitmap() {
-		return bitmap;
-	}
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 
-	public void setBitmap(final Bitmap bitmap) {
-		this.bitmap = bitmap;
-	}
+    public void setBitmap(final Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
 }

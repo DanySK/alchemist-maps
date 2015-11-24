@@ -14,43 +14,43 @@ import java.net.URL;
 import org.mapsforge.core.model.Tile;
 
 public class OpenStreetMapMapnik extends AbstractTileSource {
-	public static final OpenStreetMapMapnik INSTANCE = new OpenStreetMapMapnik("tile.openstreetmap.org", 80);
-	private static final int PARALLEL_REQUESTS_LIMIT = 8;
-	private static final String PROTOCOL = "http";
-	private static final int ZOOM_LEVEL_MAX = 18;
-	private static final int ZOOM_LEVEL_MIN = 0;
+    public static final OpenStreetMapMapnik INSTANCE = new OpenStreetMapMapnik("tile.openstreetmap.org", 80);
+    private static final int PARALLEL_REQUESTS_LIMIT = 8;
+    private static final String PROTOCOL = "http";
+    private static final int ZOOM_LEVEL_MAX = 18;
+    private static final int ZOOM_LEVEL_MIN = 0;
 
-	public OpenStreetMapMapnik(final String hostName, final int port) {
-		super(hostName, port);
-	}
+    public OpenStreetMapMapnik(final String hostName, final int port) {
+        super(hostName, port);
+    }
 
-	@Override
-	public int getParallelRequestsLimit() {
-		return PARALLEL_REQUESTS_LIMIT;
-	}
+    @Override
+    public int getParallelRequestsLimit() {
+        return PARALLEL_REQUESTS_LIMIT;
+    }
 
-	@Override
-	public URL getTileUrl(final Tile tile) throws MalformedURLException {
-		final StringBuilder stringBuilder = new StringBuilder(32);
+    @Override
+    public URL getTileUrl(final Tile tile) throws MalformedURLException {
+        final StringBuilder stringBuilder = new StringBuilder(32);
 
-		stringBuilder.append('/');
-		stringBuilder.append(tile.getZoomLevel());
-		stringBuilder.append('/');
-		stringBuilder.append(tile.getTileX());
-		stringBuilder.append('/');
-		stringBuilder.append(tile.getTileY());
-		stringBuilder.append(".png");
+        stringBuilder.append('/');
+        stringBuilder.append(tile.getZoomLevel());
+        stringBuilder.append('/');
+        stringBuilder.append(tile.getTileX());
+        stringBuilder.append('/');
+        stringBuilder.append(tile.getTileY());
+        stringBuilder.append(".png");
 
-		return new URL(PROTOCOL, getHostName(), getPort(), stringBuilder.toString());
-	}
+        return new URL(PROTOCOL, getHostName(), getPort(), stringBuilder.toString());
+    }
 
-	@Override
-	public byte getZoomLevelMax() {
-		return ZOOM_LEVEL_MAX;
-	}
+    @Override
+    public byte getZoomLevelMax() {
+        return ZOOM_LEVEL_MAX;
+    }
 
-	@Override
-	public byte getZoomLevelMin() {
-		return ZOOM_LEVEL_MIN;
-	}
+    @Override
+    public byte getZoomLevelMin() {
+        return ZOOM_LEVEL_MIN;
+    }
 }

@@ -14,34 +14,34 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class ValueMatcher implements AttributeMatcher {
-	private final List<String> values;
+    private final List<String> values;
 
-	public ValueMatcher(final List<String> values) {
-		this.values = values;
-	}
+    public ValueMatcher(final List<String> values) {
+        this.values = values;
+    }
 
-	@Override
-	public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
-		if (attributeMatcher == this) {
-			return true;
-		}
+    @Override
+    public boolean isCoveredBy(final AttributeMatcher attributeMatcher) {
+        if (attributeMatcher == this) {
+            return true;
+        }
 
-		final List<Tag> tags = new ArrayList<Tag>(this.values.size());
-		final int n = this.values.size();
-		for (int i = 0; i < n; ++i) {
-			tags.add(new Tag(null, this.values.get(i)));
-		}
-		return attributeMatcher.matches(tags);
-	}
+        final List<Tag> tags = new ArrayList<Tag>(this.values.size());
+        final int n = this.values.size();
+        for (int i = 0; i < n; ++i) {
+            tags.add(new Tag(null, this.values.get(i)));
+        }
+        return attributeMatcher.matches(tags);
+    }
 
-	@Override
-	public boolean matches(final List<Tag> tags) {
-		final int n = tags.size();
-		for (int i = 0; i < n; ++i) {
-			if (this.values.contains(tags.get(i).getValue())) {
-				return true;
-			}
-		}
-		return false;
-	}
+    @Override
+    public boolean matches(final List<Tag> tags) {
+        final int n = tags.size();
+        for (int i = 0; i < n; ++i) {
+            if (this.values.contains(tags.get(i).getValue())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

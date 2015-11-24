@@ -17,42 +17,42 @@ import org.mapsforge.map.layer.download.tilesource.TileSource;
 import org.mapsforge.map.model.MapViewPosition;
 
 public class TileDownloadLayer extends TileLayer<DownloadJob> {
-	private static final int DOWNLOAD_THREADS_MAX = 8;
+    private static final int DOWNLOAD_THREADS_MAX = 8;
 
-	private final TileDownloadThread[] tileDownloadThreads;
-	private final TileSource tileSource;
+    private final TileDownloadThread[] tileDownloadThreads;
+    private final TileSource tileSource;
 
-	public TileDownloadLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final TileSource tileSource, final LayerManager layerManager, final GraphicFactory graphicFactory) {
-		super(tileCache, mapViewPosition, graphicFactory);
+    public TileDownloadLayer(final TileCache tileCache, final MapViewPosition mapViewPosition, final TileSource tileSource, final LayerManager layerManager, final GraphicFactory graphicFactory) {
+        super(tileCache, mapViewPosition, graphicFactory);
 
-		if (tileSource == null) {
-			throw new IllegalArgumentException("tileSource must not be null");
-		} else if (layerManager == null) {
-			throw new IllegalArgumentException("layerManager must not be null");
-		}
+        if (tileSource == null) {
+            throw new IllegalArgumentException("tileSource must not be null");
+        } else if (layerManager == null) {
+            throw new IllegalArgumentException("layerManager must not be null");
+        }
 
-		this.tileSource = tileSource;
+        this.tileSource = tileSource;
 
-		final int numberOfDownloadThreads = Math.min(tileSource.getParallelRequestsLimit(), DOWNLOAD_THREADS_MAX);
-		this.tileDownloadThreads = new TileDownloadThread[numberOfDownloadThreads];
-		for (int i = 0; i < numberOfDownloadThreads; ++i) {
-			final TileDownloadThread tileDownloadThread = new TileDownloadThread(tileCache, this.jobQueue, layerManager, graphicFactory);
-			tileDownloadThread.start();
-			this.tileDownloadThreads[i] = tileDownloadThread;
-		}
-	}
+        final int numberOfDownloadThreads = Math.min(tileSource.getParallelRequestsLimit(), DOWNLOAD_THREADS_MAX);
+        this.tileDownloadThreads = new TileDownloadThread[numberOfDownloadThreads];
+        for (int i = 0; i < numberOfDownloadThreads; ++i) {
+            final TileDownloadThread tileDownloadThread = new TileDownloadThread(tileCache, this.jobQueue, layerManager, graphicFactory);
+            tileDownloadThread.start();
+            this.tileDownloadThreads[i] = tileDownloadThread;
+        }
+    }
 
-	@Override
-	protected DownloadJob createJob(final Tile tile) {
-		return new DownloadJob(tile, this.tileSource);
-	}
+    @Override
+    protected DownloadJob createJob(final Tile tile) {
+        return new DownloadJob(tile, this.tileSource);
+    }
 
-	@Override
-	public void destroy() {
-		for (final TileDownloadThread tileDownloadThread : this.tileDownloadThreads) {
-			tileDownloadThread.interrupt();
-		}
+    @Override
+    public void destroy() {
+        for (final TileDownloadThread tileDownloadThread : this.tileDownloadThreads) {
+            tileDownloadThread.interrupt();
+        }
 
-		super.destroy();
-	}
+        super.destroy();
+    }
 }

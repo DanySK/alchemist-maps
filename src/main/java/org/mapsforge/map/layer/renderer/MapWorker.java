@@ -15,39 +15,39 @@ import org.mapsforge.map.layer.cache.TileCache;
 import org.mapsforge.map.layer.queue.JobQueue;
 
 public class MapWorker extends PausableThread {
-	private final DatabaseRenderer databaseRenderer;
-	private final JobQueue<RendererJob> jobQueue;
-	private final LayerManager layerManager;
-	private final TileCache tileCache;
+    private final DatabaseRenderer databaseRenderer;
+    private final JobQueue<RendererJob> jobQueue;
+    private final LayerManager layerManager;
+    private final TileCache tileCache;
 
-	public MapWorker(final TileCache tileCache, final JobQueue<RendererJob> jobQueue, final DatabaseRenderer databaseRenderer, final LayerManager layerManager) {
-		super();
+    public MapWorker(final TileCache tileCache, final JobQueue<RendererJob> jobQueue, final DatabaseRenderer databaseRenderer, final LayerManager layerManager) {
+        super();
 
-		this.tileCache = tileCache;
-		this.jobQueue = jobQueue;
-		this.databaseRenderer = databaseRenderer;
-		this.layerManager = layerManager;
-	}
+        this.tileCache = tileCache;
+        this.jobQueue = jobQueue;
+        this.databaseRenderer = databaseRenderer;
+        this.layerManager = layerManager;
+    }
 
-	@Override
-	protected void doWork() throws InterruptedException {
-		final RendererJob rendererJob = this.jobQueue.remove();
+    @Override
+    protected void doWork() throws InterruptedException {
+        final RendererJob rendererJob = this.jobQueue.remove();
 
-		final Bitmap bitmap = this.databaseRenderer.executeJob(rendererJob);
+        final Bitmap bitmap = this.databaseRenderer.executeJob(rendererJob);
 
-		if (!isInterrupted() && bitmap != null) {
-			this.tileCache.put(rendererJob, bitmap);
-			this.layerManager.redrawLayers();
-		}
-	}
+        if (!isInterrupted() && bitmap != null) {
+            this.tileCache.put(rendererJob, bitmap);
+            this.layerManager.redrawLayers();
+        }
+    }
 
-	@Override
-	protected ThreadPriority getThreadPriority() {
-		return ThreadPriority.BELOW_NORMAL;
-	}
+    @Override
+    protected ThreadPriority getThreadPriority() {
+        return ThreadPriority.BELOW_NORMAL;
+    }
 
-	@Override
-	protected boolean hasWork() {
-		return true;
-	}
+    @Override
+    protected boolean hasWork() {
+        return true;
+    }
 }

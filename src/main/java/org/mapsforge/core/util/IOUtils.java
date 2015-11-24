@@ -17,32 +17,28 @@ import java.util.logging.Level;
 /**
  * A utility class with IO-specific helper methods.
  * 
- * @author Mapsforge
- * @author Giovanni Ciatto
- * @author Danilo Pianini
- *
  */
 public final class IOUtils {
-	
-	/**
-	 * Invokes the {@link Closeable#close()} method on the given object. If an
-	 * {@link IOException} occurs during the method call, it will be caught and
-	 * logged on level {@link Level#WARNING}.
-	 * 
-	 * @param closeable
-	 *            the data source which should be closed (may be null).
-	 */
-	public static void closeQuietly(final Closeable closeable) {
-		try {
-			if (closeable != null) {
-				closeable.close();
-			}
-		} catch (final IOException e) {
-			L.warn(e);
-		}
-	}
 
-	private IOUtils() {
-		throw new IllegalStateException();
-	}
+    /**
+     * Invokes the {@link Closeable#close()} method on the given object. If an
+     * {@link IOException} occurs during the method call, it will be caught and
+     * logged on level {@link Level#WARNING}.
+     * 
+     * @param closeable
+     *            the data source which should be closed (may be null).
+     */
+    public static void closeQuietly(final Closeable closeable) {
+        try {
+            if (closeable != null) {
+                closeable.close();
+            }
+        } catch (final IOException e) {
+            L.warn(e);
+        }
+    }
+
+    private IOUtils() {
+        throw new IllegalStateException();
+    }
 }

@@ -9,13 +9,12 @@
 package org.mapsforge.core.graphics;
 
 /**
- * @author Mapsforge
  * 
  */
 public enum FontFamily {
 
-	/**
-	 * 
-	 */
-	DEFAULT, MONOSPACE, SANS_SERIF, SERIF;
+    /**
+     * 
+     */
+    DEFAULT, MONOSPACE, SANS_SERIF, SERIF;
 }

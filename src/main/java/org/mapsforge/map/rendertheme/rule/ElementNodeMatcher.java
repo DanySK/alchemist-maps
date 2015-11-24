@@ -9,23 +9,23 @@
 package org.mapsforge.map.rendertheme.rule;
 
 public final class ElementNodeMatcher implements ElementMatcher {
-	private static final ElementNodeMatcher INSTANCE = new ElementNodeMatcher();
+    private static final ElementNodeMatcher INSTANCE = new ElementNodeMatcher();
 
-	public static ElementNodeMatcher getInstance() {
-		return INSTANCE;
-	}
+    public static ElementNodeMatcher getInstance() {
+        return INSTANCE;
+    }
 
-	private ElementNodeMatcher() {
-		// do nothing
-	}
+    private ElementNodeMatcher() {
+        // do nothing
+    }
 
-	@Override
-	public boolean isCoveredBy(final ElementMatcher elementMatcher) {
-		return elementMatcher.matches(Element.NODE);
-	}
+    @Override
+    public boolean isCoveredBy(final ElementMatcher elementMatcher) {
+        return elementMatcher.matches(Element.NODE);
+    }
 
-	@Override
-	public boolean matches(final Element element) {
-		return element == Element.NODE;
-	}
+    @Override
+    public boolean matches(final Element element) {
+        return element == Element.NODE;
+    }
 }

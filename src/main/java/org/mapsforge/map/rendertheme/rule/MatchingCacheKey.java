@@ -13,47 +13,47 @@ import java.util.List;
 import org.mapsforge.core.model.Tag;
 
 public class MatchingCacheKey {
-	private static final int PRIME = 31;
-	private final Closed closed;
-	private final List<Tag> tags;
-	private final byte zoomLevel;
+    private static final int PRIME = 31;
+    private final Closed closed;
+    private final List<Tag> tags;
+    private final byte zoomLevel;
 
-	public MatchingCacheKey(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
-		this.tags = tags;
-		this.zoomLevel = zoomLevel;
-		this.closed = closed;
-	}
+    public MatchingCacheKey(final List<Tag> tags, final byte zoomLevel, final Closed closed) {
+        this.tags = tags;
+        this.zoomLevel = zoomLevel;
+        this.closed = closed;
+    }
 
-	@Override
-	public boolean equals(final Object obj) {
-		if (this == obj) {
-			return true;
-		} else if (!(obj instanceof MatchingCacheKey)) {
-			return false;
-		}
-		final MatchingCacheKey other = (MatchingCacheKey) obj;
-		if (this.closed != other.closed) {
-			return false;
-		}
-		if (this.tags == null) {
-			if (other.tags != null) {
-				return false;
-			}
-		} else if (!this.tags.equals(other.tags)) {
-			return false;
-		}
-		if (this.zoomLevel != other.zoomLevel) {
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean equals(final Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (!(obj instanceof MatchingCacheKey)) {
+            return false;
+        }
+        final MatchingCacheKey other = (MatchingCacheKey) obj;
+        if (this.closed != other.closed) {
+            return false;
+        }
+        if (this.tags == null) {
+            if (other.tags != null) {
+                return false;
+            }
+        } else if (!this.tags.equals(other.tags)) {
+            return false;
+        }
+        if (this.zoomLevel != other.zoomLevel) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public int hashCode() {
-		int result = 1;
-		result = PRIME * result + (this.closed == null ? 0 : this.closed.hashCode());
-		result = PRIME * result + (this.tags == null ? 0 : this.tags.hashCode());
-		result = PRIME * result + this.zoomLevel;
-		return result;
-	}
+    @Override
+    public int hashCode() {
+        int result = 1;
+        result = PRIME * result + (this.closed == null ? 0 : this.closed.hashCode());
+        result = PRIME * result + (this.tags == null ? 0 : this.tags.hashCode());
+        result = PRIME * result + this.zoomLevel;
+        return result;
+    }
 }

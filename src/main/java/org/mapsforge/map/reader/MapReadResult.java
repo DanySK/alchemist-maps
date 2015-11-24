@@ -14,24 +14,24 @@ import java.util.List;
  * An immutable container for the data returned by the {@link MapDatabase}.
  */
 public class MapReadResult {
-	/**
-	 * True if the read area is completely covered by water, false otherwise.
-	 */
-	public final boolean isWater;
+    /**
+     * True if the read area is completely covered by water, false otherwise.
+     */
+    public final boolean isWater;
 
-	/**
-	 * The read POIs.
-	 */
-	public final List<PointOfInterest> pointOfInterests;
+    /**
+     * The read POIs.
+     */
+    public final List<PointOfInterest> pointOfInterests;
 
-	/**
-	 * The read ways.
-	 */
-	public final List<Way> ways;
+    /**
+     * The read ways.
+     */
+    public final List<Way> ways;
 
-	MapReadResult(final MapReadResultBuilder mapReadResultBuilder) {
-		this.pointOfInterests = mapReadResultBuilder.getPointOfInterests();
-		this.ways = mapReadResultBuilder.getWays();
-		this.isWater = mapReadResultBuilder.isWater();
-	}
+    MapReadResult(final MapReadResultBuilder mapReadResultBuilder) {
+        this.pointOfInterests = mapReadResultBuilder.getPointOfInterests();
+        this.ways = mapReadResultBuilder.getWays();
+        this.isWater = mapReadResultBuilder.isWater();
+    }
 }

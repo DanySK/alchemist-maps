@@ -16,15 +16,15 @@ import java.io.Serializable;
  * Interface for a render theme which is defined in XML.
  */
 public interface XmlRenderTheme extends Serializable {
-	/**
-	 * @return the prefix for all relative resource paths.
-	 */
-	String getRelativePathPrefix();
+    /**
+     * @return the prefix for all relative resource paths.
+     */
+    String getRelativePathPrefix();
 
-	/**
-	 * @return an InputStream to read the render theme data from.
-	 * @throws FileNotFoundException
-	 *             if the render theme file cannot be found.
-	 */
-	InputStream getRenderThemeAsStream() throws FileNotFoundException;
+    /**
+     * @return an InputStream to read the render theme data from.
+     * @throws FileNotFoundException
+     *             if the render theme file cannot be found.
+     */
+    InputStream getRenderThemeAsStream() throws FileNotFoundException;
 }

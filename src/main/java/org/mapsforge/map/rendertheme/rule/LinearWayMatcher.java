@@ -9,23 +9,23 @@
 package org.mapsforge.map.rendertheme.rule;
 
 public final class LinearWayMatcher implements ClosedMatcher {
-	private static final LinearWayMatcher INSTANCE = new LinearWayMatcher();
+    private static final LinearWayMatcher INSTANCE = new LinearWayMatcher();
 
-	public static LinearWayMatcher getInstance() {
-		return INSTANCE;
-	}
+    public static LinearWayMatcher getInstance() {
+        return INSTANCE;
+    }
 
-	private LinearWayMatcher() {
-		// do nothing
-	}
+    private LinearWayMatcher() {
+        // do nothing
+    }
 
-	@Override
-	public boolean isCoveredBy(final ClosedMatcher closedMatcher) {
-		return closedMatcher.matches(Closed.NO);
-	}
+    @Override
+    public boolean isCoveredBy(final ClosedMatcher closedMatcher) {
+        return closedMatcher.matches(Closed.NO);
+    }
 
-	@Override
-	public boolean matches(final Closed closed) {
-		return closed == Closed.NO;
-	}
+    @Override
+    public boolean matches(final Closed closed) {
+        return closed == Closed.NO;
+    }
 }

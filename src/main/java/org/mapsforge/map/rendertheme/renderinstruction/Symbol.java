@@ -18,29 +18,29 @@ import org.mapsforge.map.rendertheme.RenderCallback;
  * Represents an icon on the map.
  */
 public class Symbol implements RenderInstruction {
-	private final Bitmap bitmap;
+    private final Bitmap bitmap;
 
-	public Symbol(final SymbolBuilder symbolBuilder) {
-		this.bitmap = symbolBuilder.getBitmap();
-	}
+    public Symbol(final SymbolBuilder symbolBuilder) {
+        this.bitmap = symbolBuilder.getBitmap();
+    }
 
-	@Override
-	public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
-		renderCallback.renderPointOfInterestSymbol(this.bitmap);
-	}
+    @Override
+    public void renderNode(final RenderCallback renderCallback, final List<Tag> tags) {
+        renderCallback.renderPointOfInterestSymbol(this.bitmap);
+    }
 
-	@Override
-	public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
-		renderCallback.renderAreaSymbol(this.bitmap);
-	}
+    @Override
+    public void renderWay(final RenderCallback renderCallback, final List<Tag> tags) {
+        renderCallback.renderAreaSymbol(this.bitmap);
+    }
 
-	@Override
-	public void scaleStrokeWidth(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleStrokeWidth(final float scaleFactor) {
+        // do nothing
+    }
 
-	@Override
-	public void scaleTextSize(final float scaleFactor) {
-		// do nothing
-	}
+    @Override
+    public void scaleTextSize(final float scaleFactor) {
+        // do nothing
+    }
 }

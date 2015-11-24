@@ -13,22 +13,22 @@ import org.mapsforge.map.model.common.Observer;
 import org.mapsforge.map.view.MapView;
 
 public class MapViewController implements Observer {
-	private final MapView mapView;
-	private final Model model;
+    private final MapView mapView;
+    private final Model model;
 
-	public MapViewController(final MapView mapView, final Model model) {
-		this.mapView = mapView;
-		this.model = model;
+    public MapViewController(final MapView mapView, final Model model) {
+        this.mapView = mapView;
+        this.model = model;
 
-		model.getMapViewPosition().addObserver(this);
-	}
-	
-	public void dispose() {
-		model.getMapViewPosition().removeObserver(this);
-	}
+        model.getMapViewPosition().addObserver(this);
+    }
 
-	@Override
-	public void onChange() {
-		this.mapView.repaint();
-	}
+    public void dispose() {
+        model.getMapViewPosition().removeObserver(this);
+    }
+
+    @Override
+    public void onChange() {
+        this.mapView.repaint();
+    }
 }

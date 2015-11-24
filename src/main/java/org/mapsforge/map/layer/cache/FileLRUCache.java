@@ -16,23 +16,23 @@ import java.util.logging.Logger;
 import org.mapsforge.core.util.LRUCache;
 
 class FileLRUCache<T> extends LRUCache<T, File> {
-	private static final Logger LOGGER = Logger.getLogger(FileLRUCache.class.getName());
-	private static final long serialVersionUID = 1L;
+    private static final Logger LOGGER = Logger.getLogger(FileLRUCache.class.getName());
+    private static final long serialVersionUID = 1L;
 
-	FileLRUCache(final int capacity) {
-		super(capacity);
-	}
+    FileLRUCache(final int capacity) {
+        super(capacity);
+    }
 
-	@Override
-	protected boolean removeEldestEntry(final Map.Entry<T, File> eldest) {
-		if (size() > getCapacity()) {
-			remove(eldest.getKey());
-			final File file = eldest.getValue();
-			if (file.exists() && !file.delete()) {
-				LOGGER.log(Level.SEVERE, "could not delete file: " + file);
-			}
-		}
+    @Override
+    protected boolean removeEldestEntry(final Map.Entry<T, File> eldest) {
+        if (size() > getCapacity()) {
+            remove(eldest.getKey());
+            final File file = eldest.getValue();
+            if (file.exists() && !file.delete()) {
+                LOGGER.log(Level.SEVERE, "could not delete file: " + file);
+            }
+        }
 
-		return false;
-	}
+        return false;
+    }
 }

@@ -11,79 +11,77 @@ package it.unibo.alchemist.model.interfaces;
 import java.io.Serializable;
 
 /**
- * @author Danilo Pianini
- * 
  */
 public interface IGPSTrace extends Serializable {
 
-	/**
-	 * @param time
-	 *            the time at which the new trace should start
-	 * @return a new trace, which will have all the points of this trace
-	 *         starting at the passed time
-	 */
-	IGPSTrace filter(double time);
+    /**
+     * @param time
+     *            the time at which the new trace should start
+     * @return a new trace, which will have all the points of this trace
+     *         starting at the passed time
+     */
+    IGPSTrace filter(double time);
 
-	/**
-	 * @return the node id
-	 */
-	int getId();
+    /**
+     * @return the node id
+     */
+    int getId();
 
-	/**
-	 * @param time
-	 *            the time
-	 * @return the next point
-	 */
-	IGPSPoint getNextPosition(double time);
+    /**
+     * @param time
+     *            the time
+     * @return the next point
+     */
+    IGPSPoint getNextPosition(double time);
 
-	/**
-	 * @param time
-	 *            the time
-	 * @return the previous point
-	 */
-	IGPSPoint getPreviousPosition(double time);
+    /**
+     * @param time
+     *            the time
+     * @return the previous point
+     */
+    IGPSPoint getPreviousPosition(double time);
 
-	/**
-	 * @return the first time for this {@link IGPSTrace}
-	 */
-	double getStartTime();
+    /**
+     * @return the first time for this {@link IGPSTrace}
+     */
+    double getStartTime();
 
-	/**
-	 * @param time
-	 *            the time
-	 * @return the position at which the node would have been if it has moved in
-	 *         a straight line connecting the previous and the next point of
-	 *         time at constant speed
-	 */
-	IGPSPoint interpolate(double time);
+    /**
+     * @param time
+     *            the time
+     * @return the position at which the node would have been if it has moved in
+     *         a straight line connecting the previous and the next point of
+     *         time at constant speed
+     */
+    IGPSPoint interpolate(double time);
 
-	/**
-	 * @return distance (in meters) of the whole trace
-	 */
-	double length();
+    /**
+     * @return distance (in meters) of the whole trace
+     */
+    double length();
 
-	/**
-	 * Modifies all the times of this trace, shifting them back of initialTime.
-	 * 
-	 * @param initialTime
-	 *            the initial time
-	 */
-	void normalizeTimes(double initialTime);
+    /**
+     * Modifies all the times of this trace, shifting them back of initialTime.
+     * 
+     * @param initialTime
+     *            the initial time
+     */
+    void normalizeTimes(double initialTime);
 
-	/**
-	 * @param i
-	 *            the id
-	 */
-	void setId(int i);
+    /**
+     * @param i
+     *            the id
+     */
+    void setId(int i);
 
-	/**
-	 * @return the number of {@link IGPSPoint}s
-	 */
-	int size();
+    /**
+     * @return the number of {@link IGPSPoint}s
+     */
+    int size();
 
-	/**
-	 * orders the trace by time.
-	 */
-	void sort();
+    /**
+     * orders the trace by time.
+     */
+    void sort();
 
 }

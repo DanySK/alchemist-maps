@@ -12,36 +12,34 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * @author Danilo Pianini
- * 
  */
 public interface IRoute extends Serializable {
 
-	/**
-	 * @return the length of the route
-	 */
-	double getDistance();
+    /**
+     * @return the length of the route
+     */
+    double getDistance();
 
-	/**
-	 * @param step
-	 *            the step
-	 * @return the step-th {@link IPosition} in the route
-	 */
-	IPosition getPoint(int step);
+    /**
+     * @param step
+     *            the step
+     * @return the step-th {@link IPosition} in the route
+     */
+    IPosition getPoint(int step);
 
-	/**
-	 * @return the route as list of {@link IPosition}
-	 */
-	List<IPosition> getPoints();
+    /**
+     * @return the route as list of {@link IPosition}
+     */
+    List<IPosition> getPoints();
 
-	/**
-	 * @return the number of points this route is made of
-	 */
-	int getPointsNumber();
+    /**
+     * @return the number of points this route is made of
+     */
+    int getPointsNumber();
 
-	/**
-	 * @return the time required to walk the route
-	 */
-	double getTime();
+    /**
+     * @return the time required to walk the route
+     */
+    double getTime();
 
 }

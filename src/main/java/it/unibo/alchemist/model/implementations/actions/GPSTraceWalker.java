@@ -19,32 +19,30 @@ import it.unibo.alchemist.model.interfaces.Vehicle;
 /**
  * A walker that follows a trace. The trace is mandatory.
  * 
- * @author Danilo Pianini
- * 
  * @param <T> Concentration Time
  */
 public class GPSTraceWalker<T> extends MoveOnMap<T> {
 
-	private static final long serialVersionUID = -6495138719085165782L;
-	
-	/**
-	 * @param environment
-	 *            the environment
-	 * @param node
-	 *            the node
-	 * @param reaction
-	 *            the reaction
-	 */
-	public GPSTraceWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
-		super(environment, node,
-				new OnStreets<>(environment, Vehicle.FOOT),
-				new RoutingTraceDependantSpeed<>(environment, node, reaction, Vehicle.FOOT),
-				new FollowTrace<>(environment, node, reaction));
-	}
+    private static final long serialVersionUID = -6495138719085165782L;
 
-	@Override
-	public GPSTraceWalker<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r) {
-		return new GPSTraceWalker<>(getEnvironment(), n, r);
-	}
+    /**
+     * @param environment
+     *            the environment
+     * @param node
+     *            the node
+     * @param reaction
+     *            the reaction
+     */
+    public GPSTraceWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction) {
+        super(environment, node,
+                new OnStreets<>(environment, Vehicle.FOOT),
+                new RoutingTraceDependantSpeed<>(environment, node, reaction, Vehicle.FOOT),
+                new FollowTrace<>(environment, node, reaction));
+    }
+
+    @Override
+    public GPSTraceWalker<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r) {
+        return new GPSTraceWalker<>(getEnvironment(), n, r);
+    }
 
 }
