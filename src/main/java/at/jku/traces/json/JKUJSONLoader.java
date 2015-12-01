@@ -8,20 +8,22 @@
  */
 package at.jku.traces.json;
 
-import it.unibo.alchemist.model.interfaces.IGPSTrace;
-import it.unibo.alchemist.utils.L;
-
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.danilopianini.io.FileUtilities;
 
+import com.google.common.base.Charsets;
 import com.google.gson.Gson;
+
+import it.unibo.alchemist.model.interfaces.IGPSTrace;
+import it.unibo.alchemist.utils.L;
 
 /**
  */
@@ -42,7 +44,7 @@ public final class JKUJSONLoader implements Serializable {
      *             if there is an I/O error
      */
     public static <C> List<C> loadJsonObjects(final File f, final Class<C> c) throws IOException {
-        try (final BufferedReader in = new BufferedReader(new FileReader(f))) {
+        try (final BufferedReader in = new BufferedReader(new InputStreamReader(new FileInputStream(f), Charsets.UTF_8))) {
             final List<C> res = new ArrayList<>();
             while (in.ready()) {
                 final C el = GSON.fromJson(in.readLine(), c);
