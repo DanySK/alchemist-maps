@@ -26,6 +26,8 @@ import org.junit.Test;
 
 import com.google.common.collect.Lists;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+
 
 /**
  */
@@ -56,6 +58,8 @@ public class TestTargetWalker {
      * @throws IOException if test fails
      */
     @SuppressWarnings("unchecked")
+    @SuppressFBWarnings(value = {"DMI_HARDCODED_ABSOLUTE_FILENAME", "SIC_INNER_SHOULD_BE_STATIC_ANON"},
+        justification = "It is a resource path, not an absolute pathname.")
     @Before
     public void setUp() throws ClassNotFoundException, IOException {
         try {
