@@ -78,6 +78,21 @@ public final class LatLongPosition implements IPosition {
      *            the first point.
      * @param point2
      *            the second point.
+     * @param df
+     *            the formula to use to compute distances
+     * @return the distance in the chosen unit of measure.
+     */
+    public static double distance(final LatLng point1, final LatLng point2, final DistanceFormula df) {
+        return distanceInRadians(point1, point2, df) * EARTH_MEAN_RADIUS_METERS;
+    }
+
+    /**
+     * Distance between two points with arbitrary {@link LengthUnit}.
+     * 
+     * @param point1
+     *            the first point.
+     * @param point2
+     *            the second point.
      * @param unit
      *            the unit of measure in which to receive the result.
      * @param df
@@ -85,7 +100,7 @@ public final class LatLongPosition implements IPosition {
      * @return the distance in the chosen unit of measure.
      */
     public static double distance(final LatLng point1, final LatLng point2, final LengthUnit unit, final DistanceFormula df) {
-        return distanceInRadians(point1, point2, df) * EARTH_MEAN_RADIUS_METERS;
+        return LengthUnit.METER.convertTo(unit, distance(point1, point2, df));
     }
 
     /**
@@ -277,12 +292,12 @@ public final class LatLongPosition implements IPosition {
     @Override
     public double getDistanceTo(final IPosition p) {
         if (p instanceof LatLongPosition) {
-            return distance(latlng, ((LatLongPosition) p).latlng, LengthUnit.METER, df);
+            return distance(latlng, ((LatLongPosition) p).latlng, df);
         }
         final int pDims = p.getDimensions();
         if (pDims == 2) {
             final double[] coords = p.getCartesianCoordinates();
-            return distance(latlng, new LatLng(coords[1], coords[0]), LengthUnit.METER, df);
+            return distance(latlng, new LatLng(coords[1], coords[0]), df);
         }
         throw new UncomparableDistancesException(this, p);
     }
