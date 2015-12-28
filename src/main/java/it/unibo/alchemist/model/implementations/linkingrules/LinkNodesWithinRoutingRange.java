@@ -14,20 +14,20 @@ import java.util.Collections;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import it.unibo.alchemist.model.implementations.neighborhoods.Neighborhood;
-import it.unibo.alchemist.model.interfaces.IEnvironment;
-import it.unibo.alchemist.model.interfaces.ILinkingRule;
+import it.unibo.alchemist.model.implementations.neighborhoods.CachedNeighborhood;
+import it.unibo.alchemist.model.interfaces.Environment;
+import it.unibo.alchemist.model.interfaces.LinkingRule;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.INeighborhood;
-import it.unibo.alchemist.model.interfaces.INode;
+import it.unibo.alchemist.model.interfaces.Neighborhood;
+import it.unibo.alchemist.model.interfaces.Node;
 
 /**
  * @param <T>
  */
-public class LinkNodesWithinRoutingRange<T> implements ILinkingRule<T> {
+public class LinkNodesWithinRoutingRange<T> implements LinkingRule<T> {
 
     private static final long serialVersionUID = 726751817489962367L;
-    private final Collection<INode<T>> emptyList = Collections.unmodifiableCollection(new ArrayList<INode<T>>(0));
+    private final Collection<Node<T>> emptyList = Collections.unmodifiableCollection(new ArrayList<Node<T>>(0));
     private final double range;
 
     /**
@@ -38,14 +38,14 @@ public class LinkNodesWithinRoutingRange<T> implements ILinkingRule<T> {
     }
 
     @Override
-    public INeighborhood<T> computeNeighborhood(final INode<T> center, final IEnvironment<T> env) {
+    public Neighborhood<T> computeNeighborhood(final Node<T> center, final Environment<T> env) {
         if (env instanceof IMapEnvironment<?>) {
             final IMapEnvironment<T> menv = (IMapEnvironment<T>) env;
-            final Stream<INode<T>> stream = menv.getNodesWithinRange(center, range).parallelStream();
-            final Collection<INode<T>> filtered = stream.filter(node -> menv.computeRoute(center, node).getDistance() < range).collect(Collectors.toList());
-            return new Neighborhood<>(center, filtered, menv);
+            final Stream<Node<T>> stream = menv.getNodesWithinRange(center, range).parallelStream();
+            final Collection<Node<T>> filtered = stream.filter(node -> menv.computeRoute(center, node).getDistance() < range).collect(Collectors.toList());
+            return new CachedNeighborhood<>(center, filtered, menv);
         }
-        return new Neighborhood<>(center, emptyList, env);
+        return new CachedNeighborhood<>(center, emptyList, env);
     }
 
 }

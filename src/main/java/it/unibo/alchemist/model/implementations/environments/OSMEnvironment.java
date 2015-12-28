@@ -10,17 +10,15 @@ package it.unibo.alchemist.model.implementations.environments;
 
 import gnu.trove.map.TIntObjectMap;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import it.unibo.alchemist.Global;
 import it.unibo.alchemist.model.implementations.GraphHopperRoute;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
 import it.unibo.alchemist.model.interfaces.IGPSTrace;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.IRoute;
-import it.unibo.alchemist.model.interfaces.ITime;
+import it.unibo.alchemist.model.interfaces.Time;
 import it.unibo.alchemist.model.interfaces.Vehicle;
-import it.unibo.alchemist.utils.L;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -39,6 +37,8 @@ import org.apache.commons.lang3.tuple.ImmutableTriple;
 import org.apache.commons.lang3.tuple.Triple;
 import org.danilopianini.concurrency.FastReadWriteLock;
 import org.danilopianini.io.FileUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
@@ -91,18 +91,26 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
      * The default value for the discard of nodes too far from streets option.
      */
     public static final boolean DEFAULT_FORCE_STREETS = true;
-
+    private static final int ENCODING_BASE = 36;
     private static final int ROUTES_CACHE_SIZE = 10000;
-
     private static final String MONITOR = "MapDisplay";
+    private static final Logger L = LoggerFactory.getLogger(OSMEnvironment.class);
     private static final long serialVersionUID = -8100726226966471621L;
+    /**
+     * System file separator.
+     */
+    private static final String SLASH = System.getProperty("file.separator");
+    /**
+     * Alchemist's temp dir.
+     */
+    private static final String PERSISTENTPATH = System.getProperty("user.home") + SLASH + ".alchemist";
 
     private final String mapResource;
     private final TIntObjectMap<IGPSTrace> traces = new TIntObjectHashMap<>();
     private final boolean forceStreets, onlyStreet;
     private transient FastReadWriteLock mapLock;
     private transient Map<Vehicle, GraphHopper> navigators;
-    private transient LoadingCache<Triple<Vehicle, IPosition, IPosition>, IRoute> routecache;
+    private transient LoadingCache<Triple<Vehicle, Position, Position>, IRoute> routecache;
 
     /**
      * @param file
@@ -124,7 +132,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
      *            the file path where the map data is stored
      * @param onStreets
      *            if true, the nodes will be placed on the street nearest to the
-     *            desired {@link IPosition}. This setting is automatically
+     *            desired {@link Position}. This setting is automatically
      *            overridden if GPS traces are used, and a matching trace id is
      *            available for the node.
      * @param onlyOnStreets
@@ -203,7 +211,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
      *            the minimum time to consider when using the trace
      * @param onStreets
      *            if true, the nodes will be placed on the street nearest to the
-     *            desired {@link IPosition}. This setting is automatically
+     *            desired {@link Position}. This setting is automatically
      *            overridden if GPS traces are used, and a matching trace id is
      *            available for the node.
      * @param onlyOnStreets
@@ -243,7 +251,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
                 }
             }
             if (!useIds) {
-                L.log("Traces available for " + idgen + " nodes.");
+                L.info("Traces available for " + idgen + " nodes.");
             }
         }
         forceStreets = onStreets;
@@ -275,7 +283,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
         final boolean processOK = Arrays.stream(Vehicle.values())//.parallel()
             .map((v) -> {
                 try {
-                    final String internalWorkdir = workdir + Global.SLASH + v;
+                    final String internalWorkdir = workdir + SLASH + v;
                     final File iwdf = new File(internalWorkdir);
                     if (mkdirsIfNeeded(iwdf)) {
                         final GraphHopper gh = new GraphHopper().forDesktop();
@@ -289,9 +297,9 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
                         return true;
                     }
                 } catch (final Exception e) {
-                    L.warn(e);
+                    L.warn("", e);
                 }
-                L.warn("Unable to initialize navigation data for " + v);
+                L.warn("Unable to initialize navigation data for {}", v);
                 return false;
             })
             .reduce((a, b) -> a && b).orElse(false);
@@ -301,10 +309,10 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
     }
 
     private String initDir(final File mapfile) throws IOException {
-        final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), Global.ENCODING_BASE);
-        final String append = Global.SLASH + mapfile.getName() + code;
+        final String code = Long.toString(FileUtilities.fileCRC32sum(mapfile), ENCODING_BASE);
+        final String append = SLASH + mapfile.getName() + code;
         final String[] prefixes = new String[] {
-                Global.PERSISTENTPATH,
+                PERSISTENTPATH,
                 System.getProperty("java.io.tmpdir"),
                 System.getProperty("user.dir"),
                 "."};
@@ -323,28 +331,28 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
     }
 
     @Override
-    public IRoute computeRoute(final INode<T> node, final INode<T> node2) {
+    public IRoute computeRoute(final Node<T> node, final Node<T> node2) {
         return computeRoute(node, getPosition(node2));
     }
 
     @Override
-    public IRoute computeRoute(final IPosition p1, final IPosition p2) {
+    public IRoute computeRoute(final Position p1, final Position p2) {
         return computeRoute(p1, p2, DEFAULT_VEHICLE);
     }
 
     @Override
-    public IRoute computeRoute(final IPosition p1, final IPosition p2, final Vehicle vehicle) {
+    public IRoute computeRoute(final Position p1, final Position p2, final Vehicle vehicle) {
         if (routecache == null) {
             routecache = CacheBuilder
                 .newBuilder()
                 .maximumSize(ROUTES_CACHE_SIZE)
                 .expireAfterAccess(10, TimeUnit.MINUTES)
-                .build(new CacheLoader<Triple<Vehicle, IPosition, IPosition>, IRoute>() {
+                .build(new CacheLoader<Triple<Vehicle, Position, Position>, IRoute>() {
                     @Override
-                    public IRoute load(final Triple<Vehicle, IPosition, IPosition> key) {
+                    public IRoute load(final Triple<Vehicle, Position, Position> key) {
                         final Vehicle vehicle = key.getLeft();
-                        final IPosition p1 = key.getMiddle();
-                        final IPosition p2 = key.getRight();
+                        final Position p1 = key.getMiddle();
+                        final Position p2 = key.getRight();
                         final GHRequest req = new GHRequest(p1.getCoordinate(1), p1.getCoordinate(0), p2.getCoordinate(1), p2.getCoordinate(0))
                                 .setAlgorithm(DEFAULT_ALGORITHM)
                                 .setVehicle(vehicle.toString())
@@ -363,22 +371,22 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
         try {
             return routecache.get(new ImmutableTriple<>(vehicle, p1, p2));
         } catch (ExecutionException e) {
-            L.error(e);
-            throw new IllegalStateException("The navigator was unable to compute a route from " + p1 + " to " + p2 + " using the navigator " + vehicle + ". This is most likely a bug");
+            L.error("", e);
+            throw new IllegalStateException("The navigator was unable to compute a route from " + p1 + " to " + p2 + " using the navigator " + vehicle + ". This is most likely a bug", e);
         }
     }
 
     @Override
-    public IRoute computeRoute(final INode<T> node, final IPosition coord) {
+    public IRoute computeRoute(final Node<T> node, final Position coord) {
         return computeRoute(node, coord, DEFAULT_VEHICLE);
     }
 
     @Override
-    public IRoute computeRoute(final INode<T> node, final IPosition coord, final Vehicle vehicle) {
+    public IRoute computeRoute(final Node<T> node, final Position coord, final Vehicle vehicle) {
         return computeRoute(getPosition(node), coord, vehicle);
     }
 
-    private Optional<IPosition> getNearestStreetPoint(final IPosition position) {
+    private Optional<Position> getNearestStreetPoint(final Position position) {
         assert position != null;
         mapLock.read();
         final GraphHopper gh = navigators.get(Vehicle.BIKE);
@@ -430,7 +438,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
      * navigation engine can not resolve any such position.
      */
     @Override
-    protected boolean nodeShouldBeAdded(final INode<T> node, final IPosition position) {
+    protected boolean nodeShouldBeAdded(final Node<T> node, final Position position) {
         assert node != null;
         return traces.containsKey(node.getId())
                 || !onlyStreet
@@ -438,7 +446,7 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
     }
 
     @Override
-    protected IPosition computeActualInsertionPosition(final INode<T> node, final IPosition position) {
+    protected Position computeActualInsertionPosition(final Node<T> node, final Position position) {
         final IGPSTrace trace = traces.get(node.getId());
         if (trace == null) {
             /*
@@ -450,41 +458,41 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
             return forceStreets ? getNearestStreetPoint(position).orElse(position) : position;
         }
         assert trace.getPreviousPosition(0) != null;
-        assert trace.getPreviousPosition(0).toIPosition() != null;
-        return trace.getPreviousPosition(0).toIPosition();
+        assert trace.getPreviousPosition(0).toPosition() != null;
+        return trace.getPreviousPosition(0).toPosition();
     }
 
     @Override
-    public IPosition getNextPosition(final INode<T> node, final ITime time) {
+    public Position getNextPosition(final Node<T> node, final Time time) {
         final IGPSTrace trace = traces.get(node.getId());
         if (trace == null) {
             return getPosition(node);
         }
         assert trace.getNextPosition(time.toDouble()) != null;
-        return trace.getNextPosition(time.toDouble()).toIPosition();
+        return trace.getNextPosition(time.toDouble()).toPosition();
     }
 
     @Override
-    public IPosition getPreviousPosition(final INode<T> node, final ITime time) {
+    public Position getPreviousPosition(final Node<T> node, final Time time) {
         final IGPSTrace trace = traces.get(node.getId());
         if (trace == null) {
             return getPosition(node);
         }
         assert trace.getPreviousPosition(time.toDouble()) != null;
-        return trace.getPreviousPosition(time.toDouble()).toIPosition();
+        return trace.getPreviousPosition(time.toDouble()).toPosition();
     }
 
     @Override
-    public IPosition getExpectedPosition(final INode<T> node, final ITime time) {
+    public Position getExpectedPosition(final Node<T> node, final Time time) {
         final IGPSTrace trace = traces.get(node.getId());
         if (trace == null) {
             return getPosition(node);
         }
-        return trace.interpolate(time.toDouble()).toIPosition();
+        return trace.interpolate(time.toDouble()).toPosition();
     }
 
     @Override
-    public IGPSTrace getTrace(final INode<T> node) {
+    public IGPSTrace getTrace(final Node<T> node) {
         return traces.get(node.getId());
     }
 

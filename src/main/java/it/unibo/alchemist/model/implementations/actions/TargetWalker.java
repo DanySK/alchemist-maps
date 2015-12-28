@@ -3,15 +3,15 @@
  */
 package it.unibo.alchemist.model.implementations.actions;
 
-import it.unibo.alchemist.model.implementations.molecules.Molecule;
+import it.unibo.alchemist.model.implementations.molecules.SimpleMolecule;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
 import it.unibo.alchemist.model.implementations.strategies.routing.OnStreets;
 import it.unibo.alchemist.model.implementations.strategies.speed.InteractWithOthers;
 import it.unibo.alchemist.model.implementations.strategies.target.FollowTarget;
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.IMolecule;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IReaction;
+import it.unibo.alchemist.model.interfaces.Molecule;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Reaction;
 import it.unibo.alchemist.model.interfaces.Vehicle;
 
 /**
@@ -42,7 +42,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -50,7 +50,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -68,8 +68,8 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the range in which searching for possible obstacles. Obstacles
      *            slow down the {@link MoveOnMap}
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-            final IMolecule trackMolecule, final IMolecule interactingMolecule, final double speed, final double interaction,
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
+            final Molecule trackMolecule, final Molecule interactingMolecule, final double speed, final double interaction,
             final double range) {
         super(environment, node,
                 new OnStreets<>(environment, Vehicle.FOOT),
@@ -84,7 +84,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -92,7 +92,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -105,8 +105,8 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the speed at which this {@link MoveOnMap} will move
      *            when obstacles are found
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-            final IMolecule trackMolecule, final IMolecule interactingMolecule, final double speed) {
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
+            final Molecule trackMolecule, final Molecule interactingMolecule, final double speed) {
         this(environment, node, reaction, trackMolecule, interactingMolecule, speed, DEFAULT_INTERACTION, DEFAULT_RANGE);
     }
 
@@ -117,7 +117,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -125,7 +125,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -135,8 +135,8 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            "interacting" if such molecule is present, regardless its
      *            value.
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
-            final IMolecule trackMolecule, final IMolecule interactingMolecule) {
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
+            final Molecule trackMolecule, final Molecule interactingMolecule) {
         this(environment, node, reaction, trackMolecule, interactingMolecule, DEFAULT_SPEED);
     }
 
@@ -147,7 +147,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -155,7 +155,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -173,10 +173,10 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the range in which searching for possible obstacles. Obstacles
      *            slow down the {@link MoveOnMap}
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
             final String trackMolecule, final String interactingMolecule, final double speed, final double interaction,
             final double range) {
-        this(environment, node, reaction, new Molecule(trackMolecule), new Molecule(interactingMolecule), speed, interaction, range);
+        this(environment, node, reaction, new SimpleMolecule(trackMolecule), new SimpleMolecule(interactingMolecule), speed, interaction, range);
     }
 
     /**
@@ -186,7 +186,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -194,7 +194,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -206,7 +206,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      * @param speed
      *            the speed at which this {@link MoveOnMap} will move
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
             final String trackMolecule, final String interactingMolecule, final double speed) {
         this(environment, node, reaction, trackMolecule, interactingMolecule, speed, DEFAULT_INTERACTION, DEFAULT_RANGE);
     }
@@ -218,7 +218,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            the node
      * @param reaction
      *            the reaction. Will be used to compute the distance to walk in
-     *            every step, relying on {@link IReaction}'s getRate() method.
+     *            every step, relying on {@link Reaction}'s getRate() method.
      * @param trackMolecule
      *            the molecule to track. Its value will be read when it is time
      *            to compute a new target. If it is a {@link LatLongPosition},
@@ -226,7 +226,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            two values (if they are present and they are numbers, or
      *            Strings parse-able to numbers) will be used to create a new
      *            {@link LatLongPosition}. Otherwise, the {@link Object} bound
-     *            to this {@link IMolecule} will be converted to a String, and
+     *            to this {@link Molecule} will be converted to a String, and
      *            the String will be parsed using the float regular expression
      *            matcher in Javalib.
      * @param interactingMolecule
@@ -236,7 +236,7 @@ public class TargetWalker<T> extends MoveOnMap<T> {
      *            "interacting" if such molecule is present, regardless its
      *            value.
      */
-    public TargetWalker(final IMapEnvironment<T> environment, final INode<T> node, final IReaction<T> reaction,
+    public TargetWalker(final IMapEnvironment<T> environment, final Node<T> node, final Reaction<T> reaction,
             final String trackMolecule, final String interactingMolecule) { 
         this(environment, node, reaction, trackMolecule, interactingMolecule, DEFAULT_SPEED);
     }

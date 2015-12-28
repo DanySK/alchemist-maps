@@ -5,7 +5,7 @@ package it.unibo.alchemist.model.interfaces.strategies;
 
 import java.io.Serializable;
 
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.IRoute;
 
 /**
@@ -19,10 +19,10 @@ public interface RoutingStrategy<T> extends Serializable {
     /**
      * Computes a route between two positions.
      * 
-     * @param currentPos starting {@link IPosition}
-     * @param finalPos ending {@link IPosition}
+     * @param currentPos starting {@link Position}
+     * @param finalPos ending {@link Position}
      * @return a {@link IRoute} connecting the two points
      */
-    IRoute computeRoute(IPosition currentPos, IPosition finalPos);
+    IRoute computeRoute(Position currentPos, Position finalPos);
 
 }

@@ -11,7 +11,7 @@ package it.unibo.alchemist.model.interfaces;
 /**
  * @param <T>
  */
-public interface IMapEnvironment<T> extends IEnvironment<T> {
+public interface IMapEnvironment<T> extends Environment<T> {
 
     /**
      * The default vehicle.
@@ -21,7 +21,7 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
     /**
      * This method relies on the map data, and computes a route towards some
      * absolute coordinate solving a TSP problem. It's up to the specific
-     * {@link IAction} calling this method to effectively move nodes along the
+     * {@link Action} calling this method to effectively move nodes along the
      * path. It uses the fastest path as metric.
      * 
      * @param node
@@ -31,12 +31,12 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
      * @return A {@link IRoute} object describing the path the node should
      *         follow
      */
-    IRoute computeRoute(INode<T> node, INode<T> node2);
+    IRoute computeRoute(Node<T> node, Node<T> node2);
 
     /**
      * This method relies on the map data, and computes a route towards some
      * absolute coordinate solving a TSP problem. It's up to the specific
-     * {@link IAction} calling this method to effectively move nodes along the
+     * {@link Action} calling this method to effectively move nodes along the
      * path.
      * 
      * @param p1
@@ -52,12 +52,12 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
      * @return A {@link IRoute} object describing the path the node should
      *         follow
      */
-    IRoute computeRoute(IPosition p1, IPosition p2, final Vehicle vehicle);
+    IRoute computeRoute(Position p1, Position p2, final Vehicle vehicle);
 
     /**
      * This method relies on the map data, and computes a route towards some
      * absolute coordinate solving a TSP problem. It's up to the specific
-     * {@link IAction} calling this method to effectively move nodes along the
+     * {@link Action} calling this method to effectively move nodes along the
      * path.
      * 
      * @param p1
@@ -69,31 +69,31 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
      * @return A {@link IRoute} object describing the path the node should
      *         follow
      */
-    IRoute computeRoute(IPosition p1, IPosition p2);
+    IRoute computeRoute(Position p1, Position p2);
 
     /**
      * This method relies on the map data, and computes a route towards some
      * absolute coordinate solving a TSP problem. It's up to the specific
-     * {@link IAction} calling this method to effectively move nodes along the
+     * {@link Action} calling this method to effectively move nodes along the
      * path.
      * 
      * @param node
-     *            The {@link INode} to move
+     *            The {@link Node} to move
      * @param coord
      *            The absolute coordinate where this node wants to move to
      * @return A {@link IRoute} object describing the path the node should
      *         follow
      */
-    IRoute computeRoute(INode<T> node, IPosition coord);
+    IRoute computeRoute(Node<T> node, Position coord);
 
     /**
      * This method relies on the map data, and computes a route towards some
      * absolute coordinate solving a TSP problem. It's up to the specific
-     * {@link IAction} calling this method to effectively move nodes along the
+     * {@link Action} calling this method to effectively move nodes along the
      * path.
      * 
      * @param node
-     *            The {@link INode} to move
+     *            The {@link Node} to move
      * @param coord
      *            The absolute coordinate where this node wants to move to
      * @param vehicle
@@ -101,39 +101,39 @@ public interface IMapEnvironment<T> extends IEnvironment<T> {
      * @return A {@link IRoute} object describing the path the node should
      *         follow
      */
-    IRoute computeRoute(INode<T> node, IPosition coord, Vehicle vehicle);
+    IRoute computeRoute(Node<T> node, Position coord, Vehicle vehicle);
 
     /**
      * Works only if the node is associated with a {@link IGPSTrace}.
      * 
-     * @param node the {@link INode}
+     * @param node the {@link Node}
      * @param time the time
      * @return the position immediately after time in the {@link IGPSTrace}
      */
-    IPosition getNextPosition(INode<T> node, ITime time);
+    Position getNextPosition(Node<T> node, Time time);
 
     /**
      * Works only if the node is associated with a {@link IGPSTrace}.
      * 
-     * @param node the {@link INode}
+     * @param node the {@link Node}
      * @param time the time
      * @return the position immediately before time in the {@link IGPSTrace}
      */
-    IPosition getPreviousPosition(INode<T> node, ITime time);
+    Position getPreviousPosition(Node<T> node, Time time);
 
     /**
      * Works only if the node is associated with a {@link IGPSTrace}.
      * 
-     * @param node the {@link INode}
+     * @param node the {@link Node}
      * @param time the time
      * @return interpolates the position immediately before and the one immediately after time in the {@link IGPSTrace}
      */
-    IPosition getExpectedPosition(INode<T> node, ITime time);
+    Position getExpectedPosition(Node<T> node, Time time);
 
     /**
      * Works only if the node is associated with a {@link IGPSTrace}.
-     * @param node the {@link INode}
+     * @param node the {@link Node}
      * @return the associated {@link IGPSTrace}
      */
-    IGPSTrace getTrace(INode<T> node);
+    IGPSTrace getTrace(Node<T> node);
 }

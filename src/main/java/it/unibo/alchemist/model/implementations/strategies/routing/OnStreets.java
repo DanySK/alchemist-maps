@@ -1,7 +1,7 @@
 package it.unibo.alchemist.model.implementations.strategies.routing;
 
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.IRoute;
 import it.unibo.alchemist.model.interfaces.Vehicle;
 import it.unibo.alchemist.model.interfaces.strategies.RoutingStrategy;
@@ -30,7 +30,7 @@ public class OnStreets<T> implements RoutingStrategy<T> {
     }
 
     @Override
-    public IRoute computeRoute(final IPosition currentPos, final IPosition finalPos) {
+    public IRoute computeRoute(final Position currentPos, final Position finalPos) {
         return env.computeRoute(currentPos, finalPos, vehicle);
     }
 

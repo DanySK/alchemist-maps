@@ -13,7 +13,7 @@ import org.danilopianini.lang.HashUtils;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
 import it.unibo.alchemist.model.interfaces.IGPSPoint;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 
 /**
  */
@@ -74,7 +74,7 @@ public class GPSPoint implements IGPSPoint {
     }
 
     @Override
-    public IPosition toIPosition() {
+    public Position toPosition() {
         return new LatLongPosition(la, lo);
     }
 

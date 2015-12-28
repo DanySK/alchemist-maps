@@ -2,10 +2,10 @@ package it.unibo.alchemist.model.implementations.strategies.target;
 
 import static org.danilopianini.lang.RegexUtil.FLOAT_PATTERN;
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.interfaces.IEnvironment;
-import it.unibo.alchemist.model.interfaces.IMolecule;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Environment;
+import it.unibo.alchemist.model.interfaces.Molecule;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.strategies.TargetSelectionStrategy;
 
 import java.util.Iterator;
@@ -20,9 +20,9 @@ import java.util.regex.Matcher;
 public class FollowTarget<T> implements TargetSelectionStrategy<T> {
 
     private static final long serialVersionUID = -446053307821810437L;
-    private final IEnvironment<T> environment;
-    private final INode<T> node;
-    private final IMolecule track;
+    private final Environment<T> environment;
+    private final Node<T> node;
+    private final Molecule track;
 
     /**
      * @param env
@@ -32,18 +32,18 @@ public class FollowTarget<T> implements TargetSelectionStrategy<T> {
      * @param targetMolecule
      *            the target molecule
      */
-    public FollowTarget(final IEnvironment<T> env, final INode<T> n, final IMolecule targetMolecule) {
+    public FollowTarget(final Environment<T> env, final Node<T> n, final Molecule targetMolecule) {
         environment = env;
         node = n;
         track = targetMolecule;
     }
 
-    private IPosition getCurrentPosition() {
+    private Position getCurrentPosition() {
         return environment.getPosition(node);
     }
 
     @Override
-    public IPosition getNextTarget() {
+    public Position getNextTarget() {
         final Optional<T> optt = Optional.ofNullable(node.getConcentration(track));
         if (optt.isPresent()) {
             final T conc = optt.get();

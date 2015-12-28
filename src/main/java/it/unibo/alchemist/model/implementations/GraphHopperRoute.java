@@ -9,7 +9,7 @@
 package it.unibo.alchemist.model.implementations;
 
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.IRoute;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class GraphHopperRoute implements IRoute {
     private static final long serialVersionUID = -1455332156736222268L;
     private final int size;
     private final double distance, time;
-    private final List<IPosition> points;
+    private final List<Position> points;
 
     /**
      * @param resp
@@ -37,7 +37,7 @@ public class GraphHopperRoute implements IRoute {
         distance = resp.getDistance();
         final PointList pts = resp.getPoints();
         size = pts.getSize();
-        final List<IPosition> temp = new ArrayList<>(size);
+        final List<Position> temp = new ArrayList<>(size);
         for (int i = 0; i < pts.getSize(); i++) {
             temp.add(new LatLongPosition(pts.getLatitude(i), pts.getLongitude(i)));
         }
@@ -50,12 +50,12 @@ public class GraphHopperRoute implements IRoute {
     }
 
     @Override
-    public IPosition getPoint(final int step) {
+    public Position getPoint(final int step) {
         return points.get(step);
     }
 
     @Override
-    public List<IPosition> getPoints() {
+    public List<Position> getPoints() {
         return points;
     }
 

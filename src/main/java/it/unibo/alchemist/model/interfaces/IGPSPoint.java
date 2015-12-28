@@ -38,8 +38,8 @@ public interface IGPSPoint extends Serializable, Comparable<IGPSPoint> {
     void setTime(double t);
 
     /**
-     * @return a new {@link IPosition} representation of this {@link GPSPoint}
+     * @return a new {@link Position} representation of this {@link GPSPoint}
      */
-    IPosition toIPosition();
+    Position toPosition();
 
 }

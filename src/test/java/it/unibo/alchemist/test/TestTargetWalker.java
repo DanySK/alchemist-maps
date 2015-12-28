@@ -2,23 +2,8 @@ package it.unibo.alchemist.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-import it.unibo.alchemist.model.implementations.actions.TargetWalker;
-import it.unibo.alchemist.model.implementations.environments.OSMEnvironment;
-import it.unibo.alchemist.model.implementations.linkingrules.NoLinks;
-import it.unibo.alchemist.model.implementations.molecules.Molecule;
-import it.unibo.alchemist.model.implementations.nodes.GenericNode;
-import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.implementations.probabilitydistributions.DiracComb;
-import it.unibo.alchemist.model.implementations.reactions.Event;
-import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.IMolecule;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
-import it.unibo.alchemist.model.interfaces.IReaction;
-import it.unibo.alchemist.utils.L;
 
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.stream.IntStream;
 
 import org.junit.Before;
@@ -27,6 +12,19 @@ import org.junit.Test;
 import com.google.common.collect.Lists;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import it.unibo.alchemist.model.implementations.actions.TargetWalker;
+import it.unibo.alchemist.model.implementations.environments.OSMEnvironment;
+import it.unibo.alchemist.model.implementations.linkingrules.NoLinks;
+import it.unibo.alchemist.model.implementations.molecules.SimpleMolecule;
+import it.unibo.alchemist.model.implementations.nodes.GenericNode;
+import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
+import it.unibo.alchemist.model.implementations.probabilitydistributions.DiracComb;
+import it.unibo.alchemist.model.implementations.reactions.Event;
+import it.unibo.alchemist.model.interfaces.IMapEnvironment;
+import it.unibo.alchemist.model.interfaces.Molecule;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Position;
+import it.unibo.alchemist.model.interfaces.Reaction;
 
 
 /**
@@ -34,8 +32,8 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 public class TestTargetWalker {
 
     private static final String TESTMAP = "/maps/cesena.pbf";
-    private static final IMolecule TRACK = new Molecule("track");
-    private static final IMolecule INTERACTING = new Molecule("interacting");
+    private static final Molecule TRACK = new SimpleMolecule("track");
+    private static final Molecule INTERACTING = new SimpleMolecule("interacting");
     private static final int STEPS = 2000;
     private static final double STARTLAT = 44.13581;
     private static final double STARTLON = 12.2403;
@@ -44,14 +42,14 @@ public class TestTargetWalker {
     /*
      * Rocca Malatestiana
      */
-    private static final IPosition STARTPOSITION = new LatLongPosition(STARTLAT, STARTLON);
+    private static final Position STARTPOSITION = new LatLongPosition(STARTLAT, STARTLON);
     /*
      * Near Montefiore
      */
-    private static final IPosition ENDPOSITION = new LatLongPosition(ENDLAT, ENDLON);
+    private static final Position ENDPOSITION = new LatLongPosition(ENDLAT, ENDLON);
     private IMapEnvironment<Object> env;
-    private INode<Object> node;
-    private IReaction<Object> reaction;
+    private Node<Object> node;
+    private Reaction<Object> reaction;
 
     /**
      * @throws ClassNotFoundException if test fails
@@ -63,7 +61,6 @@ public class TestTargetWalker {
     @Before
     public void setUp() throws ClassNotFoundException, IOException {
         try {
-            L.setLoggingLevel(Level.ALL);
             env = new OSMEnvironment<>(TESTMAP, true, true);
             env.setLinkingRule(new NoLinks<>());
             node = new GenericNode<Object>(true) {
@@ -78,7 +75,6 @@ public class TestTargetWalker {
             node.addReaction(reaction);
             env.addNode(node, STARTPOSITION);
         } catch (IllegalStateException e) {
-            L.error(e);
             fail(e.getMessage());
         }
     }
@@ -95,7 +91,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testNoPosition() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -111,8 +107,8 @@ public class TestTargetWalker {
      * 
      */
     @Test
-    public void testIPosition() {
-        final IPosition start = env.getPosition(node);
+    public void testPosition() {
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -130,7 +126,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testIterableDouble() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -148,7 +144,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testIterableStrings() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -166,7 +162,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testStrings01() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -184,7 +180,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testStrings02() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -202,7 +198,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testStrings03() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */
@@ -220,7 +216,7 @@ public class TestTargetWalker {
      */
     @Test
     public void testStrings04() {
-        final IPosition start = env.getPosition(node);
+        final Position start = env.getPosition(node);
         /*
          * Should not be more than 10 meters afar the suggested start
          */

@@ -23,14 +23,14 @@ public interface IRoute extends Serializable {
     /**
      * @param step
      *            the step
-     * @return the step-th {@link IPosition} in the route
+     * @return the step-th {@link Position} in the route
      */
-    IPosition getPoint(int step);
+    Position getPoint(int step);
 
     /**
-     * @return the route as list of {@link IPosition}
+     * @return the route as list of {@link Position}
      */
-    List<IPosition> getPoints();
+    List<Position> getPoints();
 
     /**
      * @return the number of points this route is made of

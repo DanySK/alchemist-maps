@@ -1,15 +1,15 @@
 package it.unibo.alchemist.model.implementations.strategies.speed;
 
-import it.unibo.alchemist.model.interfaces.IAction;
-import it.unibo.alchemist.model.interfaces.IPosition;
-import it.unibo.alchemist.model.interfaces.IReaction;
+import it.unibo.alchemist.model.interfaces.Action;
+import it.unibo.alchemist.model.interfaces.Position;
+import it.unibo.alchemist.model.interfaces.Reaction;
 import it.unibo.alchemist.model.interfaces.TimeDistribution;
 import it.unibo.alchemist.model.interfaces.strategies.SpeedSelectionStrategy;
 
 /**
  * This strategy makes the node move at an average constant speed, which is
- * influenced by the {@link TimeDistribution} of the {@link IReaction} hosting
- * this {@link IAction}. This action tries to normalize on the {@link IReaction}
+ * influenced by the {@link TimeDistribution} of the {@link Reaction} hosting
+ * this {@link Action}. This action tries to normalize on the {@link Reaction}
  * rate, but if the {@link TimeDistribution} has a high variance, the movements
  * on the map will inherit this tract.
  * 
@@ -26,13 +26,13 @@ public class ConstantSpeed<T> implements SpeedSelectionStrategy<T> {
      * @param speed
      *            the speed, in meters/second
      */
-    public ConstantSpeed(final IReaction<T> reaction, final double speed) {
+    public ConstantSpeed(final Reaction<T> reaction, final double speed) {
         assert speed > 0 : "Speed must be positive.";
         sp = speed / reaction.getRate();
     }
 
     @Override
-    public double getCurrentSpeed(final IPosition target) {
+    public double getCurrentSpeed(final Position target) {
         return sp;
     }
 
