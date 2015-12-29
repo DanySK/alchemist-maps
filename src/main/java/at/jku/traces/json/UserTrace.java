@@ -10,7 +10,7 @@ package at.jku.traces.json;
 
 import it.unibo.alchemist.model.interfaces.IGPSPoint;
 import it.unibo.alchemist.model.interfaces.IGPSTrace;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.utils.MapUtils;
 
 import java.util.ArrayList;
@@ -106,8 +106,8 @@ public class UserTrace implements IGPSTrace {
             return next;
         }
         final double ratio = (time - prev.getTime()) / tdtime;
-        final IPosition start = prev.toIPosition();
-        final IPosition end = next.toIPosition();
+        final Position start = prev.toPosition();
+        final Position end = next.toPosition();
         final double dist = MapUtils.getDistance(start, end);
         return new GPSPoint(MapUtils.getDestinationLocation(start, end, dist * ratio), time);
     }

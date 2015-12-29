@@ -9,9 +9,9 @@
 package it.unibo.alchemist.model.implementations.actions;
 
 import it.unibo.alchemist.model.interfaces.IMapEnvironment;
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
-import it.unibo.alchemist.model.interfaces.IReaction;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Position;
+import it.unibo.alchemist.model.interfaces.Reaction;
 import it.unibo.alchemist.model.interfaces.IRoute;
 import it.unibo.alchemist.model.interfaces.strategies.RoutingStrategy;
 import it.unibo.alchemist.model.interfaces.strategies.SpeedSelectionStrategy;
@@ -30,7 +30,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
      */
     public static final double MINIMUM_DISTANCE_WALKED = 1.0;
     private static final long serialVersionUID = -2268285113653315764L;
-    private IPosition end;
+    private Position end;
     private IRoute route;
     private int curStep;
     private final RoutingStrategy<T> routeStrategy;
@@ -48,7 +48,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
      * @param tg
      *            {@link TargetSelectionStrategy}
      */
-    public MoveOnMap(final IMapEnvironment<T> environment, final INode<T> node, final RoutingStrategy<T> rt, final SpeedSelectionStrategy<T> sp, final TargetSelectionStrategy<T> tg) {
+    public MoveOnMap(final IMapEnvironment<T> environment, final Node<T> node, final RoutingStrategy<T> rt, final SpeedSelectionStrategy<T> sp, final TargetSelectionStrategy<T> tg) {
         super(environment, node, true);
         routeStrategy = rt;
         speedStrategy = sp;
@@ -61,18 +61,18 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
     }
 
     @Override
-    public IPosition getNextPosition() {
-        final IPosition previousEnd = end;
+    public Position getNextPosition() {
+        final Position previousEnd = end;
         end = targetStrategy.getNextTarget();
         if (!end.equals(previousEnd)) {
             resetRoute();
         }
         double maxWalk = speedStrategy.getCurrentSpeed(end);
         final IMapEnvironment<T> env = getEnvironment();
-        final INode<T> node = getNode();
-        final IPosition curPos = env.getPosition(node);
+        final Node<T> node = getNode();
+        final Position curPos = env.getPosition(node);
         if (curPos.getDistanceTo(end) <= maxWalk) {
-            final IPosition destination = end;
+            final Position destination = end;
             end = targetStrategy.getNextTarget();
             resetRoute();
             return destination;
@@ -84,7 +84,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
             resetRoute();
             return MapUtils.getDestinationLocation(curPos, end, maxWalk);
         }
-        IPosition target = null;
+        Position target = null;
         double toWalk;
         do {
             target = route.getPoint(curStep);
@@ -106,7 +106,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
     /**
      * @return the current target
      */
-    protected final IPosition getTargetPoint() {
+    protected final Position getTargetPoint() {
         return end;
     }
 
@@ -122,7 +122,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
      * @param p
      *            the new target
      */
-    protected final void setTargetPoint(final IPosition p) {
+    protected final void setTargetPoint(final Position p) {
         end = p;
     }
 
@@ -134,7 +134,7 @@ public class MoveOnMap<T> extends AbstractMoveNode<T> {
     }
 
     @Override
-    public MoveOnMap<T> cloneOnNewNode(final INode<T> n, final IReaction<T> r) {
+    public MoveOnMap<T> cloneOnNewNode(final Node<T> n, final Reaction<T> r) {
         /*
          * Routing strategies can not be cloned at the moment.
          */

@@ -5,8 +5,8 @@ package it.unibo.alchemist.model.interfaces.strategies;
 
 import java.io.Serializable;
 
-import it.unibo.alchemist.model.interfaces.INode;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Node;
+import it.unibo.alchemist.model.interfaces.Position;
 
 /**
  * This interface models a strategy for selecting positions where to move.
@@ -17,8 +17,8 @@ import it.unibo.alchemist.model.interfaces.IPosition;
 public interface TargetSelectionStrategy<T> extends Serializable {
 
     /**
-     * @return the next target where the {@link INode} is directed
+     * @return the next target where the {@link Node} is directed
      */
-    IPosition getNextTarget();
+    Position getNextTarget();
 
 }

@@ -3,7 +3,7 @@
  */
 package it.unibo.alchemist.model.implementations;
 
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 import it.unibo.alchemist.model.interfaces.IRoute;
 
 import java.util.List;
@@ -23,10 +23,10 @@ public class PointToPointRoute implements IRoute {
      * 
      */
     private static final long serialVersionUID = -6937104566388182150L;
-    private final IPosition s, e;
+    private final Position s, e;
     private String string;
     private double dist = Double.NaN;
-    private List<IPosition> l; // Optional is not Serializable!
+    private List<Position> l; // Optional is not Serializable!
 
     /**
      * 
@@ -35,7 +35,7 @@ public class PointToPointRoute implements IRoute {
      * @param end
      *            end position
      */
-    public PointToPointRoute(final IPosition start, final IPosition end) {
+    public PointToPointRoute(final Position start, final Position end) {
         LangUtils.requireNonNull(start, end);
         s = start;
         e = end;
@@ -50,12 +50,12 @@ public class PointToPointRoute implements IRoute {
     }
 
     @Override
-    public IPosition getPoint(final int step) {
+    public Position getPoint(final int step) {
         return step <= 0 ? s : e;
     }
 
     @Override
-    public List<IPosition> getPoints() {
+    public List<Position> getPoints() {
         if (l == null) {
             l = Lists.newArrayList(s, e);
         }

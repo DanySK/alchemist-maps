@@ -18,12 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.danilopianini.io.FileUtilities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.gson.Gson;
 
 import it.unibo.alchemist.model.interfaces.IGPSTrace;
-import it.unibo.alchemist.utils.L;
 
 /**
  */
@@ -31,6 +32,7 @@ public final class JKUJSONLoader implements Serializable {
 
     private static final long serialVersionUID = 7144531714361675479L;
     private static final Gson GSON = new Gson();
+    private static final Logger L = LoggerFactory.getLogger(JKUJSONLoader.class);
 
     /**
      * @param f

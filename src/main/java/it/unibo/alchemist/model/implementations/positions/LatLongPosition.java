@@ -23,8 +23,7 @@ import java.util.List;
 import org.danilopianini.lang.HashUtils;
 
 import it.unibo.alchemist.exceptions.UncomparableDistancesException;
-import it.unibo.alchemist.model.interfaces.IPosition;
-import it.unibo.alchemist.utils.L;
+import it.unibo.alchemist.model.interfaces.Position;
 
 import com.google.common.collect.Lists;
 import com.javadocmd.simplelatlng.LatLng;
@@ -37,7 +36,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
  * {@link IPostion} interface.
  * 
  */
-public final class LatLongPosition implements IPosition {
+public final class LatLongPosition implements Position {
 
     /**
      * The default distance formula.
@@ -144,8 +143,7 @@ public final class LatLongPosition implements IPosition {
             final double y = lat2R - lat1R;
             return sqrt(x * x + y * y);
         default:
-            L.error("Big bug in " + LatLongPosition.class.getCanonicalName() + ": ");
-            return Double.NaN;
+            throw new IllegalStateException("Unknown algorithm required: " + precision);
         }
     }
 
@@ -195,7 +193,7 @@ public final class LatLongPosition implements IPosition {
     }
 
     @Override
-    public List<IPosition> buildBoundingBox(final double range) {
+    public List<Position> buildBoundingBox(final double range) {
         if (range < 0d) {
             throw new IllegalArgumentException("Negative ranges make no sense.");
         }
@@ -234,7 +232,7 @@ public final class LatLongPosition implements IPosition {
     }
 
     @Override
-    public int compareTo(final IPosition o) {
+    public int compareTo(final Position o) {
         if (getDimensions() < o.getDimensions()) {
             return -1;
         }
@@ -290,7 +288,7 @@ public final class LatLongPosition implements IPosition {
     }
 
     @Override
-    public double getDistanceTo(final IPosition p) {
+    public double getDistanceTo(final Position p) {
         if (p instanceof LatLongPosition) {
             return distance(latlng, ((LatLongPosition) p).latlng, df);
         }
@@ -326,7 +324,7 @@ public final class LatLongPosition implements IPosition {
     }
 
     @Override
-    public IPosition sum(final IPosition other) {
+    public Position sum(final Position other) {
         if (other instanceof LatLongPosition) {
             final LatLng l = ((LatLongPosition) other).latlng;
             return new LatLongPosition(

@@ -9,7 +9,7 @@
 package it.unibo.alchemist.utils;
 
 import it.unibo.alchemist.model.implementations.positions.LatLongPosition;
-import it.unibo.alchemist.model.interfaces.IPosition;
+import it.unibo.alchemist.model.interfaces.Position;
 
 import com.javadocmd.simplelatlng.LatLng;
 import com.javadocmd.simplelatlng.LatLngTool;
@@ -48,7 +48,7 @@ public final class MapUtils {
      *            Second point
      * @return the distance in meters
      */
-    public static double getDistance(final IPosition p1, final IPosition p2) {
+    public static double getDistance(final Position p1, final Position p2) {
         return LatLngTool.distance(toLatLng(p1), toLatLng(p2), LengthUnit.METER);
     }
 
@@ -59,7 +59,7 @@ public final class MapUtils {
      *            final position
      * @return the initial bearing
      */
-    public static double initialBearing(final IPosition start, final IPosition end) {
+    public static double initialBearing(final Position start, final Position end) {
         return LatLngTool.initialBearing(toLatLng(start), toLatLng(end));
     }
 
@@ -72,7 +72,7 @@ public final class MapUtils {
      *            maximum walkable length
      * @return the actual destination
      */
-    public static LatLongPosition getDestinationLocation(final IPosition start, final double initialBearing, final double dist) {
+    public static LatLongPosition getDestinationLocation(final Position start, final double initialBearing, final double dist) {
         return toLatLong(LatLngTool.travel(toLatLng(start), initialBearing, dist, LengthUnit.METER));
     }
 
@@ -85,19 +85,19 @@ public final class MapUtils {
      *            maximum walkable length
      * @return the actual destination
      */
-    public static LatLongPosition getDestinationLocation(final IPosition start, final IPosition end, final double dist) {
+    public static LatLongPosition getDestinationLocation(final Position start, final Position end, final double dist) {
         final double bearing = initialBearing(start, end);
         return getDestinationLocation(start, bearing, dist);
     }
 
     /**
-     * Converts {@link IPosition} to {@link LatLng}.
+     * Converts {@link Position} to {@link LatLng}.
      * 
      * @param p
-     *            the {@link IPosition}
+     *            the {@link Position}
      * @return a {@link LatLng}
      */
-    public static LatLng toLatLng(final IPosition p) {
+    public static LatLng toLatLng(final Position p) {
         final double[] pa = p.getCartesianCoordinates();
         return new LatLng(pa[1], pa[0]);
     }
