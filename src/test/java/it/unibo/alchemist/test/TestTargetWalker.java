@@ -63,7 +63,7 @@ public class TestTargetWalker {
         try {
             env = new OSMEnvironment<>(TESTMAP, true, true);
             env.setLinkingRule(new NoLinks<>());
-            node = new GenericNode<Object>(true) {
+            node = new GenericNode<Object>(env) {
                 private static final long serialVersionUID = -3982001064673078159L;
                 @Override
                 protected Object createT() {
