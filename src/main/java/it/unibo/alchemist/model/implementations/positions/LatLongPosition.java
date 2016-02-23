@@ -33,7 +33,7 @@ import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * Unmodifiable state version of {@link LatLng}, also implementing the
- * {@link IPostion} interface.
+ * {@link Position} interface.
  * 
  */
 public final class LatLongPosition implements Position {
@@ -105,7 +105,7 @@ public final class LatLongPosition implements Position {
     /**
      * <p>
      * This "distance" function is mostly for internal use. Most users will
-     * simply rely upon {@link #distance(LatLng, LatLng, LengthUnit)}
+     * simply rely upon {@link #distance(LatLng, LatLng, LengthUnit, DistanceFormula)}
      * </p>
      * 
      * <p>
