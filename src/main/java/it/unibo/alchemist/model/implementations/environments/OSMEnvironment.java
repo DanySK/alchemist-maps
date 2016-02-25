@@ -113,6 +113,9 @@ public class OSMEnvironment<T> extends Continuous2DEnvironment<T> implements IMa
     private transient LoadingCache<Triple<Vehicle, Position, Position>, IRoute> routecache;
 
     /**
+     * Builds a new {@link OSMEnvironment}, with nodes forced on streets,
+     * discarding nodes too far off the map, and loading no GPS traces.
+     * 
      * @param file
      *            the file path where the map data is stored
      * @throws IOException
